@@ -5,5 +5,6 @@ export const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.primary};
     font-family: Tahoma, Helvetica, Arial, Roboto, sans-serif;
     transition: all 0.50s linear;
+    box-sizing: border-box;
   }
   `;
