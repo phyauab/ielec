@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FaBars } from "react-icons/fa";
 import logo from "../assets/Logo.png";
-import { Button } from "./UI/Button";
+import { Button, SearchBar } from "./UI";
 
 const Wrapper = styled.div`
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
@@ -68,7 +68,7 @@ const Navbar = () => {
         <img src={logo} alt="IELEC" />
       </div>
       <div className="nav-right">
-        <input type="text"></input>
+        <SearchBar />
         <p>HKD</p>
         <Button>Login</Button>
       </div>
