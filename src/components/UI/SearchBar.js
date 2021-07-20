@@ -18,6 +18,10 @@ const Wrapper = styled.div`
   }
   button {
     border: none;
+    padding: 0rem 0.25rem;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -28,7 +32,7 @@ export const SearchBar = () => {
   useEffect(() => {
     if (isFocus) {
       wrapperRef.current.style.borderColor = "#2D2D2D";
-      wrapperRef.current.style.boxShadow = "4px 4px 4px #DCDCDC";
+      wrapperRef.current.style.boxShadow = "0px 0px 10px #2D2D2D";
     } else {
       wrapperRef.current.style.borderColor = "#7b7b7b";
       wrapperRef.current.style.boxShadow = "";
