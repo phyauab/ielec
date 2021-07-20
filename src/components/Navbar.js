@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { FaBars } from "react-icons/fa";
-import logo from "../assets/Logo.png";
 import { Button, SearchBar } from "./UI";
+import logo from "../assets/Logo.png";
+import links from "../utils/links";
 
 const Wrapper = styled.div`
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
@@ -57,10 +58,9 @@ const Navbar = () => {
     <Wrapper>
       <div className="nav-left">
         <ul>
-          <li>Phone</li>
-          <li>Laptop</li>
-          <li>Headphone</li>
-          <li>Accessories</li>
+          {links.map((link) => (
+            <li>{link.text.charAt(0).toUpperCase() + link.text.slice(1)}</li>
+          ))}
         </ul>
       </div>
 
