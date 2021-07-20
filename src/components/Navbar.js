@@ -5,8 +5,8 @@ import { Button, SearchBar } from "./UI";
 import logo from "../assets/Logo.png";
 import links from "../utils/links";
 import { capitalize } from "../utils/helpers";
-import { Toggler } from "./components/Theme/Toggler";
-import { lightTheme, darkTheme } from "./components/Theme/Theme";
+import { Toggler } from "./Theme/Toggler";
+import { lightTheme, darkTheme } from "./Theme/Theme";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -61,10 +61,9 @@ const Wrapper = styled.div`
 `;
 
 const Navbar = () => {
-  const [theme, setTheme] = useState("light");
-  const toggleTheme = () => {
-    theme === "light" ? setTheme("dark") : setTheme("light");
-  };
+  // const toggleTheme = () => {
+  //   theme === "light" ? setTheme("dark") : setTheme("light");
+  // };
 
   return (
     <Wrapper>
