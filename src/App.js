@@ -4,7 +4,6 @@ import { GlobalStyle } from "./components/Theme/GlobalStyle";
 import { lightTheme, darkTheme } from "./components/Theme/Theme";
 import { Toggler } from "./components/Theme/Toggler";
 import styled from "styled-components";
-import { Button } from "./components/UI";
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -18,8 +17,6 @@ function App() {
       <GlobalStyle />
       <div className="App">
         <Navbar />
-        <h1>HI</h1>
-        <Button>Test</Button>
       </div>
     </ThemeProvider>
   );
