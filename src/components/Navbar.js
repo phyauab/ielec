@@ -4,12 +4,13 @@ import { FaBars } from "react-icons/fa";
 import { Button, SearchBar } from "./UI";
 import logo from "../assets/Logo.png";
 import links from "../utils/links";
+import { capitalize } from "../utils/helpers";
 
 const Wrapper = styled.div`
+  align-items: center;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   color: ${(props) => props.theme.background};
   display: flex;
-  align-items: center;
   justify-content: space-between;
   padding: 1rem;
   height: 80px;
@@ -22,11 +23,12 @@ const Wrapper = styled.div`
       justify-content: center;
     }
     ul {
-      padding: 0 2rem;
       align-items: center;
       display: flex;
+      justify-content: center;
+      gap: 2rem;
       list-style: none;
-      justify-content: space-around;
+      padding: 0 2rem;
       width: 100%;
     }
   }
@@ -42,6 +44,9 @@ const Wrapper = styled.div`
     display: none;
     @media (min-width: 768px) {
       display: flex;
+      padding: 0 2rem;
+      justify-content: flex-end;
+      gap: 2rem;
     }
   }
   .nav-menu {
@@ -59,7 +64,7 @@ const Navbar = () => {
       <div className="nav-left">
         <ul>
           {links.map((link) => (
-            <li>{link.text.charAt(0).toUpperCase() + link.text.slice(1)}</li>
+            <li>{capitalize(link.text)}</li>
           ))}
         </ul>
       </div>
