@@ -12,12 +12,12 @@ const links = [
   {
     id: 3,
     text: "headphone",
-    url: "headphone",
+    url: "/headphone",
   },
   {
     id: 4,
     text: "accessories",
-    url: "accessories",
+    url: "/accessories",
   },
 ];
 

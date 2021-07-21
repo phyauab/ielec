@@ -5,6 +5,7 @@ import { Button, SearchBar } from "./UI";
 import logo from "../assets/Logo.png";
 import links from "../utils/links";
 import { capitalize } from "../utils/helpers";
+import { Link } from "react-router-dom";
 import { Toggler } from "./Theme/Toggler";
 import { lightTheme, darkTheme } from "./Theme/Theme";
 
@@ -32,6 +33,18 @@ const Wrapper = styled.div`
       list-style: none;
       padding: 0 2rem;
       width: 100%;
+      a {
+        border-bottom: 1px solid ${(props) => props.theme.body};
+        text-decoration: none;
+        padding: 3px;
+        transition: 0.3s ease-out;
+        &:visited {
+          color: inherit;
+        }
+        &:hover {
+          border-color: ${(props) => props.theme.primary};
+        }
+      }
     }
   }
   .nav-left {
@@ -70,7 +83,9 @@ const Navbar = () => {
       <div className="nav-left">
         <ul>
           {links.map((link) => (
-            <li>{capitalize(link.text)}</li>
+            <Link to={`/products${link.url}`}>
+              <li>{capitalize(link.text)}</li>
+            </Link>
           ))}
         </ul>
       </div>
