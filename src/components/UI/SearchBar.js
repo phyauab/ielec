@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   border-radius: 25px;
   background: ${(props) => props.theme.body};
   padding: 0.5rem 1rem;
-  transition: 0.2s linear;
+  transition: 0.3s ease-out;
   input {
     border: none;
     background: ${(props) => props.theme.body};
@@ -31,8 +31,8 @@ export const SearchBar = () => {
 
   useEffect(() => {
     if (isFocus) {
-      wrapperRef.current.style.borderColor = "#2D2D2D";
-      wrapperRef.current.style.boxShadow = "0px 0px 10px #2D2D2D";
+      wrapperRef.current.style.borderColor = "#3F3F3F";
+      wrapperRef.current.style.boxShadow = "0px 0px 8px #3F3F3F";
     } else {
       wrapperRef.current.style.borderColor = "#7b7b7b";
       wrapperRef.current.style.boxShadow = "";

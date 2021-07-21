@@ -6,7 +6,7 @@ export const Button = styled.button`
   padding: 0.5em 1.5em;
   border: 1px solid ${(props) => props.theme.primary};
   border-radius: 25px;
-  transition: 0.2s linear;
+  transition: 0.3s ease-out;
   &:hover {
     background: ${(props) => props.theme.primary};
     color: ${(props) => props.theme.body};
