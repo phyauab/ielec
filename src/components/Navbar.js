@@ -1,18 +1,17 @@
 import { React, useState } from "react";
 import styled from "styled-components";
 import { FaBars } from "react-icons/fa";
-import { Button, SearchBar } from "./UI";
+import { SearchBar } from "./UI";
+import Button from "./Button";
 import logo from "../assets/Logo.png";
 import links from "../utils/links";
 import { capitalize } from "../utils/helpers";
 import { Link } from "react-router-dom";
-import { Toggler } from "./Theme/Toggler";
-import { lightTheme, darkTheme } from "./Theme/Theme";
 
 const Wrapper = styled.div`
   align-items: center;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
-  color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
   display: flex;
   justify-content: space-between;
   padding: 1rem;
@@ -36,7 +35,7 @@ const Wrapper = styled.div`
       a {
         border-bottom: 1px solid ${(props) => props.theme.body};
         text-decoration: none;
-        padding: 3px;
+        padding-bottom: 3px;
         transition: 0.3s ease-out;
         &:visited {
           color: inherit;
@@ -73,11 +72,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Navbar = () => {
-  // const toggleTheme = () => {
-  //   theme === "light" ? setTheme("dark") : setTheme("light");
-  // };
-
+const Navbar = ({ ThemeToggler, switchTheme }) => {
   return (
     <Wrapper>
       <div className="nav-left">
@@ -95,6 +90,7 @@ const Navbar = () => {
       </div>
       <div className="nav-right">
         <SearchBar />
+        <ThemeToggler onClick={() => switchTheme()} />
         <p>HKD</p>
         <Button>Login</Button>
       </div>

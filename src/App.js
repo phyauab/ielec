@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { GlobalStyle } from "./components/Theme/GlobalStyle";
 import Navbar from "./components/Navbar";
+import ThemeToggler from "./components/ThemeToggler";
 import { lightTheme, darkTheme } from "./components/Theme/Theme";
 import {
   AboutPage,
@@ -16,11 +17,15 @@ import {
 
 function App() {
   const [theme, setTheme] = useState("light");
+  const switchTheme = () => {
+    console.log("switch: " + theme);
+    theme === "light" ? setTheme("dark") : setTheme("light");
+  };
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyle />
       <Router>
-        <Navbar />
+        <Navbar ThemeToggler={ThemeToggler} switchTheme={switchTheme} />
         <Switch>
           <Route exact path="/">
             <HomePage />

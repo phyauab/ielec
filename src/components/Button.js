@@ -1,11 +1,13 @@
+import React from "react";
 import styled from "styled-components";
 
-export const Button = styled.button`
+const Wrapper = styled.button`
   background: ${(props) => props.theme.body};
-  font-size: 1em;
-  padding: 0.5em 1.5em;
   border: 1px solid ${(props) => props.theme.primary};
   border-radius: 25px;
+  color: ${(props) => props.theme.text};
+  font-size: 1em;
+  padding: 0.5em 1.5em;
   transition: 0.3s ease-out;
   &:hover {
     background: ${(props) => props.theme.primary};
@@ -13,3 +15,9 @@ export const Button = styled.button`
     cursor: pointer;
   }
 `;
+
+const Button = ({ children }) => {
+  return <Wrapper>{children}</Wrapper>;
+};
+
+export default Button;
