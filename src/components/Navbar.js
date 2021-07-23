@@ -86,7 +86,9 @@ const Navbar = ({ ThemeToggler, switchTheme }) => {
       </div>
 
       <div className="nav-logo">
-        <img src={logo} alt="IELEC" />
+        <Link to="/">
+          <img src={logo} alt="IELEC" />
+        </Link>
       </div>
       <div className="nav-right">
         <SearchBar />
