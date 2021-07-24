@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   padding: 1rem;
   height: 80px;
+  overflow: hidden;
   width: 100%;
   div {
     display: flex;

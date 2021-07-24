@@ -7,4 +7,7 @@ export const GlobalStyle = createGlobalStyle`
     transition: all 0.50s linear;
     box-sizing: border-box;
   }
+  h1 {
+    font-size: 3rem;
+  }
   `;
