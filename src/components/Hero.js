@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import hero from "../assets/hero.jpg";
 import Button from "./Button";
 
@@ -21,12 +22,11 @@ const Wrapper = styled.section`
     }
   }
   .intro {
+    align-items: center;
     display: flex;
+    justify-content: center;
     flex: 1;
 
-    @media (min-width: 768px) {
-      padding: 0;
-    }
     div {
       align-items: center;
       color: white;
@@ -35,11 +35,12 @@ const Wrapper = styled.section`
       gap: 2rem;
       justify-content: center;
       padding: 1rem;
+      width: 400px;
       @media (min-width: 1024px) {
-        padding: 5rem;
+        width: 500px;
       }
       @media (min-width: 1440px) {
-        padding: 10rem;
+        padding: 0rem;
       }
     }
     h1 {
@@ -49,15 +50,20 @@ const Wrapper = styled.section`
       }
     }
   }
-  Button {
+
+  // shop now button
+  a {
     width: 100%;
-    border: none;
+    Button {
+      border: none;
+      width: 100%;
+    }
   }
 `;
 
 const Hero = () => {
   return (
-    <Wrapper>
+    <Wrapper className="section-center">
       <div className="spacer" />
       <div className="intro">
         <div>
@@ -72,7 +78,9 @@ const Hero = () => {
             mollitia excepturi soluta optio culpa. Necessitatibus voluptatum,
             odit amet vitae quos ut magni inventore blanditiis?
           </p>
-          <Button>Shop Now</Button>
+          <Link to="/products">
+            <Button>Shop Now</Button>
+          </Link>
         </div>
       </div>
     </Wrapper>

@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   color: ${(props) => props.theme.text};
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+
   height: 80px;
   overflow: hidden;
   width: 100%;
@@ -75,7 +75,7 @@ const Wrapper = styled.div`
 
 const Navbar = ({ ThemeToggler, switchTheme }) => {
   return (
-    <Wrapper>
+    <Wrapper className="section-center">
       <div className="nav-left">
         <ul>
           {links.map((link) => (
