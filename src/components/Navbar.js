@@ -4,10 +4,12 @@ import { FaBars } from "react-icons/fa";
 import { SearchBar } from "./UI";
 import ThemeToggler from "./ThemeToggler";
 import Button from "./Button";
-import logo from "../assets/Logo.png";
+import logoLight from "../assets/Logo-light.png";
+import logoDark from "../assets/Logo-dark.png";
 import links from "../utils/links";
 import { capitalize } from "../utils/helpers";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -15,7 +17,6 @@ const Wrapper = styled.div`
   color: ${(props) => props.theme.text};
   display: flex;
   justify-content: space-between;
-
   height: 80px;
   overflow: hidden;
   width: 100%;
@@ -75,6 +76,8 @@ const Wrapper = styled.div`
 `;
 
 const Navbar = () => {
+  const { theme } = useAppContext();
+
   return (
     <Wrapper className="section-center">
       <div className="nav-left">
@@ -89,7 +92,7 @@ const Navbar = () => {
 
       <div className="nav-logo">
         <Link to="/">
-          <img src={logo} alt="IELEC" />
+          <img src={theme === "light" ? logoLight : logoDark} alt="IELEC" />
         </Link>
       </div>
       <div className="nav-right">
