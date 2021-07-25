@@ -1,6 +1,5 @@
 import { React, useState } from "react";
 import styled from "styled-components";
-import { useAppContext } from "../context/AppContext";
 import { FaBars } from "react-icons/fa";
 import { SearchBar } from "./UI";
 import ThemeToggler from "./ThemeToggler";
@@ -76,7 +75,6 @@ const Wrapper = styled.div`
 `;
 
 const Navbar = () => {
-  const { switchTheme } = useAppContext();
   return (
     <Wrapper className="section-center">
       <div className="nav-left">
@@ -96,7 +94,7 @@ const Navbar = () => {
       </div>
       <div className="nav-right">
         <SearchBar />
-        <ThemeToggler onClick={() => switchTheme()} />
+        <ThemeToggler />
         <p>HKD</p>
         <Button>Login</Button>
       </div>
