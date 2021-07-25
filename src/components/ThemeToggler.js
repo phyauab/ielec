@@ -6,19 +6,24 @@ import { FaSun, FaMoon } from "react-icons/fa";
 const Wrapper = styled.button`
   border: none;
   background: ${(props) => props.theme.body};
+  color: ${(props) => props.theme.text};
   font-size: 1.25rem;
   padding: 0.25rem;
+  transition: all 0.3s ease-out;
   &:hover {
     cursor: pointer;
+  }
+  FaSun {
+    color: white;
   }
 `;
 
 const ThemeToggler = () => {
-  const { switchTheme } = useAppContext();
+  const { theme, switchTheme } = useAppContext();
 
   return (
     <Wrapper onClick={switchTheme}>
-      <FaSun />
+      {theme === "light" ? <FaMoon /> : <FaSun />}
     </Wrapper>
   );
 };

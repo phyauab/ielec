@@ -4,7 +4,7 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.primary};
     font-family: Tahoma, Helvetica, Arial, Roboto, sans-serif;
-    transition: all 0.50s linear;
+    transition: all 0.3s ease-out;
     box-sizing: border-box;
   }
   h1 {
