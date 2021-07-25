@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useAppContext } from "../context/AppContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 
 const Wrapper = styled.button`
@@ -12,9 +13,11 @@ const Wrapper = styled.button`
   }
 `;
 
-const ThemeToggler = ({ onClick }) => {
+const ThemeToggler = () => {
+  const { switchTheme } = useAppContext();
+
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper onClick={switchTheme}>
       <FaSun />
     </Wrapper>
   );

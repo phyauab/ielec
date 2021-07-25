@@ -1,7 +1,9 @@
 import { React, useState } from "react";
 import styled from "styled-components";
+import { useAppContext } from "../context/AppContext";
 import { FaBars } from "react-icons/fa";
 import { SearchBar } from "./UI";
+import ThemeToggler from "./ThemeToggler";
 import Button from "./Button";
 import logo from "../assets/Logo.png";
 import links from "../utils/links";
@@ -73,7 +75,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const Navbar = ({ ThemeToggler, switchTheme }) => {
+const Navbar = () => {
+  const { switchTheme } = useAppContext();
   return (
     <Wrapper className="section-center">
       <div className="nav-left">

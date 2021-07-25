@@ -1,10 +1,9 @@
 import { React, useState } from "react";
-import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { GlobalStyle } from "./components/Theme/GlobalStyle";
+import { useAppContext } from "./context/AppContext";
 import Navbar from "./components/Navbar";
 import ThemeToggler from "./components/ThemeToggler";
-import { lightTheme, darkTheme } from "./components/Theme/Theme";
 import {
   AboutPage,
   CartPage,
@@ -22,10 +21,10 @@ function App() {
     theme === "light" ? setTheme("dark") : setTheme("light");
   };
   return (
-    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+    <>
       <GlobalStyle />
       <Router>
-        <Navbar ThemeToggler={ThemeToggler} switchTheme={switchTheme} />
+        <Navbar />
         <Switch>
           <Route exact path="/">
             <HomePage />
@@ -47,7 +46,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
-    </ThemeProvider>
+    </>
   );
 }
 

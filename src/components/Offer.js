@@ -69,7 +69,7 @@ const arr = [
 
 const Offer = () => {
   return (
-    <Wrapper>
+    <Wrapper className="section-center">
       <h1>We Will Offer</h1>
       <div className="container section-center">
         {arr.map((item) => {
