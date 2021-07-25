@@ -13,9 +13,6 @@ const Wrapper = styled.button`
   &:hover {
     cursor: pointer;
   }
-  FaSun {
-    color: white;
-  }
 `;
 
 const ThemeToggler = () => {
