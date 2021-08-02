@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { GlobalStyle } from "./components/Theme/GlobalStyle";
 import { useAppContext } from "./context/AppContext";
 import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 import ThemeToggler from "./components/ThemeToggler";
 import {
   AboutPage,
@@ -25,6 +26,7 @@ function App() {
       <GlobalStyle />
       <Router>
         <Navbar />
+        <Sidebar />
         <Switch>
           <Route exact path="/">
             <HomePage />

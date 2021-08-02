@@ -6,11 +6,14 @@ const AppContext = React.createContext();
 
 export const AppProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const switchTheme = () => {
     theme === "light" ? setTheme("dark") : setTheme("light");
   };
+
   return (
-    <AppContext.Provider value={{ theme, switchTheme }}>
+    <AppContext.Provider value={{ theme, switchTheme, isSidebarOpen, setIsSidebarOpen }}>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         {children}
       </ThemeProvider>

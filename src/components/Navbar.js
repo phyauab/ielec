@@ -72,11 +72,14 @@ const Wrapper = styled.div`
     @media (min-width: 768px) {
       display: none;
     }
+    &:hover{
+      cursor: pointer;
+    }
   }
 `;
 
 const Navbar = () => {
-  const { theme } = useAppContext();
+  const { theme, isSidebarOpen, setIsSidebarOpen } = useAppContext();
 
   return (
     <Wrapper className="section-center">
@@ -101,7 +104,7 @@ const Navbar = () => {
         <p>HKD</p>
         <Button>Login</Button>
       </div>
-      <div className="nav-menu">
+      <div className="nav-menu" onClick={() => { setIsSidebarOpen(!isSidebarOpen) }}>
         <FaBars />
       </div>
     </Wrapper>
