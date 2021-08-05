@@ -37,6 +37,7 @@ const Wrapper = styled.div`
       width: 100%;
       a {
         border-bottom: 1px solid ${(props) => props.theme.body};
+        color: ${props => props.theme.text};
         text-decoration: none;
         padding-bottom: 3px;
         transition: 0.3s ease-out;

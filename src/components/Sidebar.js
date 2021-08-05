@@ -43,7 +43,7 @@ const Wrapper = styled.div`
 
 
 const Sidebar = () => {
-    const { isSidebarOpen, setIsSidebarOpen } = useAppContext();
+    const { isSidebarOpen } = useAppContext();
     return (
         <Wrapper className={isSidebarOpen ? "active" : ""} isSidebarOpen={isSidebarOpen}>
             <ul>

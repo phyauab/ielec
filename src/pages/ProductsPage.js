@@ -1,6 +1,7 @@
 import React from "react";
+import BreadCrumb from "../components/BreadCrumb";
 
 const ProductsPage = () => {
-  return <div>ProductsPage</div>;
+  return <section><BreadCrumb/></section>;
 };
 export default ProductsPage;
