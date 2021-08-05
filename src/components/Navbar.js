@@ -51,6 +51,11 @@ const Wrapper = styled.div`
     }
   }
   .nav-left {
+    ul {
+      display: flex;
+      padding: 0;
+      justify-content: flex-start;
+    }
     @media (max-width: 768px) {
       display: none;
     }
