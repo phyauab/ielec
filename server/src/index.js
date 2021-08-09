@@ -1,11 +1,10 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
+const userRouter = require("./routers/user");
 
 // Routers
-app.use("/", (req, res) => {
-  res.send("IELEC");
-});
+app.use(userRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);

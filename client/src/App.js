@@ -13,6 +13,7 @@ import {
   HomePage,
   ProductsPage,
   SingleProductPage,
+  LoginPage,
 } from "./pages";
 
 function App() {
@@ -25,9 +26,14 @@ function App() {
     <>
       <GlobalStyle />
       <Router>
-        <Navbar />
-        <Sidebar />
         <Switch>
+          {/* No Navbar Page */}
+          <Route exact path="/login">
+            <LoginPage />
+          </Route>
+          {/* No Navbar Page */}
+          <Navbar />
+          <Sidebar />
           <Route exact path="/">
             <HomePage />
           </Route>

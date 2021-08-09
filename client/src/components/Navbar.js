@@ -37,7 +37,7 @@ const Wrapper = styled.div`
       width: 100%;
       a {
         border-bottom: 1px solid ${(props) => props.theme.body};
-        color: ${props => props.theme.text};
+        color: ${(props) => props.theme.text};
         text-decoration: none;
         padding-bottom: 3px;
         transition: 0.3s ease-out;
@@ -78,7 +78,7 @@ const Wrapper = styled.div`
     @media (min-width: 768px) {
       display: none;
     }
-    &:hover{
+    &:hover {
       cursor: pointer;
     }
   }
@@ -108,9 +108,16 @@ const Navbar = () => {
         <SearchBar />
         <ThemeToggler />
         <p>HKD</p>
-        <Button>Login</Button>
+        <Button>
+          <Link to="/login">Login</Link>
+        </Button>
       </div>
-      <div className="nav-menu" onClick={() => { setIsSidebarOpen(!isSidebarOpen) }}>
+      <div
+        className="nav-menu"
+        onClick={() => {
+          setIsSidebarOpen(!isSidebarOpen);
+        }}
+      >
         <FaBars />
       </div>
     </Wrapper>
