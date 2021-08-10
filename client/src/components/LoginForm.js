@@ -2,6 +2,7 @@ import {React, useState} from "react";
 import styled from "styled-components";
 import Button from "../components/Button"
 import { useUserContext } from "../context/UserContext"
+import { Link } from "react-router-dom"
 ;
 const Wrapper = styled.section`
   display: flex;
@@ -22,6 +23,14 @@ const Wrapper = styled.section`
       padding: 0.5rem;
     }
   }
+  a {
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
 `;
 
 const LoginForm = () => {
@@ -45,7 +54,8 @@ const LoginForm = () => {
         <input type="text" name="username" placeholder="username" onChange={(e)=>setUsername(e.target.value)} required></input>
         <label>Password</label>
         <input type="password" name="passowrd" placeholder="********" onChange={(e)=>setPassword(e.target.value)} required></input>
-          <Button>Login In</Button>
+        <Button>Login In</Button>
+        <Link to="/">Back</Link>
       </form>
     </Wrapper>
   );
