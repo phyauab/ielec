@@ -7,7 +7,10 @@ router.post("/users/signup", async (req, res) => {
   try {
     const user = new User(req.body)
     await user.save();
-    res.status(201).send();
+
+    const token = await user.generateToken();
+
+    res.status(201).send({user, token});
   } catch(e) {
     console.log(e);
     res.status(400).send();

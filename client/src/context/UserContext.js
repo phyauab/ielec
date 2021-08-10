@@ -19,11 +19,12 @@ export const UserProvider = ({children}) => {
 
     const signUpUser = async ({username, email, password}) => {
         try {
-            await axios.post("http://localhost:4000/users/signup", {
+            const response = await axios.post("http://localhost:4000/users/signup", {
                 username,
                 email,
                 password
             })
+            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
