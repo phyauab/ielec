@@ -19,7 +19,7 @@ export const UserProvider = ({children}) => {
 
     const signUpUser = async ({username, email, password}) => {
         try {
-            await axios.post("http://localhost:4000/users/login", {
+            await axios.post("http://localhost:4000/users/signup", {
                 username,
                 email,
                 password

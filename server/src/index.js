@@ -11,6 +11,9 @@ app.use(cors());
 // Routers
 app.use(userRouter);
 
+// connect to db
+require("./db/mongoose")
+
 app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);
 });
