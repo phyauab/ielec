@@ -14,6 +14,7 @@ import {
   ProductsPage,
   SingleProductPage,
   LoginPage,
+  SignUpPage
 } from "./pages";
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
       <Router>
         <Switch>
           {/* No Navbar Page */}
+          <Route exact path="/signup">
+            <SignUpPage />
+          </Route>
           <Route exact path="/login">
             <LoginPage />
           </Route>

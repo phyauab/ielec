@@ -69,7 +69,7 @@ const Wrapper = styled.div`
       display: flex;
       padding: 0 2rem;
       justify-content: flex-end;
-      gap: 2rem;
+      gap: 1rem;
     }
   }
   .nav-menu {
@@ -82,6 +82,22 @@ const Wrapper = styled.div`
       cursor: pointer;
     }
   }
+  .btn {
+    background: ${(props) => props.theme.body};
+    border: 1px solid ${(props) => props.theme.primary};
+    border-radius: 25px;
+    color: ${(props) => props.theme.text};
+    font-size: 1em;
+    padding: 0.5em 1em;
+    transition: 0.3s ease-out;
+    text-decoration: none;
+    &:hover {
+      background: ${(props) => props.theme.primary};
+      color: ${(props) => props.theme.body};
+      cursor: pointer;
+    }
+  }
+
 `;
 
 const Navbar = () => {
@@ -107,10 +123,8 @@ const Navbar = () => {
       <div className="nav-right">
         <SearchBar />
         <ThemeToggler />
-        <p>HKD</p>
-        <Button>
-          <Link to="/login">Login</Link>
-        </Button>
+          <Link to="/login" className="btn">Login</Link>
+          <Link to="/signup" className="btn">Sign up</Link>
       </div>
       <div
         className="nav-menu"

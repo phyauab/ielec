@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-
+import Button from "../components/Button"
+import { useUserContext } from "../context/UserContext"
+;
 const Wrapper = styled.section`
   display: flex;
   justify-content: center;
@@ -21,25 +23,29 @@ const Wrapper = styled.section`
     }
     div {
       width: 100%;
-      input {
+      Button {
         width: 100%;
+        margin-bottom: 5px;
       }
     }
   }
 `;
 
 const LoginForm = () => {
+
+  const { loginUser } = useUserContext();
+
   return (
     <Wrapper>
-      <form action="localhost:4000/users">
+      <form>
         <h1>IELEC</h1>
         <label for="username">Username</label>
         <input name="username" placeholder="username" required></input>
         <label>Password</label>
         <input name="passowrd" placeholder="********" required></input>
         <div>
-          <input type="submit" value="Sign up"></input>
-          <input type="submit" value="Login in"></input>
+          <Button onClick={ (e) => loginUser(e)}>Login In</Button>
+          <Button>Sign Up</Button>
         </div>
       </form>
     </Wrapper>

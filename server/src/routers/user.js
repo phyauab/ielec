@@ -5,7 +5,7 @@ const User = require("../models/user");
 // CREATE
 router.post("/users", async (req, res) => {
   console.log(req.body);
-  res.send("users");
+  res.send();
 });
 
 // READ
