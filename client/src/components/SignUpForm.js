@@ -54,16 +54,16 @@ const SignUpForm = () => {
               <h1>IELEC</h1>
 
               {/* Username */}
-              <label for="username">Username</label>
+              <label htmlFor="username">Username</label>
               <input name="username" placeholder="username" onChange={(e) => setUsername(e.target.value)} required></input>
 
               {/* Email */}
-              <label for="email">Email</label>
+              <label htmlFor="email">Email</label>
               <input name="email" placeholder="exmaple@gmail.com" onChange={(e) => setEmail(e.target.value)} required></input>
 
               {/* Password */}
-              <label>Password</label>
-              <input name="passowrd" placeholder="********" onChange={(e) => setPassword(e.target.value)} required></input>
+              <label htmlFor="password">Password</label>
+              <input name="password" placeholder="********" onChange={(e) => setPassword(e.target.value)} required></input>
               <Button>Sign Up</Button>
               <Link to="/">Back</Link>
 

@@ -50,10 +50,10 @@ const LoginForm = () => {
     <Wrapper>
       <form onSubmit={(e) => handleSubmit(e)}>
         <h1>IELEC</h1>
-        <label for="username">Username</label>
+        <label htmlFor="username">Username</label>
         <input type="text" name="username" placeholder="username" onChange={(e)=>setUsername(e.target.value)} required></input>
-        <label>Password</label>
-        <input type="password" name="passowrd" placeholder="********" onChange={(e)=>setPassword(e.target.value)} required></input>
+        <label htmlFor="password">Password</label>
+        <input type="password" name="password" placeholder="********" onChange={(e)=>setPassword(e.target.value)} required></input>
         <Button>Login In</Button>
         <Link to="/">Back</Link>
       </form>
