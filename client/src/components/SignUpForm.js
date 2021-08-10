@@ -1,6 +1,7 @@
-import React from 'react'
+import {React, useState} from 'react'
 import styled from 'styled-components';
 import Button from "./Button"
+import { useUserContext } from "../context/UserContext"
 
 const Wrapper = styled.section`
   display: flex;
@@ -31,26 +32,42 @@ const Wrapper = styled.section`
 `;
 
 const SignUpForm = () => {
-    return (
-        <Wrapper>
-            <form>
-                <h1>IELEC</h1>
+  const { signUpUser } = useUserContext();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-                {/* Username */}
-                <label for="username">Username</label>
-                <input name="username" placeholder="username" required></input>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signUpUser({
+      username,
+      email,
+      password
+    })
+  }
 
-                {/* Email */}
-                <label for="email">Email</label>
-                <input name="email" placeholder="exmaple@gmail.com" required></input>
+  return (
+      <Wrapper>
+          <form onSubmit={(e)=> handleSubmit(e)}>
+              <h1>IELEC</h1>
 
-                {/* Password */}
-                <label>Password</label>
-                <input name="passowrd" placeholder="********" required></input>
-                <Button>Sign Up</Button>
-            </form>
-        </Wrapper>
-    )
+              {/* Username */}
+              <label for="username">Username</label>
+              <input name="username" placeholder="username" onChange={(e) => setUsername(e.target.value)} required></input>
+
+              {/* Email */}
+              <label for="email">Email</label>
+              <input name="email" placeholder="exmaple@gmail.com" onChange={(e) => setEmail(e.target.value)} required></input>
+
+              {/* Password */}
+              <label>Password</label>
+              <input name="passowrd" placeholder="********" onChange={(e) => setPassword(e.target.value)} required></input>
+              <Button>Sign Up</Button>
+              <Button>Back</Button>
+
+          </form>
+      </Wrapper>
+  )
 }
 
 export default SignUpForm;

@@ -2,14 +2,20 @@ const express = require("express");
 const router = new express.Router();
 const User = require("../models/user");
 
-// CREATE
-router.post("/users", async (req, res) => {
+// Sign up / Login
+router.post("/users/signup", async (req, res) => {
+  console.log(req.body);
+  res.send();
+});
+
+router.post("/users/login", async (req, res) => {
   console.log(req.body);
   res.send();
 });
 
 // READ
-router.get("/users", async (req, res) => {
+router.get("/users/login", async (req, res) => {
+  console.log(req.body.username)
   res.send("WTF");
 });
 

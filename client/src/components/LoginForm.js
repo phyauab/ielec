@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState} from "react";
 import styled from "styled-components";
 import Button from "../components/Button"
 import { useUserContext } from "../context/UserContext"
@@ -21,32 +21,31 @@ const Wrapper = styled.section`
     input {
       padding: 0.5rem;
     }
-    div {
-      width: 100%;
-      Button {
-        width: 100%;
-        margin-bottom: 5px;
-      }
-    }
   }
 `;
 
 const LoginForm = () => {
-
   const { loginUser } = useUserContext();
+  const [ username, setUsername ] = useState("");
+  const [ password, setPassword ] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginUser({
+      username,
+      password
+    })
+  }
 
   return (
     <Wrapper>
-      <form>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <h1>IELEC</h1>
         <label for="username">Username</label>
-        <input name="username" placeholder="username" required></input>
+        <input type="text" name="username" placeholder="username" onChange={(e)=>setUsername(e.target.value)} required></input>
         <label>Password</label>
-        <input name="passowrd" placeholder="********" required></input>
-        <div>
-          <Button onClick={ (e) => loginUser(e)}>Login In</Button>
-          <Button>Sign Up</Button>
-        </div>
+        <input type="password" name="passowrd" placeholder="********" onChange={(e)=>setPassword(e.target.value)} required></input>
+          <Button>Login In</Button>
       </form>
     </Wrapper>
   );
