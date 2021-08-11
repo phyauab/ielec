@@ -1,6 +1,7 @@
 const express = require("express");
 const router = new express.Router();
 const User = require("../models/user");
+const auth = require("../middleware/auth");
 
 // Sign up new user
 router.post("/users/signup", async (req, res) => {
@@ -13,7 +14,7 @@ router.post("/users/signup", async (req, res) => {
     res.status(201).send({ user, token });
   } catch (e) {
     console.log(e);
-    res.status(400).send();
+    res.status(400).send({ error: error.message });
   }
 });
 
@@ -29,6 +30,21 @@ router.post("/users/login", async (req, res) => {
     res.status(200).send({ user, token });
   } catch (error) {
     res.status(400).send({ error: error.message });
+  }
+});
+
+// Logout existing user
+router.post("/users/logout", auth, async (req, res) => {
+  try {
+    console.log("user " + req.user.tokens);
+    // remove token
+    req.user.tokens = req.user.tokens.filter(
+      (token) => token.token !== req.token
+    );
+    await req.user.save();
+    res.send();
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
 });
 

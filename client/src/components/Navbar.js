@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { FaBars } from "react-icons/fa";
 import { SearchBar } from "./UI";
 import ThemeToggler from "./ThemeToggler";
-import Button from "./Button";
 import logoLight from "../assets/Logo-light.png";
 import logoDark from "../assets/Logo-dark.png";
 import links from "../utils/links";
 import { capitalize } from "../utils/helpers";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { useUserContext } from "../context/UserContext";
+import Button from "./Button";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -97,18 +98,18 @@ const Wrapper = styled.div`
       cursor: pointer;
     }
   }
-
 `;
 
 const Navbar = () => {
   const { theme, isSidebarOpen, setIsSidebarOpen } = useAppContext();
+  const { user, logoutUser, isLoggedIn } = useUserContext();
 
   return (
     <Wrapper className="section-center">
       <div className="nav-left">
         <ul>
-          {links.map((link) => (
-            <Link to={`/products${link.url}`}>
+          {links.map((link, index) => (
+            <Link key={index} to={`/products${link.url}`}>
               <li>{capitalize(link.text)}</li>
             </Link>
           ))}
@@ -123,8 +124,17 @@ const Navbar = () => {
       <div className="nav-right">
         <SearchBar />
         <ThemeToggler />
-          <Link to="/login" className="btn">Login</Link>
-          <Link to="/signup" className="btn">Sign up</Link>
+        {isLoggedIn || (
+          <Link to="/login" className="btn">
+            Login
+          </Link>
+        )}
+        {isLoggedIn || (
+          <Link to="/signup" className="btn">
+            Sign up
+          </Link>
+        )}
+        {isLoggedIn && <Button onClick={() => logoutUser()}>Logut</Button>}
       </div>
       <div
         className="nav-menu"

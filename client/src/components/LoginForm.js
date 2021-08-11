@@ -1,9 +1,8 @@
-import {React, useState} from "react";
+import { React, useState } from "react";
 import styled from "styled-components";
-import Button from "../components/Button"
-import { useUserContext } from "../context/UserContext"
-import { Link } from "react-router-dom"
-;
+import Button from "../components/Button";
+import { useUserContext } from "../context/UserContext";
+import { Link } from "react-router-dom";
 const Wrapper = styled.section`
   display: flex;
   justify-content: center;
@@ -24,36 +23,49 @@ const Wrapper = styled.section`
     }
   }
   a {
-      text-align: center;
-      text-decoration: none;
-      color: inherit;
-      &:hover {
-        text-decoration: underline;
-      }
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+      text-decoration: underline;
     }
+  }
 `;
 
 const LoginForm = () => {
   const { loginUser } = useUserContext();
-  const [ username, setUsername ] = useState("");
-  const [ password, setPassword ] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("sadgfd");
     loginUser({
       username,
-      password
-    })
-  }
+      password,
+    });
+  };
 
   return (
     <Wrapper>
       <form onSubmit={(e) => handleSubmit(e)}>
         <h1>IELEC</h1>
         <label htmlFor="username">Username</label>
-        <input type="text" name="username" placeholder="username" onChange={(e)=>setUsername(e.target.value)} required></input>
+        <input
+          type="text"
+          name="username"
+          placeholder="username"
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        ></input>
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" placeholder="********" onChange={(e)=>setPassword(e.target.value)} required></input>
+        <input
+          type="password"
+          name="password"
+          placeholder="********"
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        ></input>
         <Button>Login In</Button>
         <Link to="/">Back</Link>
       </form>
