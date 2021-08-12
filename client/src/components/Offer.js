@@ -46,7 +46,7 @@ const CardWrapper = styled.div`
 const Card = ({ img, title }) => {
   return (
     <CardWrapper>
-      <img src={img} />
+      <img src={img} alt="img"/>
       <h2>{title}</h2>
     </CardWrapper>
   );

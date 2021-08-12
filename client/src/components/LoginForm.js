@@ -2,7 +2,8 @@ import { React, useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { useUserContext } from "../context/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+
 const Wrapper = styled.section`
   display: flex;
   justify-content: center;
@@ -36,14 +37,19 @@ const LoginForm = () => {
   const { loginUser } = useUserContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("sadgfd");
-    loginUser({
+    const isSuccess= await loginUser({
       username,
       password,
     });
+    if(isSuccess) {
+      history.push({
+        pathname: "/",
+      });
+    }
   };
 
   return (

@@ -70,7 +70,13 @@ const Wrapper = styled.div`
       display: flex;
       padding: 0 2rem;
       justify-content: flex-end;
-      gap: 1rem;
+      gap: 0.5rem;
+    }
+    .nav-right__account{
+      div {
+        display: flex;
+        gap: 0.5rem;
+      }
     }
   }
   .nav-menu {
@@ -102,7 +108,7 @@ const Wrapper = styled.div`
 
 const Navbar = () => {
   const { theme, isSidebarOpen, setIsSidebarOpen } = useAppContext();
-  const { user, logoutUser, isLoggedIn } = useUserContext();
+  const { user, logoutUser, isLoggedIn, isUserLoading } = useUserContext();
 
   return (
     <Wrapper className="section-center">
@@ -124,17 +130,20 @@ const Navbar = () => {
       <div className="nav-right">
         <SearchBar />
         <ThemeToggler />
-        {isLoggedIn || (
-          <Link to="/login" className="btn">
-            Login
-          </Link>
-        )}
-        {isLoggedIn || (
-          <Link to="/signup" className="btn">
-            Sign up
-          </Link>
-        )}
-        {isLoggedIn && <Button onClick={() => logoutUser()}>Logut</Button>}
+        <div className="nav-right__account">
+          { isUserLoading ? <p>loading</p> 
+            : isLoggedIn ? 
+            <Button onClick={() => logoutUser()}>Logut</Button> :
+            <div>
+              <Link to="/login" className="btn">
+                Login
+              </Link>
+              <Link to="/signup" className="btn">
+                Sign up
+              </Link>
+            </div>
+          }
+        </div>
       </div>
       <div
         className="nav-menu"

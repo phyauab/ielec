@@ -7,9 +7,11 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   const loginUser = async ({ username, password }) => {
     try {
+      setIsUserLoading(true);
       const response = await axios.post("http://localhost:4000/users/login", {
         username,
         password,
@@ -18,14 +20,19 @@ export const UserProvider = ({ children }) => {
       setUser(user);
       setToken(token);
       setIsLoggedIn(true);
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
+    } finally {
+      setIsUserLoading(false);
     }
   };
 
   const logoutUser = async () => {
     try {
-      const response = await axios.post(
+      setIsUserLoading(true);
+      await axios.post(
         "http://localhost:4000/users/logout",
         {},
         {
@@ -39,11 +46,14 @@ export const UserProvider = ({ children }) => {
       setIsLoggedIn(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsUserLoading(false);
     }
   };
 
   const signUpUser = async ({ username, email, password }) => {
     try {
+      setIsUserLoading(true);
       const response = await axios.post("http://localhost:4000/users/signup", {
         username,
         email,
@@ -51,12 +61,14 @@ export const UserProvider = ({ children }) => {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsUserLoading(false);
     }
   };
 
   return (
     <UserContext.Provider
-      value={{ user, loginUser, logoutUser, signUpUser, isLoggedIn }}
+      value={{ user, loginUser, logoutUser, signUpUser, isLoggedIn, isUserLoading }}
     >
       {children}
     </UserContext.Provider>
