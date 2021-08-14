@@ -22,8 +22,8 @@ router.post("/users/signup", async (req, res) => {
 router.post("/users/login", async (req, res) => {
   try {
     const user = await User.findByPassword(
-      req.body.username,
-      req.body.password
+      req.body.data.username,
+      req.body.data.password
     );
     // When the user is logged in, a token is generated
     const token = await user.generateToken();

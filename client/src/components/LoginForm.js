@@ -34,23 +34,27 @@ const Wrapper = styled.section`
 `;
 
 const LoginForm = () => {
-  const { loginUser } = useUserContext();
+  const { isLoading, loginUser } = useUserContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isSuccess= await loginUser({
+    const isSuccess = await loginUser({
       username,
       password,
     });
-    if(isSuccess) {
+    if (isSuccess) {
       history.push({
         pathname: "/",
       });
+    } else {
+      alert("username / password is wrong");
     }
   };
+
+  if (isLoading) return <p>Loading</p>;
 
   return (
     <Wrapper>
