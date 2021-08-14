@@ -1,40 +1,37 @@
 const mongoose = require("mongoose");
 
-const options = { discriminatorKey: 'type' }
+const options = { discriminatorKey: "category" };
 
-const productSchema = new mongoose.Schema({
-    type: {
-        type: String,
-        required: true,
-    },
+const productSchema = new mongoose.Schema(
+  {
     brand: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     qty: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     rating: {
-        type: Number
+      type: Number,
     },
     price: {
-        type: Number,
-        require: true
+      type: Number,
+      require: true,
     },
     description: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
-    images: {
+    images: {},
+  },
+  options
+);
 
-    }
-}, options)
+const Product = mongoose.model("Product", productSchema);
 
-const Product = mongoose.model('Product', productSchema);
-
-module.exports = { Product, options }
+module.exports = { Product, options };

@@ -1,23 +1,26 @@
 const mongoose = require("mongoose");
 const { Product, options } = require("./product");
 
-const laptopSchema = new mongoose.Schema({
+const laptopSchema = new mongoose.Schema(
+  {
     cpu: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     ram: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     hdd: {
-        type: Number,
+      type: Number,
     },
     ssd: {
-        type: Number
-    }
-}, options)
+      type: Number,
+    },
+  },
+  options
+);
 
-const Laptop = Product.discriminator('Laptop', laptopSchema);
+const Laptop = Product.discriminator("Laptop", laptopSchema);
 
 module.exports = Laptop;

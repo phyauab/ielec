@@ -1,0 +1,35 @@
+const express = require("express");
+const router = new express.Router();
+const { Product } = require("../models/product");
+const Phone = require("../models/phone");
+
+// CREATE
+router.post("/products/phone", async (req, res) => {
+  try {
+    const phone = new Phone({
+      brand: "Apple",
+      name: "iphone",
+      qty: 10,
+      price: 100,
+      color: "White",
+      ram: 1,
+      storage: 64,
+    });
+    await phone.save();
+    res.send("Added");
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
+
+// READ
+router.get("/products/phone", async (req, res) => {
+  try {
+    const data = await Phone.find({});
+    res.send(data);
+  } catch (error) {
+    res.status(400).send({ error: error });
+  }
+});
+
+module.exports = router;
