@@ -5,6 +5,12 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
+  LOGOUT_USER_BEGIN,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_ERROR,
+  SIGNUP_USER_BEGIN,
+  SIGNUP_USER_SUCCESS,
+  SIGNUP_USER_ERROR,
 } from "../reducers/actions/UserAction";
 
 const UserContext = React.createContext();
@@ -14,14 +20,10 @@ const initialState = {
   isLoading: false,
   isError: false,
   user: null,
-  token: "",
+  token: null,
 };
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isUserLoading, setIsUserLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const BASE_URL = "http://localhost:4000";
   const api = axios.create({
@@ -43,47 +45,45 @@ export const UserProvider = ({ children }) => {
       return true;
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR });
-      console.log(error);
       return false;
-    } finally {
-      setIsUserLoading(false);
     }
   };
 
   const logoutUser = async () => {
     try {
-      setIsUserLoading(true);
-      await axios.post(
-        "http://localhost:4000/users/logout",
+      dispatch({ type: LOGOUT_USER_BEGIN });
+      await api.post(
+        "/users/logout",
         {},
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${state.token}`,
           },
         }
       );
-      setUser(null);
-      setToken(null);
-      setIsLoggedIn(false);
+      dispatch({ type: LOGOUT_USER_SUCCESS });
     } catch (error) {
-      console.log(error);
-    } finally {
-      setIsUserLoading(false);
+      dispatch({ type: LOGOUT_USER_ERROR });
+      console.logoutUser(error);
+      alert("Failed to Logout");
     }
   };
 
   const signUpUser = async ({ username, email, password }) => {
     try {
-      setIsUserLoading(true);
+      dispatch({ type: SIGNUP_USER_BEGIN });
       const response = await axios.post("http://localhost:4000/users/signup", {
         username,
         email,
         password,
       });
+      const { user, token } = response.data;
+      dispatch({ type: SIGNUP_USER_SUCCESS, payload: { user, token } });
+      return true;
     } catch (error) {
+      dispatch({ type: SIGNUP_USER_ERROR });
       console.log(error);
-    } finally {
-      setIsUserLoading(false);
+      return false;
     }
   };
 

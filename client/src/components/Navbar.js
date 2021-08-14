@@ -108,7 +108,7 @@ const Wrapper = styled.div`
 
 const Navbar = () => {
   const { theme, isSidebarOpen, setIsSidebarOpen } = useAppContext();
-  const { isLoggedIn, logoutUser } = useUserContext();
+  const { user, isLoggedIn, logoutUser } = useUserContext();
 
   return (
     <Wrapper className="section-center">
@@ -132,7 +132,10 @@ const Navbar = () => {
         <ThemeToggler />
         <div className="nav-right__account">
           {isLoggedIn ? (
-            <Button onClick={() => logoutUser()}>Logut</Button>
+            <div>
+              <p>Hi, {user.username}</p>
+              <Button onClick={() => logoutUser()}>Logut</Button>
+            </div>
           ) : (
             <div>
               <Link to="/login" className="btn">

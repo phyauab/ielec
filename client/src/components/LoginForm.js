@@ -34,7 +34,7 @@ const Wrapper = styled.section`
 `;
 
 const LoginForm = () => {
-  const { isLoading, loginUser } = useUserContext();
+  const { isLoading, isLoggedIn, isError, loginUser } = useUserContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
