@@ -1,6 +1,5 @@
 const express = require("express");
 const router = new express.Router();
-const { Product } = require("../models/product");
 const Phone = require("../models/phone");
 
 // CREATE
@@ -16,7 +15,7 @@ router.post("/products/phone", async (req, res) => {
       storage: 64,
     });
     await phone.save();
-    res.send("Added");
+    res.send("Phone Added");
   } catch (error) {
     res.status(400).send({ error: error.message });
   }
