@@ -14,7 +14,7 @@ import {
   ProductsPage,
   SingleProductPage,
   LoginPage,
-  SignUpPage
+  SignUpPage,
 } from "./pages";
 
 function App() {
@@ -28,16 +28,18 @@ function App() {
       <GlobalStyle />
       <Router>
         <Switch>
-          {/* No Navbar Page */}
           <Route exact path="/signup">
             <SignUpPage />
           </Route>
           <Route exact path="/login">
             <LoginPage />
           </Route>
+        </Switch>
+        <Navbar />
+        <Sidebar />
+        <Switch>
           {/* No Navbar Page */}
-          <Navbar />
-          <Sidebar />
+
           <Route exact path="/">
             <HomePage />
           </Route>

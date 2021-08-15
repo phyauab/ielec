@@ -3,6 +3,7 @@ const app = express();
 var cors = require("cors");
 const userRouter = require("./routers/user");
 const phoneRouter = require("./routers/phone");
+const productRouter = require("./routers/product");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -11,6 +12,7 @@ app.use(cors());
 // Routers
 app.use(userRouter);
 app.use(phoneRouter);
+app.use(productRouter);
 
 // connect to db
 require("./db/mongoose");
