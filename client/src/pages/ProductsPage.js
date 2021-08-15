@@ -25,21 +25,24 @@ const Wrapper = styled.section`
 
 const ProductsPage = () => {
   const locations = useLocation().pathname.split("/");
-  console.log("locations: " + locations);
   locations.shift();
-  const [category, setCategory] = useState("phone");
-  const { products, fetchProducts } = useProductContext();
+  const [category, setCategory] = useState("phones");
+  const { fetchProducts, displayProducts } = useProductContext();
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    setCategory(locations[1]);
+  }, [locations]);
+
+  useEffect(() => {
+    fetchProducts(category);
+  }, [category]);
 
   return (
     <Wrapper className="content-center">
       <BreadCrumb locations={locations} />
       <div className="products">
         <ProductFilter />
-        <ProductGridView products={products} />
+        <ProductGridView products={displayProducts} />
       </div>
     </Wrapper>
   );

@@ -3,7 +3,7 @@ const router = new express.Router();
 const Laptop = require("../models/laptop");
 
 // Create
-router.post("/products/laptop", async (req, res) => {
+router.post("/products/laptops", async (req, res) => {
   try {
     const laptop = new Laptop({
       brand: "Dell",
@@ -23,7 +23,7 @@ router.post("/products/laptop", async (req, res) => {
 });
 
 // Read
-router.get("/products/laptop", async (req, res) => {
+router.get("/products/laptops", async (req, res) => {
   try {
     const laptops = await Laptop.find({});
     res.send(laptops);

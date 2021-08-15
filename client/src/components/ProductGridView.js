@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Product from "./Product";
+import { useProductContext } from "../context/ProductContext";
 
 const Wrapper = styled.div`
   display: grid;
@@ -14,13 +15,17 @@ const Wrapper = styled.div`
 `;
 
 const ProductGridView = ({ products }) => {
+  const { isLoading, isError } = useProductContext();
+
+  if (isLoading) return <p>Loading</p>;
+  if (isError) return <p>Error</p>;
+
   return (
     <Wrapper>
-      <Product name="Iphone" price="123" />
-      <Product name="Iphone" price="123" />
-      <Product name="Iphone" price="123" />
-      <Product name="Iphone" price="123" />
-      <Product name="Iphone" price="123" />
+      {products.map((product) => {
+        const { _id, name, price } = product;
+        return <Product key={_id} name={name} price={price} />;
+      })}
     </Wrapper>
   );
 };

@@ -1,18 +1,18 @@
 const links = [
   {
     id: 1,
-    text: "phone",
-    url: "/phone",
+    text: "phones",
+    url: "/phones",
   },
   {
     id: 2,
-    text: "laptop",
-    url: "/laptop",
+    text: "laptops",
+    url: "/laptops",
   },
   {
     id: 3,
-    text: "headphone",
-    url: "/headphone",
+    text: "headphones",
+    url: "/headphones",
   },
   {
     id: 4,

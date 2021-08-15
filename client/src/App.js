@@ -46,6 +46,9 @@ function App() {
           <Route exact path="/products">
             <ProductsPage />
           </Route>
+          <Route exact path="/products">
+            <ProductsPage />
+          </Route>
           <Route path="/products/:id" children={<SingleProductPage />}>
             <ProductsPage />
           </Route>

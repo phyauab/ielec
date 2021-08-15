@@ -3,7 +3,7 @@ const router = new express.Router();
 const Headphone = require("../models/headphone");
 
 // Create
-router.post("/products/headphone", async (req, res) => {
+router.post("/products/headphones", async (req, res) => {
   try {
     const headphone = new Headphone({
       brand: "Sony",
@@ -21,7 +21,7 @@ router.post("/products/headphone", async (req, res) => {
 });
 
 // Read
-router.get("/products/headphone", async (req, res) => {
+router.get("/products/headphones", async (req, res) => {
   try {
     const headphone = await Headphone.find({});
     res.send(headphone);
