@@ -29,9 +29,15 @@ const Wrapper = styled.div`
 `;
 
 const Product = ({ name, img, price }) => {
+  var base64String = btoa(
+    new Uint8Array(img.data).reduce(function (data, byte) {
+      return data + String.fromCharCode(byte);
+    }, "")
+  );
+
   return (
     <Wrapper>
-      <img src={iphone} alt="asd"></img>
+      <img src={`data:image/png;base64,${base64String}`} alt="asd"></img>
       <div className="">
         <p>{name}</p>
         <p className="price">${price}</p>

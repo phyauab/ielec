@@ -64,7 +64,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: LOGOUT_USER_SUCCESS });
     } catch (error) {
       dispatch({ type: LOGOUT_USER_ERROR });
-      console.logoutUser(error);
+      console.log(error);
       alert("Failed to Logout");
     }
   };

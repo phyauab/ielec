@@ -1,34 +1,45 @@
 const express = require("express");
 const router = new express.Router();
 const Phone = require("../models/phone");
+const { upload } = require("../middleware/upload");
 
 // CREATE
-router.post("/products/phones", async (req, res) => {
-  try {
-    const phone = new Phone({
-      brand: "Apple",
-      name: "iphone",
-      qty: 10,
-      price: 100,
-      color: "White",
-      ram: 1,
-      storage: 64,
-    });
-    await phone.save();
-    res.send("Phone Added");
-  } catch (error) {
+router.post(
+  "/products/phones",
+  upload.single("profile"),
+  async (req, res) => {
+    console.log("phone");
+    console.log(req.body);
+    console.log(req.file);
+    try {
+      const phone = new Phone({ ...req.body, profile: req.file.buffer });
+      await phone.save();
+      res.send("Phone Added");
+    } catch (error) {
+      res.status(400).send({ error: error.message });
+    }
+  },
+  (error, req, res, next) => {
     res.status(400).send({ error: error.message });
   }
-});
+);
 
 // READ
 router.get("/products/phones", async (req, res) => {
   try {
     const data = await Phone.find({});
+    res.set("Content-Type", "image/jpg");
     res.send(data);
   } catch (error) {
     res.status(400).send({ error: error });
   }
+});
+
+router.get("/products/phones/properties", async (req, res) => {
+  console.log(Phone.schema.paths);
+  try {
+    res.send(Phone.schema.paths);
+  } catch (error) {}
 });
 
 module.exports = router;

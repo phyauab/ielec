@@ -15,6 +15,8 @@ import {
   SingleProductPage,
   LoginPage,
   SignUpPage,
+  PrivateRoute,
+  DashboardPage,
 } from "./pages";
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
     <>
       <GlobalStyle />
       <Router>
+        <Navbar />
+        <Sidebar />
         <Switch>
           <Route exact path="/signup">
             <SignUpPage />
@@ -34,11 +38,12 @@ function App() {
           <Route exact path="/login">
             <LoginPage />
           </Route>
-        </Switch>
-        <Navbar />
-        <Sidebar />
-        <Switch>
-          {/* No Navbar Page */}
+          {/* <PrivateRoute exact path="/dashboard">
+            <DashboardPage />
+          </PrivateRoute> */}
+          <Route exact path="/dashboard">
+            <DashboardPage />
+          </Route>
 
           <Route exact path="/">
             <HomePage />

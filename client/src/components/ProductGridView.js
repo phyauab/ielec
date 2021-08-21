@@ -23,8 +23,8 @@ const ProductGridView = ({ products }) => {
   return (
     <Wrapper>
       {products.map((product) => {
-        const { _id, name, price } = product;
-        return <Product key={_id} name={name} price={price} />;
+        const { _id, name, price, profile } = product;
+        return <Product key={_id} name={name} price={price} img={profile} />;
       })}
     </Wrapper>
   );

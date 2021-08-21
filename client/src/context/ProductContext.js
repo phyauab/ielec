@@ -82,8 +82,18 @@ export const ProductProvider = ({ children }) => {
 
   const setDisplayProducts = () => {};
 
+  const addProduct = async (dataArray, category) => {
+    console.log("add  ");
+    try {
+      const response = await api.post(`/products/${category}`, dataArray);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{ ...state, fetchProducts }}>
+    <ProductContext.Provider value={{ ...state, fetchProducts, addProduct }}>
       {children}
     </ProductContext.Provider>
   );

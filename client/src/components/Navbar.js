@@ -120,6 +120,7 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
+        <Link to="/dashboard">dash</Link>
       </div>
 
       <div className="nav-logo">

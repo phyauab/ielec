@@ -6,14 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import { AppProvider } from "./context/AppContext";
 import { UserProvider } from "./context/UserContext";
 import { ProductProvider } from "./context/ProductContext";
+import { AdminProvider } from "./context/AdminContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
       <UserProvider>
-        <ProductProvider>
-          <App />
-        </ProductProvider>
+        <AdminProvider>
+          <ProductProvider>
+            <App />
+          </ProductProvider>
+        </AdminProvider>
       </UserProvider>
     </AppProvider>
   </React.StrictMode>,
