@@ -27,4 +27,12 @@ router.get("/products/categories", async (req, res) => {
   } catch (error) {}
 });
 
+// Delete
+router.delete("/products", async (req, res) => {
+  try {
+    await Product.deleteMany({});
+    res.send("delete all products successfully");
+  } catch (error) {}
+});
+
 module.exports = router;

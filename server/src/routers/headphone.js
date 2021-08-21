@@ -30,4 +30,12 @@ router.get("/products/headphones", async (req, res) => {
   }
 });
 
+// Delete
+router.delete("/products/headphones", async (req, res) => {
+  try {
+    await Headphone.deleteMany({});
+    res.send("delete all headphones successfully");
+  } catch (error) {}
+});
+
 module.exports = router;

@@ -32,4 +32,12 @@ router.get("/products/laptops", async (req, res) => {
   }
 });
 
+// Delete
+router.delete("/products/laptops", async (req, res) => {
+  try {
+    await Laptop.deleteMany({});
+    res.send("delete successfully");
+  } catch (error) {}
+});
+
 module.exports = router;

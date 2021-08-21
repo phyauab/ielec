@@ -42,4 +42,12 @@ router.get("/products/phones/properties", async (req, res) => {
   } catch (error) {}
 });
 
+// Delete
+router.delete("/products/phones", async (req, res) => {
+  try {
+    await Phone.deleteMany({});
+    res.send("delete all phones successfully");
+  } catch (error) {}
+});
+
 module.exports = router;

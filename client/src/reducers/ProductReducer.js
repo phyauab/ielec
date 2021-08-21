@@ -7,11 +7,17 @@ import {
   FETCH_ACCESSORIES_SUCCESS,
   FETCH_PRODUCT_ERROR,
   CHANGE_DISPLAY_PRODUCT,
+  FETCH_CATEGORIES_BEGIN,
+  FETCH_CATEGORIES_SUCCESS,
+  FETCH_PROPERTIES_BEGIN,
+  FETCH_PROPERTIES_SUCCESS,
 } from "./actions/ProductAction";
 
 const ProductRecuder = (state, action) => {
   switch (action.type) {
     case FETCH_PRODUCT_BEGIN:
+    case FETCH_CATEGORIES_BEGIN:
+    case FETCH_PROPERTIES_BEGIN:
       return { ...state, isLoading: true, isError: false };
     case FETCH_PHONE_SUCCESS:
       return {
@@ -41,6 +47,10 @@ const ProductRecuder = (state, action) => {
         displayProducts: action.payload,
         isLoading: false,
       };
+    case FETCH_CATEGORIES_SUCCESS:
+      return { ...state, categories: action.payload, isLoading: false };
+    case FETCH_PROPERTIES_SUCCESS:
+      return { ...state, properties: action.payload, isLoading: false };
     case FETCH_PRODUCT_ERROR:
       return { ...state, isLoading: false, isError: true };
     case CHANGE_DISPLAY_PRODUCT:

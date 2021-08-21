@@ -6,9 +6,9 @@ import { useAdminContext } from "../../context/AdminContext";
 export const InputForm = () => {
   const [category, setCategory] = useState();
   const [product, setProduct] = useState({});
-  const { addProduct } = useProductContext();
+  const { addProduct } = useAdminContext();
   const { categories, properties, fetchCategories, fetchProperties } =
-    useAdminContext();
+    useProductContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();

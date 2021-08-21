@@ -10,6 +10,10 @@ import {
   FETCH_ACCESSORIES_SUCCESS,
   FETCH_PRODUCT_ERROR,
   CHANGE_DISPLAY_PRODUCT,
+  FETCH_CATEGORIES_BEGIN,
+  FETCH_CATEGORIES_SUCCESS,
+  FETCH_PROPERTIES_BEGIN,
+  FETCH_PROPERTIES_SUCCESS,
 } from "../reducers/actions/ProductAction";
 
 const ProductContext = React.createContext();
@@ -22,6 +26,8 @@ const initialState = {
   headphones: [],
   accessories: [],
   displayProducts: [],
+  categories: [],
+  properties: [],
 };
 
 export const ProductProvider = ({ children }) => {
@@ -80,20 +86,46 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  const setDisplayProducts = () => {};
-
-  const addProduct = async (dataArray, category) => {
-    console.log("add  ");
+  const fetchCategories = async () => {
+    dispatch({ type: FETCH_CATEGORIES_BEGIN });
     try {
-      const response = await api.post(`/products/${category}`, dataArray);
-      console.log(response);
+      const response = await api.get("/products/categories");
+      const tempCategories = response.data.map((category) => {
+        if (category != "Accessories") {
+          return category.concat("s").toLowerCase();
+        }
+        return category.toLowerCase();
+      });
+      dispatch({ type: FETCH_CATEGORIES_SUCCESS, payload: tempCategories });
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fetchProperties = async () => {
+    dispatch({ type: FETCH_PROPERTIES_BEGIN });
+    try {
+      const response = await api.get("/products/properties");
+      const tempProperties = [];
+      const object = response.data;
+      for (const property in object) {
+        if (property != "_id" && property != "__v" && property != "category") {
+          const type = object[property].instance;
+          tempProperties.push({ property, type });
+        }
+      }
+      dispatch({ type: FETCH_PROPERTIES_SUCCESS, payload: tempProperties });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setDisplayProducts = () => {};
+
   return (
-    <ProductContext.Provider value={{ ...state, fetchProducts, addProduct }}>
+    <ProductContext.Provider
+      value={{ ...state, fetchProducts, fetchCategories, fetchProperties }}
+    >
       {children}
     </ProductContext.Provider>
   );

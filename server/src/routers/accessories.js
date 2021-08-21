@@ -29,4 +29,12 @@ router.get("/products/accessories", async (req, res) => {
   }
 });
 
+// Delete
+router.delete("/products/accessories", async (req, res) => {
+  try {
+    await Accessories.deleteMany({});
+    res.send("delete all accessories successfully");
+  } catch (error) {}
+});
+
 module.exports = router;
