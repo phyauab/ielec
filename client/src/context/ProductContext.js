@@ -14,6 +14,9 @@ import {
   FETCH_CATEGORIES_SUCCESS,
   FETCH_PROPERTIES_BEGIN,
   FETCH_PROPERTIES_SUCCESS,
+  FILTER_DISPLAY_PRODUCTS_BEGIN,
+  FILTER_DISPLAY_PRODUCTS_SUCCESS,
+  FILTER_DISPLAY_PRODUCTS_ERROR,
 } from "../reducers/actions/ProductAction";
 
 const ProductContext = React.createContext();
@@ -28,6 +31,7 @@ const initialState = {
   displayProducts: [],
   categories: [],
   properties: [],
+  // { categories: [], products: [] },
 };
 
 export const ProductProvider = ({ children }) => {
@@ -40,9 +44,10 @@ export const ProductProvider = ({ children }) => {
 
   // response.data
   const fetchProducts = async (category) => {
+    // if the array is not empty, then no need to fetch
     if (state[category.toString()].length !== 0) {
-      const tempArr = state[category.toString()].slice();
-      return dispatch({ type: CHANGE_DISPLAY_PRODUCT, payload: tempArr });
+      setDisplayProducts(category);
+      return;
     }
 
     try {
@@ -87,6 +92,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   const fetchCategories = async () => {
+    console.log("making a fetch category request");
     dispatch({ type: FETCH_CATEGORIES_BEGIN });
     try {
       const response = await api.get("/products/categories");
@@ -120,11 +126,50 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  const setDisplayProducts = () => {};
+  const setDisplayProducts = async (category) => {
+    console.log("setDisplayProducts");
+    const tempArr = state[category.toString()].slice();
+    dispatch({ type: CHANGE_DISPLAY_PRODUCT, payload: tempArr });
+  };
+
+  const filterDisplayProducts = (filter, category) => {
+    dispatch({ type: FILTER_DISPLAY_PRODUCTS_BEGIN });
+    var tempArr = state[category];
+    for (const property in filter) {
+      if (property === "price") {
+        tempArr = tempArr.filter(
+          (item) =>
+            item.price >= filter[property][0] &&
+            item.price <= filter[property][1]
+        );
+      } else if (property === "rating") {
+        tempArr = tempArr.filter(
+          (item) =>
+            item.rating >= filter[property][0] &&
+            item.rating <= filter[property][1]
+        );
+      } else if (property === "name") {
+        tempArr = tempArr.filter((item) =>
+          item[property].toLowerCase().includes(filter[property].toLowerCase())
+        );
+      } else {
+        tempArr = tempArr.filter((item) =>
+          filter[property].includes(item[property])
+        );
+      }
+    }
+    dispatch({ type: FILTER_DISPLAY_PRODUCTS_SUCCESS, payload: tempArr });
+  };
 
   return (
     <ProductContext.Provider
-      value={{ ...state, fetchProducts, fetchCategories, fetchProperties }}
+      value={{
+        ...state,
+        fetchProducts,
+        fetchCategories,
+        fetchProperties,
+        filterDisplayProducts,
+      }}
     >
       {children}
     </ProductContext.Provider>

@@ -25,7 +25,7 @@ const BreadCrumb = ({ locations }) => {
             &nbsp;/ {location}
           </Link>
         ) : (
-          <p>&nbsp;/ {location}</p>
+          <p key={index}>&nbsp;/ {location}</p>
         );
       })}
     </Wrapper>
