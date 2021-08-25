@@ -22,21 +22,29 @@ const Wrapper = styled.div`
     font-size: 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     div {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 1rem;
       .filter__item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
         div {
+          gap: 0.25rem;
         }
         span {
           font-size: 1.1rem;
-          font-weight: 500;
+          font-weight: 600;
         }
       }
     }
     input {
+      padding: 0.25rem;
+      font-size: 1.1rem;
+    }
+    select {
       padding: 0.25rem;
       font-size: 1.1rem;
     }
@@ -48,8 +56,6 @@ const ProductFilter = ({ category }) => {
   const MAX_RATING = 5;
   const MIN_PRICE = 0;
   const MAX_PRICE = 10000;
-  const [ratingRange, setRatingRange] = useState([]);
-  const [priceRange, setPriceRange] = useState([]);
   const [filter, setFilter] = useState({});
   const { filterDisplayProducts } = useProductContext();
 

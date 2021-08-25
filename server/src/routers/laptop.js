@@ -1,22 +1,14 @@
 const express = require("express");
 const router = new express.Router();
 const Laptop = require("../models/laptop");
+const { upload } = require("../middleware/upload");
 
 // Create
-router.post("/products/laptops", async (req, res) => {
+router.post("/products/laptops", upload.single("profile"), async (req, res) => {
   try {
-    const laptop = new Laptop({
-      brand: "Dell",
-      name: "XPS13",
-      qty: 20,
-      price: 9999,
-      cpu: "ryzen 3600",
-      ram: 8,
-      ssd: 128,
-    });
-
+    const laptop = new Laptop({ ...req.body, profile: req.file.buffer });
     await laptop.save();
-    res.send("laptop added");
+    res.send("laptop Added");
   } catch (error) {
     res.status(400).send({ error: error });
   }

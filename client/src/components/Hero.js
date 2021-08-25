@@ -49,6 +49,10 @@ const Wrapper = styled.section`
         font-size: 3rem;
       }
     }
+    p {
+      line-height: 2rem;
+      color: #d0d3d9;
+    }
   }
 
   // shop now button
@@ -69,16 +73,12 @@ const Hero = () => {
         <div>
           <h1>Level Up Your Tech</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis sequi
-            quo est, dolor amet iste voluptas asperiores voluptatem tempora
-            debitis culpa at accusamus eligendi reprehenderit qui natus quod
-            quidem eveniet dignissimos ratione expedita esse similique molestiae
-            in. Amet eius ut voluptatum! Iusto sint molestiae nulla sequi,
-            debitis laboriosam labore atque fuga quae quis voluptatem asperiores
-            mollitia excepturi soluta optio culpa. Necessitatibus voluptatum,
-            odit amet vitae quos ut magni inventore blanditiis?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
+            praesentium, suscipit obcaecati animi quas quae excepturi fuga ad
+            iure incidunt temporibus dicta quasi eligendi quibusdam nobis,
+            tempore sed doloremque cupiditate?
           </p>
-          <Link to="/products">
+          <Link to="/products/phones">
             <Button>Shop Now</Button>
           </Link>
         </div>

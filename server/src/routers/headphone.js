@@ -1,24 +1,25 @@
 const express = require("express");
 const router = new express.Router();
 const Headphone = require("../models/headphone");
+const { upload } = require("../middleware/upload");
 
 // Create
-router.post("/products/headphones", async (req, res) => {
-  try {
-    const headphone = new Headphone({
-      brand: "Sony",
-      name: "Mx1000",
-      qty: 5,
-      price: 4333,
-      anc: true,
-    });
-
-    await headphone.save();
-    res.send("headphone added");
-  } catch (error) {
-    res.status(400).send({ error: error });
+router.post(
+  "/products/headphones",
+  upload.single("profile"),
+  async (req, res) => {
+    try {
+      const headphone = new Headphone({
+        ...req.body,
+        profile: req.file.buffer,
+      });
+      await headphone.save();
+      res.send("headphone Added");
+    } catch (error) {
+      res.status(400).send({ error: error });
+    }
   }
-});
+);
 
 // Read
 router.get("/products/headphones", async (req, res) => {

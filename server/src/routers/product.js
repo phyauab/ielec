@@ -4,9 +4,19 @@ const { Product } = require("../models/product");
 const { upload } = require("../middleware/upload");
 
 router.get("/products", async (req, res) => {
+  let params = {};
+  if (Object.keys(req.query).length !== 0) {
+    params = req.query;
+
+    // conver string to boolean
+    if (params.featured) {
+      params.featured = params.featured === "true";
+    }
+  }
+  console.log(params);
   try {
-    console.log("SASD");
-    const data = await Product.find({});
+    const data = await Product.find(params);
+    console.log(data);
     res.send(data);
   } catch (error) {
     res.status(400).send({ error: error });
@@ -14,10 +24,24 @@ router.get("/products", async (req, res) => {
 });
 
 router.get("/products/properties", async (req, res) => {
-  console.log(Product.schema.paths);
+  let properties = Product.schema.paths;
+  delete properties.updatedAt;
+  delete properties.createdAt;
+  delete properties.__t;
+  delete properties.__v;
+  delete properties.category;
+  delete properties._id;
+
+  let tempProperties = [];
+  for (const property in properties) {
+    const type = properties[property].instance;
+    tempProperties.push({ property, type });
+  }
   try {
-    res.send(Product.schema.paths);
-  } catch (error) {}
+    res.send({ properties: tempProperties });
+  } catch (error) {
+    res.status(400).send({ error: "fetch properties failed" });
+  }
 });
 
 router.get("/products/categories", async (req, res) => {

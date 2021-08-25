@@ -43,7 +43,7 @@ export const ProductProvider = ({ children }) => {
   });
 
   // response.data
-  const fetchProducts = async (category) => {
+  const fetchProducts = async (category, params) => {
     // if the array is not empty, then no need to fetch
     if (state[category.toString()].length !== 0) {
       setDisplayProducts(category);
@@ -92,7 +92,6 @@ export const ProductProvider = ({ children }) => {
   };
 
   const fetchCategories = async () => {
-    console.log("making a fetch category request");
     dispatch({ type: FETCH_CATEGORIES_BEGIN });
     try {
       const response = await api.get("/products/categories");
@@ -112,15 +111,8 @@ export const ProductProvider = ({ children }) => {
     dispatch({ type: FETCH_PROPERTIES_BEGIN });
     try {
       const response = await api.get("/products/properties");
-      const tempProperties = [];
-      const object = response.data;
-      for (const property in object) {
-        if (property != "_id" && property != "__v" && property != "category") {
-          const type = object[property].instance;
-          tempProperties.push({ property, type });
-        }
-      }
-      dispatch({ type: FETCH_PROPERTIES_SUCCESS, payload: tempProperties });
+      const { properties } = response.data;
+      dispatch({ type: FETCH_PROPERTIES_SUCCESS, payload: properties });
     } catch (error) {
       console.log(error);
     }
@@ -161,6 +153,19 @@ export const ProductProvider = ({ children }) => {
     dispatch({ type: FILTER_DISPLAY_PRODUCTS_SUCCESS, payload: tempArr });
   };
 
+  const fetchFeaturedProducts = async () => {
+    try {
+      const response = await api.get("/products", {
+        params: {
+          featured: true,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -169,6 +174,7 @@ export const ProductProvider = ({ children }) => {
         fetchCategories,
         fetchProperties,
         filterDisplayProducts,
+        fetchFeaturedProducts,
       }}
     >
       {children}

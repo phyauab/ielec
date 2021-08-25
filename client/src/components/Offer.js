@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Title from "./Title";
 import fair_price from "../assets/fair_price.png";
 import good_service from "../assets/good_service.png";
 import no_delay from "../assets/no_delay.png";
@@ -23,9 +24,6 @@ const Wrapper = styled.section`
       flex-direction: row;
     }
   }
-  h1 {
-    font-size: 3rem;
-  }
 `;
 
 const CardWrapper = styled.div`
@@ -46,7 +44,7 @@ const CardWrapper = styled.div`
 const Card = ({ img, title }) => {
   return (
     <CardWrapper>
-      <img src={img} alt="img"/>
+      <img src={img} alt="img" />
       <h2>{title}</h2>
     </CardWrapper>
   );
@@ -70,7 +68,7 @@ const arr = [
 const Offer = () => {
   return (
     <Wrapper className="section-center">
-      <h1>We Will Offer</h1>
+      <Title title={"We Will Offer"} />
       <div className="container section-center">
         {arr.map((item) => {
           const { img, title } = item;

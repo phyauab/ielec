@@ -7,6 +7,7 @@ import ProductListView from "../components/ProductListView";
 import ProductGridView from "../components/ProductGridView";
 import { useProductContext } from "../context/ProductContext";
 import Loading from "../components/Loading";
+import NewsLetter from "../components/NewsLetter";
 
 const Wrapper = styled.section`
   display: flex;
@@ -15,6 +16,7 @@ const Wrapper = styled.section`
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-bottom: 10rem;
     @media (min-width: 1024px) {
       flex-direction: row;
     }

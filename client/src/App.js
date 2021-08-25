@@ -4,6 +4,7 @@ import { GlobalStyle } from "./components/Theme/GlobalStyle";
 import { useAppContext } from "./context/AppContext";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
 import ThemeToggler from "./components/ThemeToggler";
 import {
   AboutPage,
@@ -67,6 +68,7 @@ function App() {
             <ErrorPage />
           </Route>
         </Switch>
+        <Footer />
       </Router>
     </>
   );

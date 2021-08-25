@@ -8,9 +8,6 @@ router.post(
   "/products/phones",
   upload.single("profile"),
   async (req, res) => {
-    console.log("phone");
-    console.log(req.body);
-    console.log(req.file);
     try {
       const phone = new Phone({ ...req.body, profile: req.file.buffer });
       await phone.save();

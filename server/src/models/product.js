@@ -29,6 +29,13 @@ const productSchema = new mongoose.Schema(
     },
     profile: { type: Buffer },
     images: {},
+    featured: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
   },
   options
 );
