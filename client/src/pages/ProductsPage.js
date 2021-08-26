@@ -12,16 +12,14 @@ import NewsLetter from "../components/NewsLetter";
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
+  min-height: calc(100vh - 180px);
   .products {
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    gap: 5rem;
     margin-bottom: 10rem;
-    @media (min-width: 1024px) {
+    @media (min-width: 768px) {
       flex-direction: row;
-    }
-    .filter {
-      flex-grow: 1;
     }
   }
 `;

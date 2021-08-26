@@ -8,6 +8,7 @@ const Wrapper = styled.section`
   display: flex;
   justify-content: center;
   height: 100px;
+
   .react {
     color: #8abbea;
   }
