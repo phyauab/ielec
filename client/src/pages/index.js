@@ -8,7 +8,7 @@ import SingleProductPage from "./SingleProductPage";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
 import PrivateRoute from "./PrivateRoute";
-import DashboardPage from "./DashboardPage";
+import DashboardPage from "./Admin/DashboardPage";
 
 export {
   AboutPage,

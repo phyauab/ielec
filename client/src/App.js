@@ -45,6 +45,9 @@ function App() {
           <Route exact path="/dashboard">
             <DashboardPage />
           </Route>
+          <Route exact path="/dashboard/addproduct">
+            <DashboardPage />
+          </Route>
 
           <Route exact path="/">
             <HomePage />

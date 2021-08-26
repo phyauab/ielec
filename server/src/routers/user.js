@@ -47,6 +47,16 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
+// Relogin
+router.post("/users/relogin", auth, async (req, res) => {
+  try {
+    const { user, token } = req;
+    res.send({ user, token });
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+});
+
 // READ
 router.get("/users/me", async (req, res) => {
   console.log(req.body.username);

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useReducer } from "react";
+import React, { useState, useContext, useReducer, useEffect } from "react";
 import reducer from "../reducers/UserReducer";
 import axios from "axios";
 import {
@@ -42,6 +42,7 @@ export const UserProvider = ({ children }) => {
       });
       const { user, token } = response.data;
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
+      localStorage.setItem("ielec_token", token);
       return true;
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR });
@@ -62,6 +63,7 @@ export const UserProvider = ({ children }) => {
         }
       );
       dispatch({ type: LOGOUT_USER_SUCCESS });
+      localStorage.removeItem("ielec_token");
     } catch (error) {
       dispatch({ type: LOGOUT_USER_ERROR });
       console.log(error);
@@ -86,6 +88,31 @@ export const UserProvider = ({ children }) => {
       return false;
     }
   };
+
+  const reLoginUser = async (localToken) => {
+    try {
+      dispatch({ type: LOGIN_USER_BEGIN });
+      const response = await api.post(
+        "/users/relogin",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      const { user, token } = response.data;
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
+    } catch (error) {
+      dispatch({ type: LOGIN_USER_ERROR });
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const localToken = localStorage.getItem("ielec_token");
+    reLoginUser(localToken);
+  }, []);
 
   return (
     <UserContext.Provider

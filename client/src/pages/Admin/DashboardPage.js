@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import InputForm from "../components/Dashboard/InputForm";
-import NavPanel from "../components/Dashboard/NavPanel";
 
 const Wrapper = styled.section`
   display: flex;
@@ -12,12 +10,7 @@ const Wrapper = styled.section`
 `;
 
 const DashboardPage = () => {
-  return (
-    <Wrapper>
-      <NavPanel />
-      <InputForm />
-    </Wrapper>
-  );
+  return <Wrapper>DashboardPage</Wrapper>;
 };
 
 export default DashboardPage;
