@@ -29,24 +29,51 @@ const Wrapper = styled.section`
 const FeaturedProducts = () => {
   const [featuredProducts, setFeaturedProducts] = useState({
     isLoading: false,
+    isError: false,
     products: [],
   });
   const { fetchFeaturedProducts } = useProductContext();
 
   useEffect(async () => {
     setFeaturedProducts({ ...featuredProducts, isLoading: true });
-    let tempProducts = await fetchFeaturedProducts();
-    setFeaturedProducts({ isLoading: false, products: tempProducts });
+    try {
+      let tempProducts = await fetchFeaturedProducts();
+
+      setFeaturedProducts({
+        ...featuredProducts,
+        isLoading: false,
+        products: tempProducts,
+      });
+    } catch (error) {
+      setFeaturedProducts({
+        ...featuredProducts,
+        isLoading: false,
+        isError: true,
+      });
+    }
   }, []);
 
   if (featuredProducts.isLoading) {
-    return <Loading />;
+    return (
+      <Wrapper>
+        <Loading />
+      </Wrapper>
+    );
   }
+
+  if (featuredProducts.isError || featuredProducts.products.length === 0) {
+    return (
+      <Wrapper>
+        <h3>Sorry, something went wrong :(</h3>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <Title title={"Featured Products"} />
       <div className="container section-center">
-        {featuredProducts.products.map((product) => {
+        {featuredProducts.products.map((product, index) => {
           const { _id, name, profile, price } = product;
           return <Product key={_id} name={name} img={profile} price={price} />;
         })}

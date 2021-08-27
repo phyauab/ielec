@@ -12,7 +12,7 @@ const Wrapper = styled.section`
 const NavPanel = () => {
   return (
     <Wrapper>
-      <Link>Add Product</Link>
+      <Link to>Add Product</Link>
     </Wrapper>
   );
 };

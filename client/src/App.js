@@ -45,6 +45,7 @@ function App() {
           <Route exact path="/dashboard">
             <DashboardPage />
           </Route>
+
           <Route exact path="/dashboard/addproduct">
             <DashboardPage />
           </Route>
@@ -52,21 +53,30 @@ function App() {
           <Route exact path="/">
             <HomePage />
           </Route>
+
           <Route exact path="/products">
             <ProductsPage />
           </Route>
+
           <Route exact path="/products">
             <ProductsPage />
           </Route>
-          <Route path="/products/:id" children={<SingleProductPage />}>
-            <ProductsPage />
-          </Route>
+
+          <Route exact path="/products/:category" children={<ProductsPage />} />
+          <Route
+            exact
+            path="/products/:category/:id"
+            children={<SingleProductPage />}
+          />
+
           <Route exact path="/about">
             <AboutPage />
           </Route>
+
           <Route exact path="/cart">
             <CartPage />
           </Route>
+
           <Route path="*">
             <ErrorPage />
           </Route>

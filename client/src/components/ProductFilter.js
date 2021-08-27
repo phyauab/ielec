@@ -17,12 +17,13 @@ const Range = createSliderWithTooltip(Slider.Range);
 const Wrapper = styled.div`
   flex-grow: 1;
   form {
-    padding: 0rem 2rem;
     color: ${(props) => props.theme.text};
-    font-size: 1.1rem;
     display: flex;
     flex-direction: column;
+    font-size: 1.1rem;
     gap: 1rem;
+    padding: 0rem 2rem;
+    max-width: 300px;
     div {
       display: flex;
       flex-direction: column;

@@ -55,12 +55,12 @@ export const ProductProvider = ({ children }) => {
       switch (category) {
         case "phones":
           const responsePhone = await api.get("/products/phones");
-          console.log(responsePhone);
+
           dispatch({ type: FETCH_PHONE_SUCCESS, payload: responsePhone.data });
           break;
         case "laptops":
           const responseLaptop = await api.get("/products/laptops");
-          console.log(responseLaptop);
+
           dispatch({
             type: FETCH_LAPTOP_SUCCESS,
             payload: responseLaptop.data,
@@ -68,7 +68,7 @@ export const ProductProvider = ({ children }) => {
           break;
         case "headphones":
           const responseHeadphone = await api.get("/products/headphones");
-          console.log(responseHeadphone);
+
           dispatch({
             type: FETCH_HEADPHONE_SUCCESS,
             payload: responseHeadphone.data,
@@ -76,7 +76,7 @@ export const ProductProvider = ({ children }) => {
           break;
         case "accessories":
           const responseAccessories = await api.get("/products/accessories");
-          console.log(responseAccessories);
+
           dispatch({
             type: FETCH_ACCESSORIES_SUCCESS,
             payload: responseAccessories.data,
@@ -119,7 +119,6 @@ export const ProductProvider = ({ children }) => {
   };
 
   const setDisplayProducts = async (category) => {
-    console.log("setDisplayProducts");
     const tempArr = state[category.toString()].slice();
     dispatch({ type: CHANGE_DISPLAY_PRODUCT, payload: tempArr });
   };
@@ -162,7 +161,7 @@ export const ProductProvider = ({ children }) => {
       });
       return response.data;
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   };
 

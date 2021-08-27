@@ -6,8 +6,6 @@ import ProductFilter from "../components/ProductFilter";
 import ProductListView from "../components/ProductListView";
 import ProductGridView from "../components/ProductGridView";
 import { useProductContext } from "../context/ProductContext";
-import Loading from "../components/Loading";
-import NewsLetter from "../components/NewsLetter";
 
 const Wrapper = styled.section`
   display: flex;
@@ -17,6 +15,7 @@ const Wrapper = styled.section`
   .products {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     gap: 5rem;
     margin-bottom: 10rem;
     @media (min-width: 768px) {
@@ -29,7 +28,7 @@ const ProductsPage = () => {
   const locations = useLocation().pathname.split("/");
   locations.shift();
   const [category, setCategory] = useState("phones");
-  const { isLoading, fetchProducts, displayProducts, fetchCategories } =
+  const { fetchProducts, displayProducts, fetchCategories } =
     useProductContext();
 
   useEffect(() => {
@@ -46,11 +45,7 @@ const ProductsPage = () => {
 
       <div className="products">
         <ProductFilter category={category} />
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <ProductGridView products={displayProducts} />
-        )}
+        <ProductGridView products={displayProducts} />
       </div>
     </Wrapper>
   );
