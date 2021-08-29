@@ -6,12 +6,21 @@ const { upload } = require("../middleware/upload");
 // Create
 router.post(
   "/products/headphones",
-  upload.single("profile"),
+  upload.fields([{ name: "profile" }, { name: "images" }]),
   async (req, res) => {
+    let images = req.files.images;
+    let profile = req.files.profile;
+    let bufferArray = [];
+    if (images) {
+      for (let file of images) {
+        bufferArray.push(file.buffer);
+      }
+    }
     try {
       const headphone = new Headphone({
         ...req.body,
-        profile: req.file.buffer,
+        profile: profile[0].buffer,
+        images: bufferArray,
       });
       await headphone.save();
       res.send("headphone Added");

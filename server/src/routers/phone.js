@@ -18,8 +18,6 @@ router.post(
         bufferArray.push(file.buffer);
       }
     }
-    console.log(profile[0].buffer);
-    console.log(bufferArray);
     try {
       const phone = new Phone({
         ...req.body,
@@ -51,10 +49,26 @@ router.get("/products/phones", async (req, res) => {
   }
 });
 
-// router.get("/products/phones/:id", async (req, res) => {
-//   console.log("with id");
-//   console.log(req.params.id);
-// });
+router.get("/products/phones/properties", async (req, res) => {
+  let properties = Phone.schema.paths;
+  delete properties.updatedAt;
+  delete properties.createdAt;
+  delete properties.__t;
+  delete properties.__v;
+  delete properties.category;
+  delete properties._id;
+
+  let tempProperties = [];
+  for (const property in properties) {
+    const type = properties[property].instance;
+    tempProperties.push({ property, type });
+  }
+  try {
+    res.send({ properties: tempProperties });
+  } catch (error) {
+    res.status(400).send({ error: "fetch properties failed" });
+  }
+});
 
 router.get("/products/phones/properties", async (req, res) => {
   console.log(Phone.schema.paths);

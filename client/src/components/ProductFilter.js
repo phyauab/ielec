@@ -43,11 +43,11 @@ const Wrapper = styled.div`
     }
     input {
       padding: 0.25rem;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     select {
       padding: 0.25rem;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
   }
 `;

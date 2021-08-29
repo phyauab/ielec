@@ -27,7 +27,6 @@ const ProductRecuder = (state, action) => {
     case FILTER_DISPLAY_PRODUCTS_BEGIN:
       return { ...state, isLoading: true, isError: false };
     case FETCH_SINGLE_PRODUCT_BEGIN:
-      console.log("set isLoading true");
       return { ...state, isLoading: true, isError: false };
     case FETCH_PHONE_SUCCESS:
       return {
@@ -67,7 +66,6 @@ const ProductRecuder = (state, action) => {
     case FILTER_DISPLAY_PRODUCTS_SUCCESS:
       return { ...state, displayProducts: action.payload, isLoading: false };
     case FETCH_SINGLE_PRODUCT_SUCCESS:
-      console.log("set isLoading false");
       return { ...state, isLoading: false, singleProduct: action.payload };
     case FETCH_SINGLE_PRODUCT_ERROR:
       return { ...state, isLoading: false, isError: true };

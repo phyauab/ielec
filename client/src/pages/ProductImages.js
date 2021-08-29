@@ -8,10 +8,15 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin: 0rem;
+  max-width: 600px;
+  flex-grow: 1;
   img {
     border-radius: 10px;
   }
   .img-main {
+    width: 600px;
+    height: 600px;
     img {
       width: 600px;
       height: 600px;
@@ -45,7 +50,7 @@ const ProductImages = () => {
   }
 
   return (
-    <Wrapper className="content-center">
+    <Wrapper>
       <div className="img-main">
         <img src={bufferToImage(imgMain)} alt="asd" />
       </div>

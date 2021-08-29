@@ -174,9 +174,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   const fetchSingleProduct = async (id) => {
-    console.log("fetchSingle Product");
     dispatch({ type: FETCH_SINGLE_PRODUCT_BEGIN });
-    console.log("set isLoading true finished");
     try {
       const response = await api.get("/products", {
         params: {
