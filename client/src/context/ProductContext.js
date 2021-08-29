@@ -162,6 +162,11 @@ export const ProductProvider = ({ children }) => {
           featured: true,
         },
       });
+      const tempfeaturedProducts = [];
+      if (response.data.length > 4) {
+        for (let i = 0; i < 4; ++i) tempfeaturedProducts.push(response.data[i]);
+        return tempfeaturedProducts;
+      }
       return response.data;
     } catch (error) {
       throw error;
