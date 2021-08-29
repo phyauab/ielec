@@ -82,7 +82,7 @@ const ProductFilter = ({ category }) => {
             onChange={(e) => {
               let tempArr;
               const newInput = parseInt(e.target.value);
-              console.log("ram: " + newInput);
+              // console.log("ram: " + newInput);
               if (filter[name]) {
                 tempArr = [...filter[name]];
               } else {
@@ -94,10 +94,10 @@ const ProductFilter = ({ category }) => {
               } else {
                 tempArr.push(newInput);
               }
-
+              console.log(tempArr);
               if (tempArr.length === 0) {
                 let tempFilter = filter;
-                delete tempFilter.ram;
+                delete tempFilter[e.target.name];
                 return setFilter({ ...tempFilter });
               }
 
