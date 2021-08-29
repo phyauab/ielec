@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     qty: {
       type: Number,
@@ -18,6 +19,8 @@ const productSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
+      min: 0,
+      max: 5,
     },
     price: {
       type: Number,
@@ -28,7 +31,9 @@ const productSchema = new mongoose.Schema(
       default: "",
     },
     profile: { type: Buffer },
-    images: {},
+    images: {
+      type: [Buffer],
+    },
     featured: {
       type: Boolean,
       default: false,

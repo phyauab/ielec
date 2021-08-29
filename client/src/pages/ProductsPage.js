@@ -28,8 +28,7 @@ const ProductsPage = () => {
   const locations = useLocation().pathname.split("/");
   locations.shift();
   const [category, setCategory] = useState("phones");
-  const { fetchProducts, displayProducts, fetchCategories } =
-    useProductContext();
+  const { fetchProducts, displayProducts } = useProductContext();
 
   useEffect(() => {
     setCategory(locations[1]);

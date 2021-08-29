@@ -3,7 +3,8 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.primary};
-    font-family: Tahoma, Helvetica, Arial, Roboto, sans-serif;
+    font-family: "Sora", sans-serif;
+    font-weight: 600;
     transition: all 0.3s ease-out;
     box-sizing: border-box;
   }

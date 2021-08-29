@@ -17,6 +17,9 @@ import {
   FILTER_DISPLAY_PRODUCTS_BEGIN,
   FILTER_DISPLAY_PRODUCTS_SUCCESS,
   FILTER_DISPLAY_PRODUCTS_ERROR,
+  FETCH_SINGLE_PRODUCT_BEGIN,
+  FETCH_SINGLE_PRODUCT_SUCCESS,
+  FETCH_SINGLE_PRODUCT_ERROR,
 } from "../reducers/actions/ProductAction";
 
 const ProductContext = React.createContext();
@@ -31,7 +34,7 @@ const initialState = {
   displayProducts: [],
   categories: [],
   properties: [],
-  // { categories: [], products: [] },
+  singleProduct: {},
 };
 
 export const ProductProvider = ({ children }) => {
@@ -165,6 +168,28 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const fetchSingleProduct = async (id) => {
+    console.log("fetchSingle Product");
+    dispatch({ type: FETCH_SINGLE_PRODUCT_BEGIN });
+    console.log("set isLoading true finished");
+    try {
+      const response = await api.get("/products", {
+        params: {
+          _id: id,
+        },
+      });
+      console.log(response);
+      if (response.data.length === 0) throw new Error("No Product Found!");
+      dispatch({
+        type: FETCH_SINGLE_PRODUCT_SUCCESS,
+        payload: response.data[0],
+      });
+    } catch (error) {
+      console.log(error.message);
+      dispatch({ type: FETCH_SINGLE_PRODUCT_ERROR });
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -174,6 +199,7 @@ export const ProductProvider = ({ children }) => {
         fetchProperties,
         filterDisplayProducts,
         fetchFeaturedProducts,
+        fetchSingleProduct,
       }}
     >
       {children}

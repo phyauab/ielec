@@ -8,7 +8,8 @@ import { Link, useLocation } from "react-router-dom";
 const Wrapper = styled.div`
   display: grid;
   justify-content: center;
-  gap: 1rem;
+  column-gap: 3rem;
+  row-gap: 4rem;
   @media (min-width: 768px) {
     grid-template-columns: 1fr 1fr;
   }
@@ -44,15 +45,19 @@ const ProductGridView = ({ products }) => {
     );
   }
 
-  console.log(pathname);
   return (
     <Wrapper>
       {products.map((product) => {
         const { _id, name, price, profile } = product;
         return (
-          <Link to={`${pathname}/${_id}`}>
-            <Product key={_id} name={name} price={price} img={profile} />
-          </Link>
+          <Product
+            key={_id}
+            name={name}
+            price={price}
+            img={profile}
+            pathname={pathname}
+            _id={_id}
+          />
         );
       })}
     </Wrapper>

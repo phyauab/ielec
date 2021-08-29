@@ -55,22 +55,34 @@ export const InputForm = () => {
     e.preventDefault();
     const dataArray = new FormData();
     const keyArr = Object.keys(product);
+
     for (let i = 0; i < keyArr.length; ++i) {
-      console.log(i);
-      console.log(keyArr[i].toString());
+      // FormData does not support file object, so images have to be appended one by one!!!!!!!!!!!!!!!!!!!!
+      if (keyArr[i].toString() == "images") {
+        // console.log("images: ");
+        // console.log(product[keyArr[i].toString()]);
+        for (let file in product[keyArr[i].toString()]) {
+          // console.log(keyArr[i].toString());
+          console.log(product[keyArr[i].toString()][file]);
+          dataArray.append("images", product[keyArr[i].toString()][file]);
+        }
+        continue;
+      }
       dataArray.append(keyArr[i].toString(), product[keyArr[i].toString()]);
     }
 
     // DEBUG
-    for (var pair of dataArray.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    // for (var pair of dataArray.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
+    console.log(dataArray);
 
     addProduct(dataArray, category);
   };
 
   const fetchForm = async () => {
     try {
+      console.log("fetch form");
       await fetchCategories();
       await fetchProperties();
     } catch (error) {
@@ -138,6 +150,25 @@ export const InputForm = () => {
             }}
           />
         );
+      case "images":
+        return (
+          <input
+            type="file"
+            name={property}
+            onChange={(e) => {
+              if (e.target.files.length > 3) {
+                e.target.value = "";
+                alert("only 3 images are allowed");
+              } else {
+                setProduct({
+                  ...product,
+                  [e.target.name]: e.target.files,
+                });
+              }
+            }}
+            multiple
+          />
+        );
       case "featured":
         return (
           <div>
@@ -175,6 +206,7 @@ export const InputForm = () => {
           handleSubmit(e);
         }}
         id="form"
+        enctype="multipart/form-data"
       >
         <h1>Product Detail</h1>
         {/* All products */}

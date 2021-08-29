@@ -14,6 +14,9 @@ import {
   FILTER_DISPLAY_PRODUCTS_BEGIN,
   FILTER_DISPLAY_PRODUCTS_SUCCESS,
   FILTER_DISPLAY_PRODUCTS_ERROR,
+  FETCH_SINGLE_PRODUCT_BEGIN,
+  FETCH_SINGLE_PRODUCT_SUCCESS,
+  FETCH_SINGLE_PRODUCT_ERROR,
 } from "./actions/ProductAction";
 
 const ProductRecuder = (state, action) => {
@@ -22,6 +25,9 @@ const ProductRecuder = (state, action) => {
     case FETCH_CATEGORIES_BEGIN:
     case FETCH_PROPERTIES_BEGIN:
     case FILTER_DISPLAY_PRODUCTS_BEGIN:
+      return { ...state, isLoading: true, isError: false };
+    case FETCH_SINGLE_PRODUCT_BEGIN:
+      console.log("set isLoading true");
       return { ...state, isLoading: true, isError: false };
     case FETCH_PHONE_SUCCESS:
       return {
@@ -60,6 +66,11 @@ const ProductRecuder = (state, action) => {
     case CHANGE_DISPLAY_PRODUCT:
     case FILTER_DISPLAY_PRODUCTS_SUCCESS:
       return { ...state, displayProducts: action.payload, isLoading: false };
+    case FETCH_SINGLE_PRODUCT_SUCCESS:
+      console.log("set isLoading false");
+      return { ...state, isLoading: false, singleProduct: action.payload };
+    case FETCH_SINGLE_PRODUCT_ERROR:
+      return { ...state, isLoading: false, isError: true };
   }
   return { ...state };
 };

@@ -21,10 +21,11 @@ export const AdminProvider = ({ children }) => {
   });
 
   const addProduct = async (dataArray, category) => {
-    console.log("------");
-    console.log(dataArray);
+    // console.log("------");
+    // console.log(dataArray);
     try {
       const response = await api.post(`/products/${category}`, dataArray);
+      console.log(response);
     } catch (error) {
       console.log(error.message);
     }

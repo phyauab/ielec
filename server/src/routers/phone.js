@@ -4,19 +4,38 @@ const Phone = require("../models/phone");
 const { upload } = require("../middleware/upload");
 
 // CREATE
+// Multiple calls on multer middleware is not allowed, use fields instead
+// https://stackoverflow.com/questions/62846558/multererror-unexpected-field-when-i-need-to-upload-multiple-file-in-nodejs
 router.post(
   "/products/phones",
-  upload.single("profile"),
+  upload.fields([{ name: "profile" }, { name: "images" }]),
   async (req, res) => {
+    let images = req.files.images;
+    let profile = req.files.profile;
+    let bufferArray = [];
+    if (images) {
+      for (let file of images) {
+        bufferArray.push(file.buffer);
+      }
+    }
+    console.log(profile[0].buffer);
+    console.log(bufferArray);
     try {
-      const phone = new Phone({ ...req.body, profile: req.file.buffer });
+      const phone = new Phone({
+        ...req.body,
+        profile: profile[0].buffer,
+        images: bufferArray,
+      });
       await phone.save();
       res.send("Phone Added");
     } catch (error) {
+      console.log("main error");
       res.status(400).send({ error: error.message });
     }
   },
   (error, req, res, next) => {
+    console.log("upload error");
+    console.log(error.message);
     res.status(400).send({ error: error.message });
   }
 );
@@ -31,6 +50,11 @@ router.get("/products/phones", async (req, res) => {
     res.status(400).send({ error: error });
   }
 });
+
+// router.get("/products/phones/:id", async (req, res) => {
+//   console.log("with id");
+//   console.log(req.params.id);
+// });
 
 router.get("/products/phones/properties", async (req, res) => {
   console.log(Phone.schema.paths);
