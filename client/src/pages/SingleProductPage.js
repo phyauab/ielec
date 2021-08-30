@@ -36,7 +36,11 @@ const SingleProductPage = () => {
   }, [id]);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <Wrapper>
+        <Loading />
+      </Wrapper>
+    );
   }
 
   return (

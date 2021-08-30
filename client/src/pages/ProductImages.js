@@ -26,6 +26,7 @@ const Wrapper = styled.section`
   .img-list {
     display: flex;
     gap: 1rem;
+    flex-direction: row;
     img {
       width: 130px;
       height: 130px;

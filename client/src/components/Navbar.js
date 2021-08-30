@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import styled from "styled-components";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaShoppingCart } from "react-icons/fa";
 import { SearchBar } from "./UI";
 import ThemeToggler from "./ThemeToggler";
 import logoLight from "../assets/Logo-light.png";
@@ -79,6 +79,17 @@ const Wrapper = styled.div`
         gap: 0.5rem;
       }
     }
+    .shopping_cart {
+      border: none;
+      background: ${(props) => props.theme.body};
+      color: ${(props) => props.theme.text};
+      font-size: 1.75rem;
+      padding: 0.25rem;
+      transition: all 0.3s ease-out;
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
   .nav-menu {
     font-size: 1.25rem;
@@ -129,26 +140,27 @@ const Navbar = () => {
           <img src={theme === "light" ? logoLight : logoDark} alt="IELEC" />
         </Link>
       </div>
+
+      {/* Right Navbar */}
       <div className="nav-right">
         <SearchBar />
         <ThemeToggler />
-        <div className="nav-right__account">
-          {isLoggedIn ? (
-            <div>
-              <p>Hi, {user.username}</p>
-              <Button onClick={() => logoutUser()}>Logut</Button>
-            </div>
-          ) : (
-            <div>
-              <Link to="/login" className="btn">
-                Login
-              </Link>
-              <Link to="/signup" className="btn">
-                Sign up
-              </Link>
-            </div>
-          )}
-        </div>
+        {isLoggedIn ? (
+          <>
+            <p>Hi, {user.username}</p>
+            <FaShoppingCart className="shopping_cart" />
+            <Button onClick={() => logoutUser()}>Logut</Button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="btn">
+              Login
+            </Link>
+            <Link to="/signup" className="btn">
+              Sign up
+            </Link>
+          </>
+        )}
       </div>
       <div
         className="nav-menu"

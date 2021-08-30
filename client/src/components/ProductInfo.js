@@ -37,7 +37,12 @@ const Wrapper = styled.section`
   .property {
     align-items: flex-start;
     display: flex;
-    justify-content: start;
+    flex-direction: row;
+    justify-content: flex-start;
+    span {
+      color: black;
+      width: 50px;
+    }
   }
   .green {
     color: green;
@@ -80,19 +85,19 @@ const ProductInfo = ({ category }) => {
       list.push(
         <div className="property">
           <span>Ram: </span>
-          {ram} GB
+          <p>{ram} GB</p>
         </div>
       );
       list.push(
         <div className="property">
           <span>Storage: </span>
-          {storage} GB
+          <p>{storage} GB</p>
         </div>
       );
       list.push(
         <div className="property">
           <span>Color: </span>
-          {color}
+          <p>{color}</p>
         </div>
       );
     } else if (category === "laptops") {
@@ -100,19 +105,19 @@ const ProductInfo = ({ category }) => {
       list.push(
         <div className="property">
           <span>Ram: </span>
-          {ram} GB
+          <p>{ram} GB</p>
         </div>
       );
       list.push(
         <div className="property">
           <span>HDD: </span>
-          {hdd} GB
+          <p>{hdd} GB</p>
         </div>
       );
       list.push(
         <div className="property">
           <span>SSD: </span>
-          {ssd} GB
+          <p>{ssd} GB</p>
         </div>
       );
     } else if (category === "headphones") {
@@ -120,13 +125,13 @@ const ProductInfo = ({ category }) => {
       list.push(
         <div className="property">
           <span>ANC: </span>
-          {anc ? "Yes" : "No"}
+          <p>{anc ? "Yes" : "No"}</p>
         </div>
       );
       list.push(
         <div className="property">
           <span>WIRED: </span>
-          {wired ? "Yes" : "No"}
+          <p>{wired ? "Yes" : "No"}</p>
         </div>
       );
     }
@@ -139,21 +144,23 @@ const ProductInfo = ({ category }) => {
       <div className="divider"></div>
       {generateRating(rating)}
       <div className="price">{`$ ${price}`}</div>
-      <div className="description">
+      <div className="description property">
         <p>{description}</p>
       </div>
+
       <div className="brand property">
         <span>Brand:</span>
-        {brand}
+        <p>{brand}</p>
       </div>
       {buildRows(category)}
+
       <div className="divider"></div>
       {qty > 0 ? (
-        <div className="property green">
+        <div className="green">
           <span>In Stock</span>
         </div>
       ) : (
-        <div className="property red">
+        <div className="red">
           <span>Out of stock</span>
         </div>
       )}

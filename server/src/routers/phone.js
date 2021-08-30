@@ -50,7 +50,7 @@ router.get("/products/phones", async (req, res) => {
 });
 
 router.get("/products/phones/properties", async (req, res) => {
-  let properties = Phone.schema.paths;
+  let phoneProperties = Phone.schema.paths;
   delete properties.updatedAt;
   delete properties.createdAt;
   delete properties.__t;

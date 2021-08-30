@@ -69,13 +69,36 @@ const FeaturedProducts = () => {
     );
   }
 
+  const getType = (type) => {
+    switch (type) {
+      case "Phone":
+        return "phones";
+      case "Laptop":
+        return "laptops";
+      case "Headphone":
+        return "headphones";
+      case "Accessories":
+        return "accessories";
+    }
+  };
+
   return (
     <Wrapper>
       <Title title={"Featured Products"} />
       <div className="container section-center">
         {featuredProducts.products.map((product, index) => {
-          const { _id, name, profile, price } = product;
-          return <Product key={_id} name={name} img={profile} price={price} />;
+          const { _id, name, profile, price, __t } = product;
+          const type = getType(__t);
+          return (
+            <Product
+              key={_id}
+              _id={_id}
+              name={name}
+              img={profile}
+              price={price}
+              pathname={`products/${type}`}
+            />
+          );
         })}
       </div>
     </Wrapper>
