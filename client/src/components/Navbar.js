@@ -13,107 +13,68 @@ import { useUserContext } from "../context/UserContext";
 import Button from "./Button";
 
 const Wrapper = styled.div`
-  align-items: center;
+  display: flex;
+  justify-content: center;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
   color: ${(props) => props.theme.text};
-  display: flex;
-  justify-content: space-between;
   height: 80px;
-  overflow: hidden;
   width: 100%;
   z-index: 100;
-  div {
+  .nav-container {
     display: flex;
-    align-items: center;
-    @media (min-width: 768px) {
-      flex: 1;
-      justify-content: center;
+    justify-content: space-between;
+    width: 100%;
+    @media (min-width: 1440px) {
+      max-width: 90vw;
+      justify-content: space-evenly;
     }
-    ul {
+    .nav-item {
       align-items: center;
       display: flex;
-      justify-content: center;
-      gap: 2rem;
-      list-style: none;
-      padding: 0 2rem;
-      width: 100%;
-      a {
-        border-bottom: 1px solid ${(props) => props.theme.body};
-        color: ${(props) => props.theme.text};
-        text-decoration: none;
-        padding-bottom: 3px;
-        transition: 0.3s ease-out;
-        &:visited {
-          color: inherit;
-        }
-        &:hover {
-          border-color: ${(props) => props.theme.primary};
-        }
-      }
-    }
-  }
-  .nav-left {
-    ul {
-      display: flex;
-      padding: 0;
-      justify-content: flex-start;
-    }
-    @media (max-width: 768px) {
-      display: none;
-    }
-  }
-  .nav-logo {
-    padding: 1rem;
-  }
-  .nav-right {
-    display: none;
-    @media (min-width: 768px) {
-      display: flex;
-      padding: 0 2rem;
-      justify-content: flex-end;
-      gap: 0.5rem;
-    }
-    .nav-right__account {
-      div {
+      flex: 1 1 0px;
+      justify-content: space-between;
+      padding: 0 1rem;
+      ul {
+        align-items: center;
         display: flex;
-        gap: 0.5rem;
+        justify-content: space-between;
+        height: 100%;
+        width: 100%;
+        list-style: none;
+        a {
+          border-bottom: 1px solid ${(props) => props.theme.body};
+          color: ${(props) => props.theme.text};
+          text-decoration: none;
+          padding-bottom: 3px;
+          transition: 0.3s ease-out;
+          &:visited {
+            color: inherit;
+          }
+          &:hover {
+            border-color: ${(props) => props.theme.primary};
+          }
+        }
       }
     }
-    .shopping_cart {
-      border: none;
-      background: ${(props) => props.theme.body};
-      color: ${(props) => props.theme.text};
-      font-size: 1.75rem;
-      padding: 0.25rem;
-      transition: all 0.3s ease-out;
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-  .nav-menu {
-    font-size: 1.25rem;
-    padding: 1rem;
-    @media (min-width: 768px) {
+    .desktop {
       display: none;
+      @media (min-width: 1440px) {
+        display: flex;
+      }
     }
-    &:hover {
-      cursor: pointer;
+    .phone {
+      @media (min-width: 1440px) {
+        display: none;
+      }
     }
-  }
-  .btn {
-    background: ${(props) => props.theme.body};
-    border: 1px solid ${(props) => props.theme.primary};
-    border-radius: 25px;
-    color: ${(props) => props.theme.text};
-    font-size: 1em;
-    padding: 0.5em 1em;
-    transition: 0.3s ease-out;
-    text-decoration: none;
-    &:hover {
-      background: ${(props) => props.theme.primary};
-      color: ${(props) => props.theme.body};
-      cursor: pointer;
+    .left {
+      justify-content: flex-start;
+      @media (min-width: 1440px) {
+        justify-content: center;
+      }
+    }
+    .right {
+      justify-content: flex-end;
     }
   }
 `;
@@ -123,52 +84,55 @@ const Navbar = () => {
   const { user, isLoggedIn, logoutUser } = useUserContext();
 
   return (
-    <Wrapper className="section-center">
-      <div className="nav-left">
-        <ul>
-          {links.map((link, index) => (
-            <Link key={index} to={`/products${link.url}`}>
-              <li>{capitalize(link.text)}</li>
-            </Link>
-          ))}
-        </ul>
-        <Link to="/dashboard">dash</Link>
-      </div>
+    <Wrapper>
+      <div className="nav-container">
+        {/* Navbar-left */}
+        <div className="nav-item desktop">
+          <ul>
+            {links.map((link, index) => (
+              <Link key={index} to={`/products${link.url}`}>
+                <li>{capitalize(link.text)}</li>
+              </Link>
+            ))}
+          </ul>
+        </div>
 
-      <div className="nav-logo">
-        <Link to="/">
-          <img src={theme === "light" ? logoLight : logoDark} alt="IELEC" />
-        </Link>
-      </div>
+        {/* Left or Navbar-center */}
+        <div className="nav-item left">
+          <Link to="/">
+            <img src={theme === "light" ? logoLight : logoDark} alt="IELEC" />
+          </Link>
+        </div>
 
-      {/* Right Navbar */}
-      <div className="nav-right">
-        <SearchBar />
-        <ThemeToggler />
-        {isLoggedIn ? (
-          <>
-            <p>Hi, {user.username}</p>
-            <FaShoppingCart className="shopping_cart" />
-            <Button onClick={() => logoutUser()}>Logut</Button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="btn">
-              Login
-            </Link>
-            <Link to="/signup" className="btn">
-              Sign up
-            </Link>
-          </>
-        )}
-      </div>
-      <div
-        className="nav-menu"
-        onClick={() => {
-          setIsSidebarOpen(!isSidebarOpen);
-        }}
-      >
-        <FaBars />
+        {/* Right Navbar */}
+        <div className="nav-item desktop">
+          <SearchBar />
+          <ThemeToggler />
+          {isLoggedIn ? (
+            <>
+              <p>Hi, {user.username}</p>
+              <FaShoppingCart className="shopping_cart" />
+              <Button onClick={() => logoutUser()}>Logut</Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button>Log in</Button>
+              </Link>
+              <Link to="/signup">
+                <Button>Sign up</Button>
+              </Link>
+            </>
+          )}
+        </div>
+        <div
+          className="nav-item phone right"
+          onClick={() => {
+            setIsSidebarOpen(!isSidebarOpen);
+          }}
+        >
+          <FaBars />
+        </div>
       </div>
     </Wrapper>
   );

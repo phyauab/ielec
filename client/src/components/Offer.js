@@ -22,6 +22,7 @@ const Wrapper = styled.section`
     width: 100%;
     @media (min-width: 1024px) {
       flex-direction: row;
+      overflow-y: scroll;
     }
   }
 `;

@@ -18,26 +18,9 @@ code {
     monospace;
 }
 
-.section-center {
-  padding: 0rem 1rem;
-}
-
-.content-center {
-  width: 80vw;
-  margin: 0 auto;
-}
-
-@media (min-width: 1440px) {
-  .section-center {
-    padding: 0rem 5rem;
-  }
-}
-
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .content-center {
-    width: 60vw;
+    width: 90%;
+    margin: auto;
   }
-}
-
-.form__input {
 }

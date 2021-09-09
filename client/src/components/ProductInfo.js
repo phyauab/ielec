@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useProductContext } from "../context/ProductContext";
 import Loading from "./Loading";
+import Modal from "./Modal";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import Button from "./Button";
 
@@ -164,7 +165,18 @@ const ProductInfo = ({ category }) => {
           <span>Out of stock</span>
         </div>
       )}
-      <Button>Add To Cart</Button>
+      <Button
+        onClick={(e) => {
+          console.log("hi?");
+          return (
+            <Modal
+              message={"wtfaaaaaaaaaafrekklsbngiltrbnseignbthstihglisdhtgsloi"}
+            />
+          );
+        }}
+      >
+        Add To Cart
+      </Button>
     </Wrapper>
   );
 };

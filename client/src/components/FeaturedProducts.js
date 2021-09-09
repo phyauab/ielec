@@ -22,6 +22,7 @@ const Wrapper = styled.section`
     width: 100%;
     @media (min-width: 1024px) {
       flex-direction: row;
+      overflow-y: scroll;
     }
   }
 `;
@@ -85,7 +86,7 @@ const FeaturedProducts = () => {
   return (
     <Wrapper>
       <Title title={"Featured Products"} />
-      <div className="container section-center">
+      <div className="container ">
         {featuredProducts.products.map((product, index) => {
           const { _id, name, profile, price, __t } = product;
           const type = getType(__t);

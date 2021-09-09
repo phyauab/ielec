@@ -7,81 +7,70 @@ import Button from "./Button";
 const Wrapper = styled.section`
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url(${hero});
+  color: white;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   height: calc(100vh - 80px);
   width: 100%;
-  padding: 1rem;
-  @media (min-width: 768px) {
+  @media (min-width: 1440px) {
+    flex-direction: row;
   }
   .spacer {
     display: none;
-    flex: 1;
-    width: 100%;
-    @media (min-width: 768px) {
-      display: block;
+    @media (min-width: 1440px) {
+      display: flex;
+      flex: 1 1 50%;
     }
   }
-  .intro {
-    align-items: center;
+  .container {
     display: flex;
-    justify-content: center;
-    flex: 1;
-
-    div {
-      align-items: center;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      justify-content: center;
-      padding: 1rem;
-      width: 400px;
-      @media (min-width: 1024px) {
-        width: 500px;
-      }
-      @media (min-width: 1440px) {
-        padding: 0rem;
-      }
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 1rem;
+    @media (min-width: 1440px) {
+      padding: 0 5rem;
+      flex: 1 1 50%;
+    }
+    @media (min-width: 1920px) {
+      padding: 0 10rem;
     }
     h1 {
+      text-align: center;
       font-size: 2rem;
       @media (min-width: 768px) {
-        font-size: 3rem;
+        font-size: 4rem;
       }
     }
     p {
-      line-height: 2rem;
-      color: #d0d3d9;
+      text-align: center;
+      line-height: 1.5rem;
     }
-  }
-
-  // shop now button
-  a {
-    width: 100%;
-    Button {
-      border: none;
+    a {
       width: 100%;
+      Button {
+        width: 100%;
+        border: none;
+      }
     }
   }
 `;
 
 const Hero = () => {
   return (
-    <Wrapper className="section-center">
-      <div className="spacer" />
-      <div className="intro">
-        <div>
-          <h1>Level Up Your Tech</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-            praesentium, suscipit obcaecati animi quas quae excepturi fuga ad
-            iure incidunt temporibus dicta quasi eligendi quibusdam nobis,
-            tempore sed doloremque cupiditate?
-          </p>
-          <Link to="/products/phones">
-            <Button>Shop Now</Button>
-          </Link>
-        </div>
+    <Wrapper>
+      <div className="spacer"></div>
+      <div className="container content-center">
+        <h1>Level Up Your Tech</h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
+          praesentium, suscipit obcaecati animi quas quae excepturi fuga ad iure
+          incidunt temporibus dicta quasi eligendi quibusdam nobis, tempore sed
+          doloremque cupiditate?
+        </p>
+        <Link to="/products/phones">
+          <Button>Shop Now</Button>
+        </Link>
       </div>
     </Wrapper>
   );

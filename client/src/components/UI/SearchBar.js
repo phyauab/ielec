@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   border: 1px solid #7b7b7b;
   border-radius: 25px;
   background: ${(props) => props.theme.body};
+  display: flex;
   padding: 0.5rem 1rem;
   transition: 0.3s ease-out;
   input {

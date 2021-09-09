@@ -6,6 +6,7 @@ const Wrapper = styled.section`
   background: #181818;
   color: #f0f0f0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   height: 100px;
 
@@ -20,8 +21,11 @@ const Wrapper = styled.section`
 const Footer = () => {
   return (
     <Wrapper>
-      &copy; 2021&ensp; <span className="logo">I</span>ELEC All rights reserverd
-      | built with&ensp;
+      <div>
+        &copy; 2021&ensp; <span className="logo">I</span>ELEC All rights
+        reserverd | built with&ensp;
+      </div>
+
       <span className="react"> ReactJS</span>
     </Wrapper>
   );
