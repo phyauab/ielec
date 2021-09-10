@@ -90,7 +90,7 @@ const Navbar = () => {
         <div className="nav-item desktop">
           <ul>
             {links.map((link, index) => (
-              <Link key={index} to={`/products${link.url}`}>
+              <Link key={index} to={`${link.url}`}>
                 <li>{capitalize(link.text)}</li>
               </Link>
             ))}

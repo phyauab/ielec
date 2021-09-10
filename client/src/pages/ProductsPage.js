@@ -29,9 +29,10 @@ const ProductsPage = () => {
   locations.shift();
   const [category, setCategory] = useState("phones");
   const { fetchProducts, displayProducts } = useProductContext();
+  console.log(locations);
 
   useEffect(() => {
-    setCategory(locations[1]);
+    setCategory(locations[0]);
   }, [locations]);
 
   useEffect(() => {

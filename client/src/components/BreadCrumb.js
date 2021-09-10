@@ -13,6 +13,9 @@ const Wrapper = styled.section`
     color: ${(props) => props.theme.text};
     text-decoration: none;
   }
+  .current {
+    color: #000000;
+  }
 `;
 
 const BreadCrumb = ({ locations }) => {
@@ -25,7 +28,9 @@ const BreadCrumb = ({ locations }) => {
             &nbsp;/ {location}
           </Link>
         ) : (
-          <p key={index}>&nbsp;/ {location}</p>
+          <p className="current" key={index}>
+            &nbsp;/ {location}
+          </p>
         );
       })}
     </Wrapper>

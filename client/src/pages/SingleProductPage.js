@@ -28,10 +28,9 @@ const SingleProductPage = () => {
   const { category, id } = useParams();
   const locations = useLocation().pathname.split("/");
   locations.shift();
-  const { fetchSingleProduct, isLoading } = useProductContext();
+  const { fetchSingleProduct, isLoading, singleProduct } = useProductContext();
 
   useEffect(() => {
-    console.log("start fetching");
     fetchSingleProduct(id);
   }, [id]);
 
@@ -43,12 +42,15 @@ const SingleProductPage = () => {
     );
   }
 
+  locations[locations.length - 1] = singleProduct.name;
+  console.log(locations);
+
   return (
     <Wrapper className="section-center">
       <BreadCrumb locations={locations} />
       <div className="content-center">
         <ProductImages />
-        <ProductInfo category={locations[1]} />
+        <ProductInfo category={locations[0]} />
       </div>
     </Wrapper>
   );

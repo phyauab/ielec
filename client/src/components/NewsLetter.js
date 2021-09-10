@@ -2,7 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.section`
-  padding: 10rem 5rem;
+  padding: 10rem 2rem;
+  @media (min-width: 768px) {
+    padding: 10rem 5rem;
+  }
+  @media (min-width: 1024px) {
+    padding: 10rem 10rem;
+  }
+  @media (min-width: 1440px) {
+    padding: 10rem 15rem;
+  }
   h1 {
     padding: 1rem 0rem;
   }
@@ -53,13 +62,6 @@ const Wrapper = styled.section`
       }
     }
   }
-
-  @media (min-width: 1024px) {
-    padding: 10rem 10rem;
-  }
-  @media (min-width: 1440px) {
-    padding: 10rem 15rem;
-  }
 `;
 
 const NewsLetter = () => {
@@ -67,7 +69,7 @@ const NewsLetter = () => {
     e.preventDefault();
   };
   return (
-    <Wrapper className="section-center">
+    <Wrapper className="cenetent-center">
       <h1>Join Our NewsLetter!</h1>
       <div>
         <p>

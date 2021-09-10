@@ -54,20 +54,8 @@ function App() {
             <HomePage />
           </Route>
 
-          <Route exact path="/products">
-            <ProductsPage />
-          </Route>
-
-          <Route exact path="/products">
-            <ProductsPage />
-          </Route>
-
-          <Route exact path="/products/:category" children={<ProductsPage />} />
-          <Route
-            exact
-            path="/products/:category/:id"
-            children={<SingleProductPage />}
-          />
+          <Route exact path="/:category" children={<ProductsPage />} />
+          <Route exact path="/:category/:id" children={<SingleProductPage />} />
 
           <Route exact path="/about">
             <AboutPage />

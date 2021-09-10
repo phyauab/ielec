@@ -71,9 +71,9 @@ const ProductInfo = ({ category }) => {
     const list = [];
     for (let i = 0, count = rating; i < 5; ++i, count--) {
       if (count > 0) {
-        list.push(<AiFillStar />);
+        list.push(<AiFillStar key={i} />);
       } else {
-        list.push(<AiOutlineStar />);
+        list.push(<AiOutlineStar key={i} />);
       }
     }
     return <div className="rating property">{list}</div>;
@@ -84,19 +84,19 @@ const ProductInfo = ({ category }) => {
     if (category === "phones") {
       const { ram, storage, color } = singleProduct;
       list.push(
-        <div className="property">
+        <div className="property" key={0}>
           <span>Ram: </span>
           <p>{ram} GB</p>
         </div>
       );
       list.push(
-        <div className="property">
+        <div className="property" key={1}>
           <span>Storage: </span>
           <p>{storage} GB</p>
         </div>
       );
       list.push(
-        <div className="property">
+        <div className="property" key={2}>
           <span>Color: </span>
           <p>{color}</p>
         </div>
@@ -104,19 +104,19 @@ const ProductInfo = ({ category }) => {
     } else if (category === "laptops") {
       const { ram, hdd, ssd } = singleProduct;
       list.push(
-        <div className="property">
+        <div className="property" key={0}>
           <span>Ram: </span>
           <p>{ram} GB</p>
         </div>
       );
       list.push(
-        <div className="property">
+        <div className="property" key={1}>
           <span>HDD: </span>
           <p>{hdd} GB</p>
         </div>
       );
       list.push(
-        <div className="property">
+        <div className="property" key={2}>
           <span>SSD: </span>
           <p>{ssd} GB</p>
         </div>
@@ -124,13 +124,13 @@ const ProductInfo = ({ category }) => {
     } else if (category === "headphones") {
       const { anc, wired } = singleProduct;
       list.push(
-        <div className="property">
+        <div className="property" key={0}>
           <span>ANC: </span>
           <p>{anc ? "Yes" : "No"}</p>
         </div>
       );
       list.push(
-        <div className="property">
+        <div className="property" key={1}>
           <span>WIRED: </span>
           <p>{wired ? "Yes" : "No"}</p>
         </div>
@@ -149,11 +149,13 @@ const ProductInfo = ({ category }) => {
         <p>{description}</p>
       </div>
 
+      {/* List of Info */}
       <div className="brand property">
         <span>Brand:</span>
         <p>{brand}</p>
       </div>
       {buildRows(category)}
+      {/* List of Info */}
 
       <div className="divider"></div>
       {qty > 0 ? (

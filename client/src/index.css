@@ -24,3 +24,17 @@ code {
     margin: auto;
   }
 }
+
+@media (min-width: 1024px) {
+  .content-center {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 1440px) {
+  .content-center {
+    width: 70%;
+    margin: auto;
+  }
+}

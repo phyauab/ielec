@@ -11,6 +11,10 @@ const Wrapper = styled.div`
   column-gap: 3rem;
   row-gap: 4rem;
   @media (min-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content;
+  }
+  @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: min-content;
   }
