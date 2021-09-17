@@ -1,19 +1,22 @@
 const mongoose = require("mongoose");
 const { Product, options } = require("./product");
+const { ramSchema } = require("./options/ram");
+const { colorSchema } = require("./options/color");
+const { storageSchema } = require("./options/storage");
 
 const phoneSchema = new mongoose.Schema(
   {
     color: {
-      type: String,
-      required: true,
+      type: [colorSchema],
+      validate: (v) => Array.isArray(v) && v.length > 0,
     },
     ram: {
-      type: Number,
-      required: true,
+      type: [ramSchema],
+      validate: (v) => Array.isArray(v) && v.length > 0,
     },
     storage: {
-      type: Number,
-      required: true,
+      type: [storageSchema],
+      validate: (v) => Array.isArray(v) && v.length > 0,
     },
   },
   options

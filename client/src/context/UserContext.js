@@ -15,7 +15,7 @@ import {
 
 const UserContext = React.createContext();
 
-const initialState = {
+const initialUserState = {
   isLoggedIn: false,
   isLoading: false,
   isError: false,
@@ -23,8 +23,17 @@ const initialState = {
   token: null,
 };
 
+const initialCart = {
+  cart: [],
+};
+
+// item = {
+//   id: Number,
+//   qty: Number
+// }
+
 export const UserProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialUserState);
   const BASE_URL = "http://localhost:4000";
   const api = axios.create({
     baseURL: BASE_URL,
@@ -111,7 +120,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const localToken = localStorage.getItem("ielec_token");
-    reLoginUser(localToken);
+    if (localToken) reLoginUser(localToken);
   }, []);
 
   return (

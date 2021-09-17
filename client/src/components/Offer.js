@@ -71,9 +71,9 @@ const Offer = () => {
     <Wrapper className="section-center">
       <Title title={"We Will Offer"} />
       <div className="container section-center">
-        {arr.map((item) => {
+        {arr.map((item, index) => {
           const { img, title } = item;
-          return <Card img={img} title={title} />;
+          return <Card img={img} title={title} key={index} />;
         })}
       </div>
     </Wrapper>

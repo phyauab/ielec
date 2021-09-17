@@ -7,6 +7,7 @@ const laptopRouter = require("./routers/laptop");
 const headphoneRouter = require("./routers/headphone");
 const accessoriesRouter = require("./routers/accessories");
 const productRouter = require("./routers/product");
+const brandRouter = require("./routers/brand");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,6 +20,7 @@ app.use(laptopRouter);
 app.use(headphoneRouter);
 app.use(accessoriesRouter);
 app.use(productRouter);
+app.use(brandRouter);
 
 // connect to db
 require("./db/mongoose");

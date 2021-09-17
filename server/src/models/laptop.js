@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const { Product, options } = require("./product");
+const { ramSchema } = require("./options/ram");
+const { colorSchema } = require("./options/color");
+const { storageSchema } = require("./options/storage");
 
 const laptopSchema = new mongoose.Schema(
   {
@@ -8,14 +11,18 @@ const laptopSchema = new mongoose.Schema(
       required: true,
     },
     ram: {
-      type: String,
-      required: true,
+      type: [ramSchema],
+      validate: (v) => Array.isArray(v) && v.length > 0,
     },
     hdd: {
-      type: Number,
+      type: [storageSchema],
     },
     ssd: {
-      type: Number,
+      type: [storageSchema],
+    },
+    color: {
+      type: [colorSchema],
+      validate: (v) => Array.isArray(v) && v.length > 0,
     },
   },
   options

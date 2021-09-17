@@ -45,6 +45,8 @@ export const ProductProvider = ({ children }) => {
     timeout: 5000,
   });
 
+  const test = asyn;
+
   // response.data
   const fetchProducts = async (category, params) => {
     // if the array is not empty, then no need to fetch
