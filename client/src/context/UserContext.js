@@ -1,6 +1,7 @@
 import React, { useState, useContext, useReducer, useEffect } from "react";
 import reducer from "../reducers/UserReducer";
 import axios from "axios";
+import { useHistory, Redirect } from "react-router-dom";
 import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
@@ -34,6 +35,7 @@ const initialCart = {
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialUserState);
+  const history = useHistory();
   const BASE_URL = "http://localhost:4000";
   const api = axios.create({
     baseURL: BASE_URL,
@@ -51,8 +53,8 @@ export const UserProvider = ({ children }) => {
       });
       const { user, token } = response.data;
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
+      // console.log("after dispatch");
       localStorage.setItem("ielec_token", token);
-      return true;
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR });
       return false;
@@ -111,6 +113,11 @@ export const UserProvider = ({ children }) => {
         }
       );
       const { user, token } = response.data;
+      // admin cannot relogin
+      if (user.isAdmin) {
+        dispatch({ type: LOGIN_USER_ERROR });
+        return;
+      }
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR });

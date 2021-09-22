@@ -1,23 +1,23 @@
 const links = [
   {
-    id: 1,
+    text: "products",
+    type: "",
+  },
+  {
     text: "phones",
-    url: "/phones",
+    type: "Phone",
   },
   {
-    id: 2,
     text: "laptops",
-    url: "/laptops",
+    type: "Laptop",
   },
   {
-    id: 3,
     text: "headphones",
-    url: "/headphones",
+    type: "Headphone",
   },
   {
-    id: 4,
     text: "accessories",
-    url: "/accessories",
+    type: "Accessories",
   },
 ];
 

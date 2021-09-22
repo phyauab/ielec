@@ -3,6 +3,16 @@ const router = new express.Router();
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 
+// READ
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
 // Sign up new user
 router.post("/users/signup", async (req, res) => {
   try {
@@ -55,12 +65,6 @@ router.post("/users/relogin", auth, async (req, res) => {
   } catch (error) {
     res.status(404).send({ error: error.message });
   }
-});
-
-// READ
-router.get("/users/me", async (req, res) => {
-  console.log(req.body.username);
-  res.send("WTF");
 });
 
 module.exports = router;

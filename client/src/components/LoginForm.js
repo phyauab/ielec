@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { useUserContext } from "../context/UserContext";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 
 const Wrapper = styled.section`
   display: flex;
@@ -34,28 +34,25 @@ const Wrapper = styled.section`
 `;
 
 const LoginForm = () => {
-  const { isLoading, isLoggedIn, isError, loginUser } = useUserContext();
+  const { isLoading, isLoggedIn, isError, loginUser, user } = useUserContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const isSuccess = await loginUser({
+    loginUser({
       username,
       password,
     });
-    if (isSuccess) {
-      history.push({
-        pathname: "/",
-      });
-    } else {
-      alert("username / password is wrong");
-    }
   };
 
   if (isLoading) return <p>Loading</p>;
-
+  if (user) {
+    if (user.isAdmin) {
+      return <Redirect to="/dashboard" />;
+    }
+  }
   return (
     <Wrapper>
       <form onSubmit={(e) => handleSubmit(e)}>

@@ -53,7 +53,7 @@ const Sidebar = () => {
       <ul>
         {links.map((link, index) => {
           return (
-            <Link to={link.url} key={index}>
+            <Link to={`/products${link.url}`} key={index}>
               <li>
                 <p>{link.text}</p>
               </li>

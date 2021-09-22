@@ -28,31 +28,10 @@ const ProductRecuder = (state, action) => {
       return { ...state, isLoading: true, isError: false };
     case FETCH_SINGLE_PRODUCT_BEGIN:
       return { ...state, isLoading: true, isError: false };
-    case FETCH_PHONE_SUCCESS:
+    case FETCH_PRODUCT_SUCCESS:
       return {
         ...state,
         phones: action.payload,
-        displayProducts: action.payload,
-        isLoading: false,
-      };
-    case FETCH_LAPTOP_SUCCESS:
-      return {
-        ...state,
-        laptops: action.payload,
-        displayProducts: action.payload,
-        isLoading: false,
-      };
-    case FETCH_HEADPHONE_SUCCESS:
-      return {
-        ...state,
-        headphones: action.payload,
-        displayProducts: action.payload,
-        isLoading: false,
-      };
-    case FETCH_ACCESSORIES_SUCCESS:
-      return {
-        ...state,
-        accessories: action.payload,
         displayProducts: action.payload,
         isLoading: false,
       };

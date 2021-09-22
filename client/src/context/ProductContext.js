@@ -45,51 +45,18 @@ export const ProductProvider = ({ children }) => {
     timeout: 5000,
   });
 
-  const test = asyn;
-
   // response.data
   const fetchProducts = async (category, params) => {
     // if the array is not empty, then no need to fetch
-    if (state[category.toString()].length !== 0) {
-      setDisplayProducts(category);
-      return;
-    }
+    // if (state[category.toString()].length !== 0) {
+    //   setDisplayProducts(category);
+    //   return;
+    // }
 
     try {
       dispatch({ type: FETCH_PRODUCT_BEGIN });
-      switch (category) {
-        case "phones":
-          const responsePhone = await api.get("/products/phones");
-
-          dispatch({ type: FETCH_PHONE_SUCCESS, payload: responsePhone.data });
-          break;
-        case "laptops":
-          const responseLaptop = await api.get("/products/laptops");
-
-          dispatch({
-            type: FETCH_LAPTOP_SUCCESS,
-            payload: responseLaptop.data,
-          });
-          break;
-        case "headphones":
-          const responseHeadphone = await api.get("/products/headphones");
-
-          dispatch({
-            type: FETCH_HEADPHONE_SUCCESS,
-            payload: responseHeadphone.data,
-          });
-          break;
-        case "accessories":
-          const responseAccessories = await api.get("/products/accessories");
-
-          dispatch({
-            type: FETCH_ACCESSORIES_SUCCESS,
-            payload: responseAccessories.data,
-          });
-          break;
-        default:
-          dispatch({ type: FETCH_PRODUCT_ERROR });
-      }
+      const response = await api.get("/products");
+      dispatch({ type: FETCH_PRODUCT_SUCCESS, payload: response.data });
     } catch (error) {
       console.log(error);
       dispatch({ type: FETCH_PRODUCT_ERROR });
@@ -100,24 +67,20 @@ export const ProductProvider = ({ children }) => {
     dispatch({ type: FETCH_CATEGORIES_BEGIN });
     try {
       const response = await api.get("/products/categories");
-      const tempCategories = response.data.map((category) => {
-        if (category != "Accessories") {
-          return category.concat("s").toLowerCase();
-        }
-        return category.toLowerCase();
-      });
+      const tempCategories = response.data;
       dispatch({ type: FETCH_CATEGORIES_SUCCESS, payload: tempCategories });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchProperties = async () => {
+  const fetchProperties = async (type) => {
+    if (!type) return;
+    const params = { type: type };
     dispatch({ type: FETCH_PROPERTIES_BEGIN });
     try {
-      const response = await api.get("/products/properties");
-      const { properties } = response.data;
-      dispatch({ type: FETCH_PROPERTIES_SUCCESS, payload: properties });
+      const response = await api.get("/products/properties", { params });
+      dispatch({ type: FETCH_PROPERTIES_SUCCESS, payload: response.data });
     } catch (error) {
       console.log(error);
     }

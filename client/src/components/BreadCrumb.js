@@ -1,6 +1,6 @@
 import { React, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Wrapper = styled.section`
   align-items: center;
@@ -18,19 +18,18 @@ const Wrapper = styled.section`
   }
 `;
 
-const BreadCrumb = ({ locations }) => {
+const BreadCrumb = () => {
+  let location = useLocation();
+  const locations = location.pathname.split("/");
+  locations.shift();
   return (
     <Wrapper>
       <Link to="/">Home</Link>
       {locations.map((location, index) => {
-        return index !== locations.length - 1 ? (
-          <Link key={index} to={`/${location}`}>
-            &nbsp;/ {location}
+        return (
+          <Link key={index} to={`${location}`}>
+            &ensp;/&ensp;{location}
           </Link>
-        ) : (
-          <p className="current" key={index}>
-            &nbsp;/ {location}
-          </p>
         );
       })}
     </Wrapper>

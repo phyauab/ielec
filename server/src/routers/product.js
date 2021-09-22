@@ -31,7 +31,6 @@ router.post(
     params.profile = profile[0].buffer;
     params.images = bufferArray;
 
-    console.log(params);
     // create a product
     let product;
     switch (params.__t) {
@@ -85,15 +84,33 @@ router.get("/products", async (req, res) => {
   }
 });
 
-router.get("/products/exist", async (req, res) => {
+// Read - get all unqiue value of a key
+router.get("/products/unqiue_values", async (req, res) => {
+  const { category, property } = req.query;
+
+  let list = [];
   try {
-    console.log("hi");
-    // let list = await Phone.find({}, { storage: 1 });
-    let list = await Phone.distinct("name");
+    switch (category) {
+      case "Phone":
+        list = await Phone.distinct(property);
+        break;
+      case "Laptop":
+        list = await Laptop.distinct(property);
+        break;
+      case "Headphone":
+        list = await Headphone.distinct(property);
+        break;
+      case "Accessories":
+        list = await Accessories.distinct(property);
+        break;
+    }
     res.send(list);
-  } catch (e) {}
+  } catch (e) {
+    res.send(e.message);
+  }
 });
 
+// Read - get properties of a category
 router.get("/products/properties", async (req, res) => {
   const __t = req.query.type;
   let properties;
@@ -131,6 +148,7 @@ router.get("/products/properties", async (req, res) => {
   }
 });
 
+// Read - get all categories, e.g. phone, laptop
 router.get("/products/categories", async (req, res) => {
   console.log(Object.keys(Product.discriminators));
   try {
@@ -139,6 +157,26 @@ router.get("/products/categories", async (req, res) => {
     res.status(404).send("Cannot find product categories");
   }
 });
+
+// Update
+// Update - a product
+router.patch(
+  "/products/:id",
+  upload.fields([{ name: "profile" }, { name: "images" }]),
+  async (req, res) => {
+    const { id } = req.params;
+    let params = req.body;
+    try {
+      const product = await Product.findByIdAndUpdate(id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      res.send(product);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
+  }
+);
 
 // Delete
 // Delete - all products

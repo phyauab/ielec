@@ -26,6 +26,7 @@ const UserReducer = (state, action) => {
         token: action.payload.token,
       };
     case LOGOUT_USER_SUCCESS:
+    case LOGIN_USER_ERROR:
       return {
         ...state,
         isLoading: false,
@@ -34,7 +35,6 @@ const UserReducer = (state, action) => {
         token: null,
       };
     case LOGOUT_USER_ERROR:
-    case LOGIN_USER_ERROR:
     case SIGNUP_USER_ERROR:
       return { ...state, isLoading: false, isError: true };
     default:
