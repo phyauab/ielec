@@ -6,7 +6,6 @@ import HomePage from "./HomePage";
 import ProductsPage from "./ProductsPage";
 import SingleProductPage from "./SingleProductPage";
 import LoginPage from "./LoginPage";
-import SignUpPage from "./SignUpPage";
 import PrivateRoute from "./PrivateRoute";
 import DashboardPage from "./Admin/DashboardPage";
 
@@ -19,7 +18,6 @@ export {
   ProductsPage,
   SingleProductPage,
   LoginPage,
-  SignUpPage,
   PrivateRoute,
   DashboardPage,
 };

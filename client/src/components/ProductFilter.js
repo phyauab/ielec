@@ -6,7 +6,6 @@ import {
   headphoneProperties,
 } from "../data/properties";
 import { brands } from "../data/brands";
-import Button from "./Button";
 import Checkbox from "react-custom-checkbox";
 import { useProductContext } from "../context/ProductContext";
 import "rc-slider/assets/index.css";
@@ -277,9 +276,7 @@ const ProductFilter = ({ category }) => {
             </div>
           </div>
         )}
-        <div>
-          <Button>Filter</Button>
-        </div>
+        <div></div>
       </form>
     </Wrapper>
   );

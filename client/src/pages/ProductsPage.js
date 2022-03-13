@@ -7,6 +7,11 @@ import ProductListView from "../components/ProductListView";
 import ProductGridView from "../components/ProductGridView";
 import { useProductContext } from "../context/ProductContext";
 
+// UI
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -34,14 +39,26 @@ const ProductsPage = () => {
   }, []);
 
   return (
-    <Wrapper className="content-center">
-      <BreadCrumb />
+    <Box sx={{ minHeight: "calc(100vh - 132px)", py: 10 }}>
+      <Container>
+        <Grid container>
+          <Grid item xs={4}>
+            <ProductFilter />
+          </Grid>
+          <Grid item xs={8}>
+            <ProductGridView products={displayProducts} />
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+    // <Wrapper className="content-center">
+    //   <BreadCrumb />
 
-      <div className="products">
-        <ProductFilter />
-        <ProductGridView products={displayProducts} />
-      </div>
-    </Wrapper>
+    //   <div className="products">
+    //     <ProductFilter />
+    //     <ProductGridView products={displayProducts} />
+    //   </div>
+    // </Wrapper>
   );
 };
 export default ProductsPage;

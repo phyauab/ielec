@@ -1,78 +1,66 @@
 import React from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Title from "./Title";
 import hero from "../assets/hero.jpg";
-import Button from "./Button";
-
-const Wrapper = styled.section`
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(${hero});
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: calc(100vh - 80px);
-  width: 100%;
-  @media (min-width: 1440px) {
-    flex-direction: row;
-  }
-  .spacer {
-    display: none;
-    @media (min-width: 1440px) {
-      display: flex;
-      flex: 1 1 50%;
-    }
-  }
-  .container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0 1rem;
-    @media (min-width: 1440px) {
-      padding: 0 5rem;
-      flex: 1 1 50%;
-    }
-    @media (min-width: 1920px) {
-      padding: 0 10rem;
-    }
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      @media (min-width: 768px) {
-        font-size: 4rem;
-      }
-    }
-    p {
-      text-align: center;
-      line-height: 1.5rem;
-    }
-    a {
-      width: 100%;
-      Button {
-        width: 100%;
-        border: none;
-      }
-    }
-  }
-`;
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 
 const Hero = () => {
   return (
-    <Wrapper>
-      <div className="spacer"></div>
-      <div className="container content-center">
-        <h1>Level Up Your Tech</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
-          praesentium, suscipit obcaecati animi quas quae excepturi fuga ad iure
-          incidunt temporibus dicta quasi eligendi quibusdam nobis, tempore sed
-          doloremque cupiditate?
-        </p>
-        <Link to="/products/phones">
-          <Button>Shop Now</Button>
-        </Link>
-      </div>
-    </Wrapper>
+    <Box
+      sx={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${hero})`,
+        height: "calc(100vh - 68px)",
+        color: "white",
+      }}
+    >
+      <Container
+        sx={{
+          display: "flex",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <Box
+          sx={{
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "2rem",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <Title title="Level Up Your Tech" />
+          <Typography component="p" sx={{ textAlign: "center" }}>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque
+            laboriosam ipsa dignissimos necessitatibus nulla! Reprehenderit,
+            itaque officiis ab doloribus magni minus laborum error debitis
+            molestias accusamus sunt qui similique. Tempore provident,
+          </Typography>
+          <Button
+            variant="outlined"
+            size="large"
+            color="secondary"
+            sx={{
+              borderWidth: "3px",
+              ":hover": {
+                borderWidth: "3px",
+              },
+            }}
+            endIcon={<AddShoppingCartOutlinedIcon />}
+          >
+            <Link to="products">
+              <Typography variant="h6">Shop Now</Typography>
+            </Link>
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

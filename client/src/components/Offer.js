@@ -1,55 +1,19 @@
 import React from "react";
-import styled from "styled-components";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+
+// components
 import Title from "./Title";
+
+// assets
 import fair_price from "../assets/fair_price.png";
 import good_service from "../assets/good_service.png";
 import no_delay from "../assets/no_delay.png";
-
-const Wrapper = styled.section`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
-  width: 100%;
-  justify-content: center;
-  padding: 5rem;
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    justify-content: space-around;
-    width: 100%;
-    @media (min-width: 1024px) {
-      flex-direction: row;
-      overflow-y: scroll;
-    }
-  }
-`;
-
-const CardWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  justify-content: center;
-  img {
-    width: 330px;
-    height: 330px;
-  }
-  h2 {
-    text-align: center;
-  }
-`;
-
-const Card = ({ img, title }) => {
-  return (
-    <CardWrapper>
-      <img src={img} alt="img" />
-      <h2>{title}</h2>
-    </CardWrapper>
-  );
-};
 
 const arr = [
   {
@@ -68,15 +32,54 @@ const arr = [
 
 const Offer = () => {
   return (
-    <Wrapper className="section-center">
-      <Title title={"We Will Offer"} />
-      <div className="container section-center">
-        {arr.map((item, index) => {
-          const { img, title } = item;
-          return <Card img={img} title={title} key={index} />;
-        })}
-      </div>
-    </Wrapper>
+    <Box>
+      <Container
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "4rem",
+          py: "4rem",
+        }}
+      >
+        <Title title="We Will Offer" />
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={15}>
+            {arr.map((item, index) => {
+              const { title, img } = item;
+              const description =
+                "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magni neque fugiat excepturi impedit sit nisi non vel asperiores laudantium ratione?";
+              return (
+                <Grid item xs={4} key={index}>
+                  <Card elevation={0}>
+                    <CardMedia component="img" alt="green iguana" image={img} />
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                        align="center"
+                        sx={{ fontWeight: "semi-bold" }}
+                      >
+                        {title}
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        component="p"
+                        color="text.secondary"
+                        sx={{ textAlign: "center", lineHeight: 2 }}
+                      >
+                        {description}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

@@ -18,23 +18,10 @@ code {
     monospace;
 }
 
-@media (min-width: 768px) {
-  .content-center {
-    width: 90%;
-    margin: auto;
-  }
+a {
+  text-decoration: none;
 }
 
-@media (min-width: 1024px) {
-  .content-center {
-    width: 80%;
-    margin: auto;
-  }
-}
-
-@media (min-width: 1440px) {
-  .content-center {
-    width: 70%;
-    margin: auto;
-  }
+a:visited {
+  color: inherit;
 }

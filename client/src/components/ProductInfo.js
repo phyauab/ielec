@@ -4,7 +4,6 @@ import { useProductContext } from "../context/ProductContext";
 import Loading from "./Loading";
 import Modal from "./Modal";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
-import Button from "./Button";
 
 const Wrapper = styled.section`
   flex-grow: 1;
@@ -167,18 +166,6 @@ const ProductInfo = ({ category }) => {
           <span>Out of stock</span>
         </div>
       )}
-      <Button
-        onClick={(e) => {
-          console.log("hi?");
-          return (
-            <Modal
-              message={"wtfaaaaaaaaaafrekklsbngiltrbnseignbthstihglisdhtgsloi"}
-            />
-          );
-        }}
-      >
-        Add To Cart
-      </Button>
     </Wrapper>
   );
 };

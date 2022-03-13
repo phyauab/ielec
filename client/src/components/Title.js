@@ -1,35 +1,27 @@
 import React from "react";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-  h1 {
-    text-align: center;
-    font-size: 2rem;
-    @media (min-width: 768px) {
-      font-size: 3rem;
-    }
-    @media (min-width: 1024px) {
-      font-size: 4rem;
-    }
-  }
-  div {
-    background: ${(props) => props.theme.text};
-    height: 0.25rem;
-    width: 8rem;
-  }
-`;
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const Title = ({ title }) => {
   return (
-    <Wrapper>
-      <h1>{title}</h1>
-      <div></div>
-    </Wrapper>
+    <Box
+      sx={{
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        justifyContent: "center",
+      }}
+    >
+      <Typography
+        variant="h3"
+        component="h3"
+        sx={{ textAlign: "center", fontWeight: "bold" }}
+      >
+        {title}
+      </Typography>
+      <Box sx={{ background: "red", width: "100px", height: "5px" }}></Box>
+    </Box>
   );
 };
 

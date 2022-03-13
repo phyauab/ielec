@@ -3,22 +3,19 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { AppProvider } from "./context/AppContext";
 import { UserProvider } from "./context/UserContext";
 import { ProductProvider } from "./context/ProductContext";
 import { AdminProvider } from "./context/AdminContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppProvider>
-      <UserProvider>
-        <AdminProvider>
-          <ProductProvider>
-            <App />
-          </ProductProvider>
-        </AdminProvider>
-      </UserProvider>
-    </AppProvider>
+    <UserProvider>
+      <AdminProvider>
+        <ProductProvider>
+          <App />
+        </ProductProvider>
+      </AdminProvider>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -55,7 +55,7 @@ router.post(
       await product.save();
       res.send(`${params.__t} added`);
     } catch (e) {
-      res.send("Add product error");
+      res.send(e.message);
     }
   }
 );

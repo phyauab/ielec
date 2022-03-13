@@ -42,7 +42,7 @@ export const UserProvider = ({ children }) => {
     timeout: 5000,
   });
 
-  const loginUser = async ({ username, password }) => {
+  const loginUser = async (username, password) => {
     try {
       dispatch({ type: LOGIN_USER_BEGIN });
       const response = await api.post("/users/login", {
@@ -53,7 +53,6 @@ export const UserProvider = ({ children }) => {
       });
       const { user, token } = response.data;
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
-      // console.log("after dispatch");
       localStorage.setItem("ielec_token", token);
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR });
@@ -82,7 +81,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const signUpUser = async ({ username, email, password }) => {
+  const signUpUser = async ({ username, password, email }) => {
     try {
       dispatch({ type: SIGNUP_USER_BEGIN });
       const response = await axios.post("http://localhost:4000/users/signup", {

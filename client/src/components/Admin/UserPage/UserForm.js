@@ -1,6 +1,5 @@
 import { React, useState, useRef } from "react";
-import { useUserContext } from "../context/UserContext";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { useAdminContext } from "../../../context/AdminContext";
 
 // UI
 import {
@@ -13,37 +12,40 @@ import {
   DialogActions,
   Typography,
   TextField,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RodioGroup,
   IconButton,
   Slide,
+  RadioGroup,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
-const LoginForm = ({ onClose, open }) => {
+const UserForm = ({ open, onClose, action }) => {
   const containerRef = useRef(null);
-  const [action, setAction] = useState("login");
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState("xs");
-  const { isLoading, isLoggedIn, isError, loginUser, user, signUpUser } =
-    useUserContext();
+  const { addUser } = useAdminContext();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const username = e.target[0].value;
     const password = e.target[2].value;
-    if (action == "login") {
-      loginUser(username, password);
-    } else if (action == "register") {
-      const email = e.target[4].value;
-      signUpUser(username, password, email);
-    }
+    const email = e.target[4].value;
+    const isAdmin = e.target[7].checked;
+    const status = await addUser({
+      username: username,
+      password: password,
+      email: email,
+      isAdmin: isAdmin,
+    });
   };
 
   const handleClose = () => {
     onClose();
   };
-
-  if (user) {
-    handleClose();
-  }
 
   return (
     <Dialog
@@ -55,11 +57,15 @@ const LoginForm = ({ onClose, open }) => {
       <Container sx={{ py: 2 }} ref={containerRef}>
         <DialogTitle>
           <Typography variant="h5" component="span" sx={{ fontWeight: "bold" }}>
-            Add User
+            LOG IN TO&thinsp;
+            <Typography variant="h5" component="span" color="red">
+              I
+            </Typography>
+            ELEC
           </Typography>
         </DialogTitle>
-        {action == "login" ? (
-          // Login
+        {action == "add" ? (
+          // Add User
           <form onSubmit={(e) => handleSubmit(e)}>
             <DialogContent
               sx={{ display: "flex", flexDirection: "column", gap: 2, py: 2 }}
@@ -76,24 +82,40 @@ const LoginForm = ({ onClose, open }) => {
                 type="password"
                 required
               />
-            </DialogContent>
-            <DialogActions
-              sx={{ display: "flex", justifyContent: "space-around", py: 2 }}
-            >
-              <Button
-                onClick={(e) => {
-                  setAction("register");
-                }}
+              <TextField
+                variant="outlined"
+                label="Email"
+                type="email"
+                required
+              />
+              <FormControl
+                component="fieldset"
+                sx={{ display: "flex" }}
+                required
               >
-                Dont have an account?
-              </Button>
-              <Button variant="contained" type="submit" disabled={isLoading}>
-                Login In
+                <FormLabel component="legend">Role</FormLabel>
+                <RadioGroup row aria-label="role" name="role">
+                  <FormControlLabel
+                    value="admin"
+                    control={<Radio />}
+                    label="Admin"
+                  />
+                  <FormControlLabel
+                    value="user"
+                    control={<Radio />}
+                    label="User"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </DialogContent>
+            <DialogActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button variant="contained" type="submit" startIcon={<AddIcon />}>
+                Add
               </Button>
             </DialogActions>
           </form>
         ) : (
-          // Register
+          // Modify
           <Slide
             direction="right"
             in={action == "register"}
@@ -125,16 +147,16 @@ const LoginForm = ({ onClose, open }) => {
               <DialogActions
                 sx={{ display: "flex", justifyContent: "space-around", py: 2 }}
               >
-                <Button
+                {/* <Button
                   onClick={(e) => {
                     setAction("login");
                   }}
                 >
                   Already have an accrount?
-                </Button>
-                <Button variant="contained" type="submit" disabled={isLoading}>
+                </Button> */}
+                {/* <Button variant="contained" type="submit" disabled={isLoading}>
                   Register
-                </Button>
+                </Button> */}
               </DialogActions>
             </form>
           </Slide>
@@ -143,4 +165,4 @@ const LoginForm = ({ onClose, open }) => {
     </Dialog>
   );
 };
-export default LoginForm;
+export default UserForm;

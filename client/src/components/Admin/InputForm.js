@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Button from "../Button";
 import { useProductContext } from "../../context/ProductContext";
 import { useAdminContext } from "../../context/AdminContext";
 import { brands } from "../../data/brands";

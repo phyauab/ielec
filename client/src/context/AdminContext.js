@@ -1,7 +1,11 @@
 import React, { useState, useContext, useReducer } from "react";
 import reducer from "../reducers/AdminReducer";
 import axios from "axios";
-import {} from "../reducers/actions/AdminAction";
+import {
+  FETCH_USERS_BEGIN,
+  FETCH_USERS_SUCCESS,
+  FETCH_USERS_ERROR,
+} from "../reducers/actions/AdminAction";
 
 const AdminContext = React.createContext();
 
@@ -10,6 +14,7 @@ const initialState = {
   isError: false,
   categories: [],
   properties: [],
+  users: [],
 };
 
 export const AdminProvider = ({ children }) => {
@@ -19,6 +24,16 @@ export const AdminProvider = ({ children }) => {
     baseURL: BASE_URL,
     timeout: 5000,
   });
+
+  const addUser = async (user) => {
+    try {
+      const response = await api.post("/users/signup", user);
+      const status = response.status;
+      return status;
+    } catch (e) {
+      return e;
+    }
+  };
 
   const addProduct = async (dataArray, category) => {
     // console.log("------");
@@ -31,8 +46,20 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
+  const fetchUsers = async () => {
+    dispatch({ type: FETCH_USERS_BEGIN });
+    try {
+      const response = await api.get("/users");
+      dispatch({ type: FETCH_USERS_SUCCESS, payload: response.data });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <AdminContext.Provider value={{ ...state, addProduct }}>
+    <AdminContext.Provider
+      value={{ ...state, addUser, addProduct, fetchUsers }}
+    >
       {children}
     </AdminContext.Provider>
   );
