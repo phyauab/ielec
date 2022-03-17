@@ -1,72 +1,39 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 import { useProductContext } from "../context/ProductContext";
-import Loading from "./Loading";
-import Modal from "./Modal";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import ReadMoreReact from "read-more-react";
 
-const Wrapper = styled.section`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  div {
-    align-items: flex-start;
-    display: flex;
-    justify-content: start;
-  }
-  .divider {
-    height: 1px;
-    width: 100%;
-    background: ${(props) => props.theme.text};
-  }
-  .rating {
-    gap: 0;
-    color: #ffdb0e;
-    font-size: 1.5rem;
-  }
-  .price {
-    justify-content: start;
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
-  .description {
-    line-height: 2rem;
-  }
+import ColorOption from "./Options/ColorOption";
+import RamOption from "./Options/RamOption";
+import SsdOption from "./Options/SsdOption";
+import StorageOption from "./Options/StorageOption";
+import Loading from "./Loading";
 
-  .property {
-    align-items: flex-start;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    span {
-      color: black;
-      width: 50px;
-    }
-  }
-  .green {
-    color: green;
-  }
-  .red {
-    color: red;
-  }
-  .phones .laptops .headphones {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-`;
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Modal from "./Modal";
 
-const ProductInfo = ({ category }) => {
-  const { singleProduct, isLoading } = useProductContext();
+// ICONS
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-  if (isLoading) {
+const ProductInfo = () => {
+  const { singleProduct, isProductLoading } = useProductContext();
+  const [options, setOptions] = useState({});
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  if (isProductLoading) {
     return <Loading />;
   }
 
   const { name, brand, rating, price, description, qty } = singleProduct;
 
-  const generateRating = (rating) => {
+  const buildRating = () => {
     const list = [];
     for (let i = 0, count = rating; i < 5; ++i, count--) {
       if (count > 0) {
@@ -75,98 +42,188 @@ const ProductInfo = ({ category }) => {
         list.push(<AiOutlineStar key={i} />);
       }
     }
-    return <div className="rating property">{list}</div>;
+    return <>{list}</>;
   };
 
-  const buildRows = (category) => {
-    const list = [];
-    if (category === "phones") {
-      const { ram, storage, color } = singleProduct;
-      list.push(
-        <div className="property" key={0}>
-          <span>Ram: </span>
-          <p>{ram} GB</p>
-        </div>
-      );
-      list.push(
-        <div className="property" key={1}>
-          <span>Storage: </span>
-          <p>{storage} GB</p>
-        </div>
-      );
-      list.push(
-        <div className="property" key={2}>
-          <span>Color: </span>
-          <p>{color}</p>
-        </div>
-      );
-    } else if (category === "laptops") {
-      const { ram, hdd, ssd } = singleProduct;
-      list.push(
-        <div className="property" key={0}>
-          <span>Ram: </span>
-          <p>{ram} GB</p>
-        </div>
-      );
-      list.push(
-        <div className="property" key={1}>
-          <span>HDD: </span>
-          <p>{hdd} GB</p>
-        </div>
-      );
-      list.push(
-        <div className="property" key={2}>
-          <span>SSD: </span>
-          <p>{ssd} GB</p>
-        </div>
-      );
-    } else if (category === "headphones") {
-      const { anc, wired } = singleProduct;
-      list.push(
-        <div className="property" key={0}>
-          <span>ANC: </span>
-          <p>{anc ? "Yes" : "No"}</p>
-        </div>
-      );
-      list.push(
-        <div className="property" key={1}>
-          <span>WIRED: </span>
-          <p>{wired ? "Yes" : "No"}</p>
-        </div>
-      );
+  const init = () => {
+    let initOptions = {};
+    for (const property in singleProduct) {
+      if (property == "color") {
+        initOptions.color = singleProduct[property][0]._id;
+      } else if (property == "ram") {
+        initOptions.ram = singleProduct[property][0]._id;
+      } else if (property == "storage") {
+        initOptions.storage = singleProduct[property][0]._id;
+      } else if (property == "ssd") {
+        initOptions.ssd = singleProduct[property][0]._id;
+      }
     }
+    setOptions(initOptions);
+  };
+
+  const _buildOption = () => {
+    let list = [];
+    let colorList = [];
+    let ramList = [];
+    let ssdList = [];
+    let storageList = [];
+    for (const property in singleProduct) {
+      if (property == "color") {
+        for (let i = 0; i < singleProduct[property].length; ++i) {
+          colorList.push(
+            <Grid key={`colorGrid${i}`} item xs={6}>
+              <ColorOption
+                key={i}
+                color={singleProduct[property][i]}
+                options={options}
+                setOptions={setOptions}
+              />
+            </Grid>
+          );
+        }
+        list = [
+          ...list,
+          <>
+            <Divider sx={{ py: "1rem" }} />
+            <Typography sx={{ py: "1rem" }} variant="h6">
+              Pick a color
+            </Typography>
+            <Grid container spacing={1}>
+              {colorList}
+            </Grid>
+          </>,
+        ];
+      } else if (property == "ram") {
+        for (let i = 0; i < singleProduct[property].length; ++i) {
+          ramList.push(
+            <Grid key={i} item xs={6}>
+              <RamOption
+                ram={singleProduct[property][i]}
+                options={options}
+                setOptions={setOptions}
+              />
+            </Grid>
+          );
+        }
+        list = [
+          ...list,
+          <>
+            <Divider sx={{ py: "1rem" }} />
+            <Typography sx={{ py: "1rem" }} variant="h6">
+              Pick a ram size
+            </Typography>
+            <Grid container spacing={1}>
+              {ramList}
+            </Grid>
+          </>,
+        ];
+      } else if (property == "storage") {
+        for (let i = 0; i < singleProduct[property].length; ++i) {
+          storageList.push(
+            <Grid key={i} item xs={6}>
+              <StorageOption
+                storage={singleProduct[property][i]}
+                options={options}
+                setOptions={setOptions}
+              />
+            </Grid>
+          );
+        }
+        list = [
+          ...list,
+          <>
+            <Divider sx={{ py: "1rem" }} />
+            <Typography sx={{ py: "1rem" }} variant="h6">
+              Pick a storage size
+            </Typography>
+            <Grid container spacing={1}>
+              {storageList}
+            </Grid>
+          </>,
+        ];
+      } else if (property == "ssd") {
+        for (let i = 0; i < singleProduct[property].length; ++i) {
+          ssdList.push(
+            <Grid key={i} item xs={6}>
+              <SsdOption
+                ssd={singleProduct[property][i]}
+                options={options}
+                setOptions={setOptions}
+              />
+            </Grid>
+          );
+        }
+        list = [
+          ...list,
+          <>
+            <Divider sx={{ py: "1rem" }} />
+            <Typography sx={{ py: "1rem" }} variant="h6">
+              Pick a SSD size
+            </Typography>
+            <Grid container spacing={1}>
+              {ssdList}
+            </Grid>
+          </>,
+        ];
+      } else if (property == "anc") {
+        list = [
+          ...list,
+          <>
+            <Divider sx={{ py: "1rem" }} />
+            <Typography sx={{ py: "1rem" }} variant="h6">
+              ANC: {singleProduct[property] ? "Yes" : "No"}
+            </Typography>
+          </>,
+        ];
+      } else if (property == "wired") {
+        list = [
+          ...list,
+          <>
+            <Divider sx={{ py: "1rem" }} />
+            <Typography sx={{ py: "1rem" }} variant="h6">
+              Wired: {singleProduct[property] ? "Yes" : "No"}
+            </Typography>
+          </>,
+        ];
+      }
+    }
+
     return list;
   };
 
   return (
-    <Wrapper>
-      <h1>{name}</h1>
-      <div className="divider"></div>
-      {generateRating(rating)}
-      <div className="price">{`$ ${price}`}</div>
-      <div className="description property">
-        <p>{description}</p>
-      </div>
+    <Box sx={{}}>
+      <Typography sx={{ textTransform: "capitalize" }} variant="caption">
+        {brand.name}
+      </Typography>
+      <Typography variant="h2">{name}</Typography>
+      <Box sx={{ py: "1rem" }}>
+        <Typography variant="h5" sx={{ color: "text.secondary" }}>
+          ${price}
+        </Typography>
+      </Box>
+      <Box sx={{ py: "1rem" }}>{buildRating()}</Box>
+      <Box>
+        <ReadMoreReact
+          text={description}
+          min={200}
+          ideal={250}
+          max={300}
+          readMoreText="...more"
+        />
+      </Box>
+      <Box>{_buildOption()}</Box>
 
-      {/* List of Info */}
-      <div className="brand property">
-        <span>Brand:</span>
-        <p>{brand}</p>
-      </div>
-      {buildRows(category)}
-      {/* List of Info */}
-
-      <div className="divider"></div>
-      {qty > 0 ? (
-        <div className="green">
-          <span>In Stock</span>
-        </div>
-      ) : (
-        <div className="red">
-          <span>Out of stock</span>
-        </div>
-      )}
-    </Wrapper>
+      <Box sx={{ my: "2rem" }}>
+        <Button
+          variant="contained"
+          startIcon={<AddShoppingCartIcon />}
+          sx={{ width: "100%", py: "1" }}
+        >
+          ADD TO CART
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

@@ -23,16 +23,23 @@ const UserReducer = (state, action) => {
         isLoading: false,
         isLoggedIn: true,
         user: action.payload.user,
-        token: action.payload.token,
+        msg: null,
       };
     case LOGOUT_USER_SUCCESS:
+      // return {
+      //   ...state,
+      //   isLoading: false,
+      //   isLoggedIn: false,
+      //   user: null,
+      // };
+      return;
     case LOGIN_USER_ERROR:
       return {
         ...state,
         isLoading: false,
         isLoggedIn: false,
+        msg: action.payload.msg ? action.payload.msg : null,
         user: null,
-        token: null,
       };
     case LOGOUT_USER_ERROR:
     case SIGNUP_USER_ERROR:

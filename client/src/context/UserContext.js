@@ -1,7 +1,8 @@
 import React, { useState, useContext, useReducer, useEffect } from "react";
+import jwt_decode from "jwt-decode";
 import reducer from "../reducers/UserReducer";
-import axios from "axios";
-import { useHistory, Redirect } from "react-router-dom";
+import api from "./Api";
+import { useHistory } from "react-router-dom";
 import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
@@ -20,71 +21,59 @@ const initialUserState = {
   isLoggedIn: false,
   isLoading: false,
   isError: false,
+  msg: null,
   user: null,
   token: null,
 };
 
-const initialCart = {
-  cart: [],
-};
-
-// item = {
-//   id: Number,
-//   qty: Number
-// }
-
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialUserState);
-  const history = useHistory();
-  const BASE_URL = "http://localhost:4000";
-  const api = axios.create({
-    baseURL: BASE_URL,
-    timeout: 5000,
-  });
 
-  const loginUser = async (username, password) => {
+  const login = async (username, password) => {
     try {
       dispatch({ type: LOGIN_USER_BEGIN });
       const response = await api.post("/users/login", {
-        data: {
-          username,
-          password,
-        },
+        username: username,
+        password: password,
       });
-      const { user, token } = response.data;
-      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
-      localStorage.setItem("ielec_token", token);
+      console.log(response.data);
+      const { user, access_token } = response.data;
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
+      localStorage.setItem("access_token", access_token);
     } catch (error) {
-      dispatch({ type: LOGIN_USER_ERROR });
+      console.log(error.response.data.msg);
+      dispatch({
+        type: LOGIN_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
       return false;
     }
   };
 
-  const logoutUser = async () => {
+  const logout = async () => {
     try {
       dispatch({ type: LOGOUT_USER_BEGIN });
-      await api.post(
-        "/users/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-        }
-      );
+      // await api.post(
+      //   "/users/logout",
+      //   {},
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${state.token}`,
+      //     },
+      //   }
+      // );
       dispatch({ type: LOGOUT_USER_SUCCESS });
-      localStorage.removeItem("ielec_token");
+      localStorage.removeItem("access_token");
     } catch (error) {
-      dispatch({ type: LOGOUT_USER_ERROR });
+      dispatch({ type: LOGOUT_USER_ERROR, payload: {} });
       console.log(error);
-      alert("Failed to Logout");
     }
   };
 
   const signUpUser = async ({ username, password, email }) => {
     try {
       dispatch({ type: SIGNUP_USER_BEGIN });
-      const response = await axios.post("http://localhost:4000/users/signup", {
+      const response = await api.post("/users/signup", {
         username,
         email,
         password,
@@ -99,15 +88,15 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const reLoginUser = async (localToken) => {
+  const refresh = async (access_token) => {
     try {
       dispatch({ type: LOGIN_USER_BEGIN });
       const response = await api.post(
-        "/users/relogin",
+        "/users/refresh",
         {},
         {
           headers: {
-            Authorization: `Bearer ${localToken}`,
+            Authorization: `Bearer ${access_token}`,
           },
         }
       );
@@ -124,17 +113,57 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const getMe = async (access_token) => {
+    try {
+      // dispatch({ type: LOGIN_USER_BEGIN });
+      const response = await api.get("/users/me", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      const user = response.data;
+      // admin cannot relogin
+      // if (user.isAdmin) {
+      //   dispatch({ type: LOGIN_USER_ERROR });
+      //   return;
+      // }
+      // dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
+    } catch (error) {
+      // console.log("getme error");
+      // console.log(error.response.data.error);
+      // dispatch({
+      //   type: LOGIN_USER_ERROR,
+      //   payload: { msg: error.response.data.error },
+      // });
+      // console.log(error);
+    }
+  };
+
+  const validateToken = (token) => {
+    let expiry = jwt_decode(token).exp;
+    const now = new Date();
+
+    // if now < exp time = valid
+    return now.getTime() < expiry * 1000;
+  };
+
   useEffect(() => {
-    const localToken = localStorage.getItem("ielec_token");
-    if (localToken) reLoginUser(localToken);
+    const access_token = localStorage.getItem("access_token");
+    if (access_token) {
+      console.log("have access token");
+      if (validateToken(access_token)) {
+        console.log("now refresh");
+        getMe(access_token);
+      }
+    }
   }, []);
 
   return (
     <UserContext.Provider
       value={{
         ...state,
-        loginUser,
-        logoutUser,
+        login,
+        logout,
         signUpUser,
       }}
     >

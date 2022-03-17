@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const { Option } = require("../option");
 
 const storageSchema = new mongoose.Schema({
-  storage: {
+  size: {
     type: Number,
     require: true,
   },
@@ -10,10 +11,8 @@ const storageSchema = new mongoose.Schema({
     required: true,
     enum: ["KB", "MB", "GB", "TB"],
   },
-  additionalPrice: {
-    type: Number,
-    default: 0,
-  },
 });
 
-module.exports = { storageSchema };
+const Storage = Option.discriminator("Storage", storageSchema);
+
+module.exports = { Storage, storageSchema };

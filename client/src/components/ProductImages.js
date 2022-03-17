@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useProductContext } from "../context/ProductContext";
-import Loading from "../components/Loading";
 import { bufferToImage } from "../utils/helpers";
+
+// components
+import Loading from "./Loading";
 
 const Wrapper = styled.section`
   display: flex;
@@ -15,12 +17,12 @@ const Wrapper = styled.section`
     border-radius: 10px;
   }
   .img-main {
-    width: 600px;
+    width: 500px;
     height: 600px;
     img {
-      width: 600px;
+      width: 500px;
       height: 600px;
-      object-fit: cover;
+      object-fit: contain;
     }
   }
   .img-list {
@@ -28,8 +30,8 @@ const Wrapper = styled.section`
     gap: 1rem;
     flex-direction: row;
     img {
-      width: 130px;
-      height: 130px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
       &:hover {
         cursor: pointer;
@@ -42,32 +44,33 @@ const Wrapper = styled.section`
 `;
 
 const ProductImages = () => {
-  const { isLoading, isError, singleProduct } = useProductContext();
-  const { profile, images } = singleProduct;
-  const [imgMain, setImgMain] = useState(profile);
+  const { isProductLoading, isError, singleProduct } = useProductContext();
+  const { profilePath, imagePaths } = singleProduct;
+  const [imgMain, setImgMain] = useState(profilePath);
 
-  if (isLoading || Object.keys(singleProduct).length === 0) {
+  if (isProductLoading) {
     return <Loading />;
   }
 
   return (
     <Wrapper>
       <div className="img-main">
-        <img src={bufferToImage(imgMain)} alt="asd" />
+        <img src={imgMain} alt="asd" />
       </div>
       <div className="img-list">
         <img
-          src={bufferToImage(profile)}
+          src={profilePath}
           alt="asd"
-          onClick={(e) => setImgMain(profile)}
-          className={imgMain == profile ? `img-selected` : ``}
+          onClick={(e) => setImgMain(profilePath)}
+          className={imgMain == profilePath ? `img-selected` : ``}
         />
-        {images.map((image) => (
+        {imagePaths.map((imagePath, index) => (
           <img
-            src={bufferToImage(image)}
+            key={index}
+            src={imagePath}
             alt="asd"
-            onClick={(e) => setImgMain(image)}
-            className={imgMain == image ? `img-selected` : ``}
+            onClick={(e) => setImgMain(imagePath)}
+            className={imgMain == imagePath ? `img-selected` : ``}
           />
         ))}
       </div>

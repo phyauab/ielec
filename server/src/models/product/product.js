@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
-
 const options = { discriminatorKey: "category" };
+const { Schema } = mongoose;
 
 const productSchema = new mongoose.Schema(
   {
     brand: {
-      type: String,
-      default: "",
+      type: Schema.Types.ObjectId,
+      ref: "Brand",
+      unique: false,
+      required: true,
     },
     name: {
       type: String,
@@ -30,9 +32,9 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    profile: { type: Buffer },
-    images: {
-      type: [Buffer],
+    profilePath: { type: String },
+    imagePaths: {
+      type: [String],
     },
     featured: {
       type: Boolean,
@@ -47,4 +49,4 @@ const productSchema = new mongoose.Schema(
 
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = { Product, options };
+module.exports = { Product, options, productSchema };

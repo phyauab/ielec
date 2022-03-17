@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Product, options } = require("./product");
+const { Product, options } = require("../product");
 
 const headphoneSchema = new mongoose.Schema(
   {

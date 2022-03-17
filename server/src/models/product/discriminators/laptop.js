@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const { Product, options } = require("./product");
-const { ramSchema } = require("./options/ram");
-const { colorSchema } = require("./options/color");
-const { storageSchema } = require("./options/storage");
+const { Product, options } = require("../product");
+const { ramSchema } = require("../../option/discriminators/ram");
+const { colorSchema } = require("../../option/discriminators/color");
+const { storageSchema } = require("../../option/discriminators/storage");
 
 const laptopSchema = new mongoose.Schema(
   {

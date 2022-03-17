@@ -1,23 +1,23 @@
 const express = require("express");
-const { Brand } = require("../models/brand");
+const { Color } = require("../../models/option/discriminators/color");
 const router = new express.Router();
 
 // Create
-router.post("/brands", async (req, res) => {
+router.post("/colors", async (req, res) => {
   try {
-    const brand = new Brand(req.body);
-    await brand.save();
-    res.send(`Brand ${brand.name} is added`);
+    const color = new Color(req.body);
+    await color.save();
+    res.send(color);
   } catch (e) {
     res.status(400).send(e.message);
   }
 });
 
 // Read
-router.get("/brands", async (req, res) => {
+router.get("/colors", async (req, res) => {
   try {
-    const brand = await Brand.find();
-    res.send(brand);
+    const colors = await Color.find();
+    res.send(colors);
   } catch (e) {
     res.send(e.message);
   }

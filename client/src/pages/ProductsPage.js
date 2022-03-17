@@ -12,27 +12,8 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
-const Wrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  /* 180 = navbar + footer  */
-  min-height: calc(100vh - 180px);
-  .products {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 5rem;
-    margin-bottom: 10rem;
-    @media (min-width: 768px) {
-      flex-direction: row;
-    }
-  }
-`;
-
 const ProductsPage = () => {
   const { fetchProducts, displayProducts } = useProductContext();
-  const location = useLocation();
-  // console.log(location);
 
   useEffect(() => {
     fetchProducts();
@@ -51,14 +32,6 @@ const ProductsPage = () => {
         </Grid>
       </Container>
     </Box>
-    // <Wrapper className="content-center">
-    //   <BreadCrumb />
-
-    //   <div className="products">
-    //     <ProductFilter />
-    //     <ProductGridView products={displayProducts} />
-    //   </div>
-    // </Wrapper>
   );
 };
 export default ProductsPage;

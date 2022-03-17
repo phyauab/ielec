@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const { Option } = require("../option");
 
 const ramSchema = new mongoose.Schema({
-  ram: {
+  size: {
     type: Number,
     require: true,
   },
@@ -10,10 +11,8 @@ const ramSchema = new mongoose.Schema({
     required: true,
     enum: ["MB", "GB"],
   },
-  additionalPrice: {
-    type: Number,
-    default: 0,
-  },
 });
 
-module.exports = { ramSchema };
+const Ram = Option.discriminator("Ram", ramSchema);
+
+module.exports = { Ram, ramSchema };

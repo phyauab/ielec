@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Option } = require("../option");
 
 const colorSchema = new mongoose.Schema({
   name: {
@@ -9,10 +10,8 @@ const colorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  additionalPrice: {
-    type: Number,
-    default: 0,
-  },
 });
 
-module.exports = { colorSchema };
+const Color = Option.discriminator("Color", colorSchema);
+
+module.exports = { Color, colorSchema };

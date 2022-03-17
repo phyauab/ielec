@@ -9,12 +9,8 @@ import {
 // Context
 import { useUserContext } from "./context/UserContext";
 
-// UI
-import Navbar from "./components/Navbar/Navbar";
-import Sidebar from "./components/Sidebar";
-import NavPanel from "./components/Admin/NavPanel/NavPanel";
-import Footer from "./components/Footer";
-import { Box } from "@mui/system";
+// Layout
+import ClientLayout from "./components/Layout/ClientLayout";
 
 // Theme
 import theme from "./themes/theme";
@@ -40,19 +36,18 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const { user } = useUserContext();
 
-  useEffect(() => {
-    if (user) {
-      setIsAdmin(user.isAdmin);
-    } else {
-      setIsAdmin(false);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     setIsAdmin(user.isAdmin);
+  //   } else {
+  //     setIsAdmin(false);
+  //   }
+  // }, [user]);
 
   return (
     <ThemeProvider theme={theme}>
-      {!isAdmin ? (
-        <Router>
-          <Navbar />
+      <Router>
+        <ClientLayout>
           {/* <Sidebar /> */}
           <Switch>
             <Route exact path="/">
@@ -65,9 +60,14 @@ function App() {
             <Route exact path="/products" children={<ProductsPage />} />
             <Route
               exact
-              path="/products/:category/:id"
+              path="/products/:id"
               children={<SingleProductPage />}
             />
+            {/* <Route
+              exact
+              path="/products/:category/:id"
+              children={<SingleProductPage />}
+            /> */}
             <Route exact path="/about">
               <AboutPage />
             </Route>
@@ -90,27 +90,8 @@ function App() {
               <Redirect to="/" />
             </Route>
           </Switch>
-          <Footer />
-        </Router>
-      ) : (
-        <Box sx={{ display: "flex", height: "100vh", width: "100%" }}>
-          <Router>
-            <NavPanel />
-            <Route path="/dashboard">
-              <DashboardPage />
-            </Route>
-            <Route path="/users">
-              <AdminUserPage />
-            </Route>
-            <Route path="/products">
-              <AdminProductPage />
-            </Route>
-            <Router path="*">
-              <Redirect to="/dashboard" />
-            </Router>
-          </Router>
-        </Box>
-      )}
+        </ClientLayout>
+      </Router>
     </ThemeProvider>
   );
 }

@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/UserContext";
 import { ProductProvider } from "./context/ProductContext";
 import { AdminProvider } from "./context/AdminContext";
+import { CartProvider } from "./context/CartContext";
 
 ReactDOM.render(
   <React.StrictMode>

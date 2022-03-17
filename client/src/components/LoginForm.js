@@ -4,6 +4,8 @@ import { Link, useHistory, Redirect } from "react-router-dom";
 
 // UI
 import {
+  Alert,
+  AlertTitle,
   Button,
   CloseIcon,
   Container,
@@ -22,7 +24,7 @@ const LoginForm = ({ onClose, open }) => {
   const [action, setAction] = useState("login");
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState("xs");
-  const { isLoading, isLoggedIn, isError, loginUser, user, signUpUser } =
+  const { isLoading, isLoggedIn, isError, msg, login, user, signUpUser } =
     useUserContext();
 
   const handleSubmit = (e) => {
@@ -30,7 +32,7 @@ const LoginForm = ({ onClose, open }) => {
     const username = e.target[0].value;
     const password = e.target[2].value;
     if (action == "login") {
-      loginUser(username, password);
+      login(username, password);
     } else if (action == "register") {
       const email = e.target[4].value;
       signUpUser(username, password, email);
@@ -55,7 +57,7 @@ const LoginForm = ({ onClose, open }) => {
       <Container sx={{ py: 2 }} ref={containerRef}>
         <DialogTitle>
           <Typography variant="h5" component="span" sx={{ fontWeight: "bold" }}>
-            Add User
+            Login
           </Typography>
         </DialogTitle>
         {action == "login" ? (
@@ -64,6 +66,12 @@ const LoginForm = ({ onClose, open }) => {
             <DialogContent
               sx={{ display: "flex", flexDirection: "column", gap: 2, py: 2 }}
             >
+              {msg ? (
+                <Alert severity="error" filled>
+                  <strong>{msg}</strong>
+                </Alert>
+              ) : null}
+
               <TextField
                 variant="outlined"
                 label="Username"
@@ -76,6 +84,7 @@ const LoginForm = ({ onClose, open }) => {
                 type="password"
                 required
               />
+              <Typography></Typography>
             </DialogContent>
             <DialogActions
               sx={{ display: "flex", justifyContent: "space-around", py: 2 }}
@@ -88,7 +97,7 @@ const LoginForm = ({ onClose, open }) => {
                 Dont have an account?
               </Button>
               <Button variant="contained" type="submit" disabled={isLoading}>
-                Login In
+                Login
               </Button>
             </DialogActions>
           </form>

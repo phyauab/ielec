@@ -1,49 +1,38 @@
 import React, { useContext, useReducer } from "react";
 import reducer from "../reducers/ProductReducer";
-import axios from "axios";
+import api from "./Api";
 import {
-  FETCH_PRODUCT_BEGIN,
-  FETCH_PRODUCT_SUCCESS,
-  FETCH_PHONE_SUCCESS,
-  FETCH_LAPTOP_SUCCESS,
-  FETCH_HEADPHONE_SUCCESS,
-  FETCH_ACCESSORIES_SUCCESS,
-  FETCH_PRODUCT_ERROR,
+  FETCH_PRODUCTS_BEGIN,
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_PRODUCTS_ERROR,
   CHANGE_DISPLAY_PRODUCT,
   FETCH_CATEGORIES_BEGIN,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_PROPERTIES_BEGIN,
   FETCH_PROPERTIES_SUCCESS,
-  FILTER_DISPLAY_PRODUCTS_BEGIN,
-  FILTER_DISPLAY_PRODUCTS_SUCCESS,
-  FILTER_DISPLAY_PRODUCTS_ERROR,
   FETCH_SINGLE_PRODUCT_BEGIN,
   FETCH_SINGLE_PRODUCT_SUCCESS,
   FETCH_SINGLE_PRODUCT_ERROR,
+  FETCH_BRANDS_BEGIN,
+  FETCH_BRANDS_SUCCESS,
+  FETCH_BRANDS_ERROR,
 } from "../reducers/actions/ProductAction";
 
 const ProductContext = React.createContext();
 
 const initialState = {
-  isLoading: false,
-  isError: false,
-  phones: [],
-  laptops: [],
-  headphones: [],
-  accessories: [],
-  displayProducts: [],
+  products: [],
+  singleProduct: {},
+  brands: [],
   categories: [],
   properties: [],
-  singleProduct: {},
+  isProductLoading: false,
+  isFilterLoading: false,
+  isError: false,
 };
 
 export const ProductProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const BASE_URL = "http://localhost:4000";
-  const api = axios.create({
-    baseURL: BASE_URL,
-    timeout: 5000,
-  });
 
   // response.data
   const fetchProducts = async (category, params) => {
@@ -53,13 +42,26 @@ export const ProductProvider = ({ children }) => {
     //   return;
     // }
 
+    console.log("fetchProducts");
+
     try {
-      dispatch({ type: FETCH_PRODUCT_BEGIN });
+      dispatch({ type: FETCH_PRODUCTS_BEGIN });
       const response = await api.get("/products");
-      dispatch({ type: FETCH_PRODUCT_SUCCESS, payload: response.data });
+      dispatch({ type: FETCH_PRODUCTS_SUCCESS, payload: response.data });
     } catch (error) {
       console.log(error);
-      dispatch({ type: FETCH_PRODUCT_ERROR });
+      dispatch({ type: FETCH_PRODUCTS_ERROR });
+    }
+  };
+
+  const fetchBrands = async () => {
+    dispatch({ type: FETCH_BRANDS_BEGIN });
+    try {
+      const response = await api.get("/brands");
+      const tempBrands = response.data;
+      dispatch({ type: FETCH_BRANDS_SUCCESS, payload: tempBrands });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -91,33 +93,57 @@ export const ProductProvider = ({ children }) => {
     dispatch({ type: CHANGE_DISPLAY_PRODUCT, payload: tempArr });
   };
 
-  const filterDisplayProducts = (filter, category) => {
-    dispatch({ type: FILTER_DISPLAY_PRODUCTS_BEGIN });
-    var tempArr = state[category];
-    for (const property in filter) {
-      if (property === "price") {
-        tempArr = tempArr.filter(
-          (item) =>
-            item.price >= filter[property][0] &&
-            item.price <= filter[property][1]
-        );
-      } else if (property === "rating") {
-        tempArr = tempArr.filter(
-          (item) =>
-            item.rating >= filter[property][0] &&
-            item.rating <= filter[property][1]
-        );
-      } else if (property === "name") {
-        tempArr = tempArr.filter((item) =>
-          item[property].toLowerCase().includes(filter[property].toLowerCase())
-        );
-      } else {
-        tempArr = tempArr.filter((item) =>
-          filter[property].includes(item[property])
-        );
+  function toQueryString(paramsObject) {
+    return Object.keys(paramsObject)
+      .map(
+        (key) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(paramsObject[key])}`
+      )
+      .join("&");
+  }
+
+  const fetchProductsWithFilter = async (filter) => {
+    dispatch({ type: FETCH_PRODUCTS_BEGIN });
+    let filterObj = {};
+    Object.assign(filterObj, filter);
+    try {
+      // filter => query string
+      // name
+
+      // brand
+      if (filterObj.brand == "") {
+        delete filterObj.brand;
       }
+
+      // rating
+      console.log(filterObj);
+      filterObj.minRating = filterObj.rating[0];
+      filterObj.maxRating = filterObj.rating[1];
+      delete filterObj.rating;
+
+      // price
+      filterObj.minPrice = filterObj.price[0];
+      filterObj.maxPrice = filterObj.price[1];
+      delete filterObj.price;
+
+      // featured
+      if (filterObj.featured) {
+        if (filterObj.featured == "all") {
+          delete filterObj.featured;
+        } else {
+          filterObj.featured = filterObj.featured == "yes";
+        }
+      }
+
+      const queryString = toQueryString(filterObj);
+      const response = await api.get(`/products?${queryString}`);
+
+      const filteredProducts = response.data;
+      dispatch({ type: FETCH_PRODUCTS_SUCCESS, payload: filteredProducts });
+    } catch (error) {
+      console.log(error);
     }
-    dispatch({ type: FILTER_DISPLAY_PRODUCTS_SUCCESS, payload: tempArr });
+    // dispatch({ type: FILTER_DISPLAY_PRODUCTS_SUCCESS, payload: tempArr });
   };
 
   const fetchFeaturedProducts = async () => {
@@ -141,16 +167,12 @@ export const ProductProvider = ({ children }) => {
   const fetchSingleProduct = async (id) => {
     dispatch({ type: FETCH_SINGLE_PRODUCT_BEGIN });
     try {
-      const response = await api.get("/products", {
-        params: {
-          _id: id,
-        },
-      });
+      const response = await api.get(`/products/${id}`);
       console.log(response);
       if (response.data.length === 0) throw new Error("No Product Found!");
       dispatch({
         type: FETCH_SINGLE_PRODUCT_SUCCESS,
-        payload: response.data[0],
+        payload: response.data,
       });
     } catch (error) {
       console.log(error.message);
@@ -165,9 +187,10 @@ export const ProductProvider = ({ children }) => {
         fetchProducts,
         fetchCategories,
         fetchProperties,
-        filterDisplayProducts,
         fetchFeaturedProducts,
         fetchSingleProduct,
+        fetchBrands,
+        fetchProductsWithFilter,
       }}
     >
       {children}

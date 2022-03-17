@@ -1,36 +1,13 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useProductContext } from "../context/ProductContext";
-import Loading from "./Loading";
 import ProductCard from "./ProductCard";
 import Title from "./Title";
 
 // UI
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
-
-// const Wrapper = styled.section`
-//   align-items: center;
-//   background: #f1f5f8;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 5rem;
-//   width: 100%;
-//   justify-content: center;
-//   padding: 5rem;
-//   .container {
-//     display: flex;
-//     flex-direction: column;
-//     gap: 5rem;
-//     justify-content: center;
-//     width: 100%;
-//     @media (min-width: 1024px) {
-//       flex-direction: row;
-//       overflow-y: scroll;
-//     }
-//   }
-// `;
 
 const FeaturedProducts = () => {
   const [featuredProducts, setFeaturedProducts] = useState({
@@ -44,7 +21,7 @@ const FeaturedProducts = () => {
     setFeaturedProducts({ ...featuredProducts, isLoading: true });
     try {
       let tempProducts = await fetchFeaturedProducts();
-
+      console.log(tempProducts);
       setFeaturedProducts({
         ...featuredProducts,
         isLoading: false,
@@ -59,20 +36,19 @@ const FeaturedProducts = () => {
     }
   }, []);
 
+  // console.log("featured products: " + featuredProducts.isLoading);
   if (featuredProducts.isLoading) {
     return (
-      // <Wrapper>
-      <Loading />
-      // </Wrapper>
+      <Box sx={{ py: "4rem" }}>
+        <Container sx={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress />
+        </Container>
+      </Box>
     );
   }
 
   if (featuredProducts.isError || featuredProducts.products.length === 0) {
-    return (
-      // <Wrapper>
-      <h3>Sorry, something went wrong :(</h3>
-      // </Wrapper>
-    );
+    return <h3>Sorry, something went wrong :(</h3>;
   }
 
   const getType = (type) => {
@@ -94,44 +70,16 @@ const FeaturedProducts = () => {
         <Title title="Featured Products" />
         <Grid container spacing={5}>
           {featuredProducts.products.map((product, index) => {
-            const { _id, name, brand, profile, price, __t } = product;
-            const type = getType(__t);
+            // const type = getType(__t);
             return (
               <Grid item xs={3} key={index}>
-                <ProductCard
-                  key={_id}
-                  _id={_id}
-                  name={name}
-                  brand={brand}
-                  img={profile}
-                  price={price}
-                  pathname={`products/${type}`}
-                />
+                <ProductCard product={product} />
               </Grid>
             );
           })}
         </Grid>
       </Container>
     </Box>
-    // <Wrapper>
-    //   <Title title={"Featured Products"} />
-    //   <div className="container ">
-    //     {featuredProducts.products.map((product, index) => {
-    //       const { _id, name, profile, price, __t } = product;
-    //       const type = getType(__t);
-    //       return (
-    //         <ProductCard
-    //           key={_id}
-    //           _id={_id}
-    //           name={name}
-    //           img={profile}
-    //           price={price}
-    //           pathname={`products/${type}`}
-    //         />
-    //       );
-    //     })}
-    //   </div>
-    // </Wrapper>
   );
 };
 
