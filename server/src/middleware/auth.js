@@ -8,13 +8,12 @@ const auth = async (req, res, next) => {
     }
     const token = req.header("Authorization").replace("Bearer ", "");
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
 
     const user = await User.findOne(
       {
         _id: decoded._id,
       },
-      "isAdmin username email"
+      "username email isAdmin firstName lastName gender email birthday"
     );
     if (!user) {
       throw new Error("Authentication failed");

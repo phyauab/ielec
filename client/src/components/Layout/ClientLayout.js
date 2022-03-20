@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
 import Box from "@mui/material/Box";
 import Navbar from "../Navbar/Navbar";
@@ -6,20 +6,25 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer";
 
 const ClientLayout = ({ children }) => {
-  const navbarRef = useRef(null);
-  const footerRef = useRef(null);
-
   return (
     <Box
       sx={{
         minHeight: "100vh",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
       }}
     >
       <Navbar />
-      <main>{children}</main>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          flex: 1,
+        }}
+      >
+        {children}
+      </Box>
       <Footer />
     </Box>
   );

@@ -6,6 +6,7 @@ const PrivateRoute = ({ children, ...rest }) => {
   const { user } = useUserContext();
 
   if (!user) {
+    console.log("no user");
     return <Redirect to="/"></Redirect>;
   }
 
@@ -13,7 +14,7 @@ const PrivateRoute = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() => {
-        return user.isAdmin ? children : <Redirect to="/"></Redirect>;
+        return user ? children : <Redirect to="/"></Redirect>;
       }}
     ></Route>
   );

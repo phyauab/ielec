@@ -3,20 +3,28 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { AppProvider } from "./context/AppContext";
 import { UserProvider } from "./context/UserContext";
 import { ProductProvider } from "./context/ProductContext";
 import { AdminProvider } from "./context/AdminContext";
 import { CartProvider } from "./context/CartContext";
+import { TransactionProvider } from "./context/TransactionContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
-      <AdminProvider>
-        <ProductProvider>
-          <App />
-        </ProductProvider>
-      </AdminProvider>
-    </UserProvider>
+    <AppProvider>
+      <CartProvider>
+        <UserProvider>
+          <TransactionProvider>
+            <AdminProvider>
+              <ProductProvider>
+                <App />
+              </ProductProvider>
+            </AdminProvider>
+          </TransactionProvider>
+        </UserProvider>
+      </CartProvider>
+    </AppProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

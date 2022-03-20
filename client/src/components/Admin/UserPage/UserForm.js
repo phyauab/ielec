@@ -1,10 +1,10 @@
-import { React, useState, useRef } from "react";
+import { React, useRef } from "react";
 import { useAdminContext } from "../../../context/AdminContext";
 
 // UI
 import {
   Button,
-  CloseIcon,
+  // CloseIcon,
   Container,
   Dialog,
   DialogTitle,
@@ -16,8 +16,8 @@ import {
   FormControlLabel,
   FormLabel,
   Radio,
-  RodioGroup,
-  IconButton,
+  // RodioGroup,
+  // IconButton,
   Slide,
   RadioGroup,
 } from "@mui/material";
@@ -25,8 +25,8 @@ import AddIcon from "@mui/icons-material/Add";
 
 const UserForm = ({ open, onClose, action }) => {
   const containerRef = useRef(null);
-  const [fullWidth, setFullWidth] = useState(true);
-  const [maxWidth, setMaxWidth] = useState("xs");
+  // const [fullWidth, setFullWidth] = useState(true);
+  // const [maxWidth, setMaxWidth] = useState("xs");
   const { addUser } = useAdminContext();
 
   const handleSubmit = async (e) => {
@@ -41,6 +41,7 @@ const UserForm = ({ open, onClose, action }) => {
       email: email,
       isAdmin: isAdmin,
     });
+    console.log(status);
   };
 
   const handleClose = () => {
@@ -48,12 +49,7 @@ const UserForm = ({ open, onClose, action }) => {
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      fullWidth={fullWidth}
-      maxWidth={maxWidth}
-    >
+    <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"xs"}>
       <Container sx={{ py: 2 }} ref={containerRef}>
         <DialogTitle>
           <Typography variant="h5" component="span" sx={{ fontWeight: "bold" }}>
@@ -64,7 +60,7 @@ const UserForm = ({ open, onClose, action }) => {
             ELEC
           </Typography>
         </DialogTitle>
-        {action == "add" ? (
+        {action === "add" ? (
           // Add User
           <form onSubmit={(e) => handleSubmit(e)}>
             <DialogContent
@@ -118,7 +114,7 @@ const UserForm = ({ open, onClose, action }) => {
           // Modify
           <Slide
             direction="right"
-            in={action == "register"}
+            in={(action = "register")}
             container={containerRef.current}
           >
             <form>

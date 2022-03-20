@@ -5,7 +5,9 @@ import {
   FETCH_PRODUCTS_BEGIN,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_ERROR,
-  CHANGE_DISPLAY_PRODUCT,
+  FETCH_FEATUREDPRODUCTS_BEGIN,
+  FETCH_FEATUREDPRODUCTS_SUCCESS,
+  FETCH_FEATUREDPRODUCTS_ERROR,
   FETCH_CATEGORIES_BEGIN,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_PROPERTIES_BEGIN,
@@ -15,13 +17,14 @@ import {
   FETCH_SINGLE_PRODUCT_ERROR,
   FETCH_BRANDS_BEGIN,
   FETCH_BRANDS_SUCCESS,
-  FETCH_BRANDS_ERROR,
+  // FETCH_BRANDS_ERROR,
 } from "../reducers/actions/ProductAction";
 
 const ProductContext = React.createContext();
 
 const initialState = {
   products: [],
+  featuredProducts: [],
   singleProduct: {},
   brands: [],
   categories: [],
@@ -29,6 +32,8 @@ const initialState = {
   isProductLoading: false,
   isFilterLoading: false,
   isError: false,
+  isFeaturedProductLoading: false,
+  isFeaturedProductError: false,
 };
 
 export const ProductProvider = ({ children }) => {
@@ -36,14 +41,7 @@ export const ProductProvider = ({ children }) => {
 
   // response.data
   const fetchProducts = async (category, params) => {
-    // if the array is not empty, then no need to fetch
-    // if (state[category.toString()].length !== 0) {
-    //   setDisplayProducts(category);
-    //   return;
-    // }
-
     console.log("fetchProducts");
-
     try {
       dispatch({ type: FETCH_PRODUCTS_BEGIN });
       const response = await api.get("/products");
@@ -88,11 +86,6 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  const setDisplayProducts = async (category) => {
-    const tempArr = state[category.toString()].slice();
-    dispatch({ type: CHANGE_DISPLAY_PRODUCT, payload: tempArr });
-  };
-
   function toQueryString(paramsObject) {
     return Object.keys(paramsObject)
       .map(
@@ -111,7 +104,7 @@ export const ProductProvider = ({ children }) => {
       // name
 
       // brand
-      if (filterObj.brand == "") {
+      if (filterObj.brand === "") {
         delete filterObj.brand;
       }
 
@@ -128,10 +121,10 @@ export const ProductProvider = ({ children }) => {
 
       // featured
       if (filterObj.featured) {
-        if (filterObj.featured == "all") {
+        if (filterObj.featured === "all") {
           delete filterObj.featured;
         } else {
-          filterObj.featured = filterObj.featured == "yes";
+          filterObj.featured = filterObj.featured === "yes";
         }
       }
 
@@ -147,20 +140,26 @@ export const ProductProvider = ({ children }) => {
   };
 
   const fetchFeaturedProducts = async () => {
+    dispatch({ type: FETCH_FEATUREDPRODUCTS_BEGIN });
     try {
-      const response = await api.get("/products", {
-        params: {
-          featured: true,
-        },
-      });
-      const tempfeaturedProducts = [];
+      const response = await api.get("/products/featured");
+      let tempfeaturedProducts = [];
       if (response.data.length > 4) {
-        for (let i = 0; i < 4; ++i) tempfeaturedProducts.push(response.data[i]);
-        return tempfeaturedProducts;
+        for (let i = 0; i < 4; ++i) {
+          tempfeaturedProducts.push(response.data[i]);
+        }
+      } else {
+        tempfeaturedProducts = response.data;
       }
-      return response.data;
+
+      dispatch({
+        type: FETCH_FEATUREDPRODUCTS_SUCCESS,
+        payload: tempfeaturedProducts,
+      });
     } catch (error) {
-      throw error;
+      dispatch({
+        type: FETCH_FEATUREDPRODUCTS_ERROR,
+      });
     }
   };
 

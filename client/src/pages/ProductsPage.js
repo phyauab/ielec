@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import BreadCrumb from "../components/BreadCrumb";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+
 import ProductFilter from "../components/ProductFilter";
-import ProductListView from "../components/ProductListView";
+// import ProductListView from "../components/ProductListView";
 import ProductGridView from "../components/ProductGridView";
 import { useProductContext } from "../context/ProductContext";
 
@@ -17,10 +15,11 @@ const ProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <Box sx={{ minHeight: "calc(100vh - 132px)", py: 10 }}>
+    <Box sx={{ py: 10 }}>
       <Container>
         <Grid container>
           <Grid item xs={4}>

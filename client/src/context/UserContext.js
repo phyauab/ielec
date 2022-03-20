@@ -1,8 +1,8 @@
-import React, { useState, useContext, useReducer, useEffect } from "react";
+import React, { useContext, useReducer, useEffect } from "react";
+import { useCartContext } from "./CartContext";
 import jwt_decode from "jwt-decode";
 import reducer from "../reducers/UserReducer";
 import api from "./Api";
-import { useHistory } from "react-router-dom";
 import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
@@ -13,11 +13,13 @@ import {
   SIGNUP_USER_BEGIN,
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
+  GETME_DONE,
 } from "../reducers/actions/UserAction";
 
 const UserContext = React.createContext();
 
 const initialUserState = {
+  getMe: false,
   isLoggedIn: false,
   isLoading: false,
   isError: false,
@@ -28,6 +30,11 @@ const initialUserState = {
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialUserState);
+  const { fetchCartItems } = useCartContext();
+
+  const clearMsg = () => {
+    dispatch({ type: "CLEAR_MSG" });
+  };
 
   const login = async (username, password) => {
     try {
@@ -36,12 +43,14 @@ export const UserProvider = ({ children }) => {
         username: username,
         password: password,
       });
-      console.log(response.data);
       const { user, access_token } = response.data;
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
       localStorage.setItem("access_token", access_token);
+
+      api.defaults.headers["Authorization"] = `Bearer ${access_token}`;
+      return true;
     } catch (error) {
-      console.log(error.response.data.msg);
+      // console.log(error.response.data.msg);
       dispatch({
         type: LOGIN_USER_ERROR,
         payload: { msg: error.response.data.msg },
@@ -70,16 +79,30 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const signUpUser = async ({ username, password, email }) => {
+  const register = async (
+    username,
+    firstName,
+    lastName,
+    password,
+    gender,
+    email,
+    birthday
+  ) => {
     try {
       dispatch({ type: SIGNUP_USER_BEGIN });
-      const response = await api.post("/users/signup", {
-        username,
-        email,
-        password,
+      const response = await api.post("/users/register", {
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+        password: password,
+        gender: gender,
+        email: email,
+        birthday: birthday,
       });
-      const { user, token } = response.data;
-      dispatch({ type: SIGNUP_USER_SUCCESS, payload: { user, token } });
+      console.log(response);
+      const { user, access_token } = response.data;
+      dispatch({ type: SIGNUP_USER_SUCCESS, payload: { user } });
+      localStorage.setItem("access_token", access_token);
       return true;
     } catch (error) {
       dispatch({ type: SIGNUP_USER_ERROR });
@@ -100,13 +123,13 @@ export const UserProvider = ({ children }) => {
           },
         }
       );
-      const { user, token } = response.data;
+      const { user, access_token } = response.data;
       // admin cannot relogin
       if (user.isAdmin) {
         dispatch({ type: LOGIN_USER_ERROR });
         return;
       }
-      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, access_token } });
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR });
       console.log(error);
@@ -122,21 +145,9 @@ export const UserProvider = ({ children }) => {
         },
       });
       const user = response.data;
-      // admin cannot relogin
-      // if (user.isAdmin) {
-      //   dispatch({ type: LOGIN_USER_ERROR });
-      //   return;
-      // }
-      // dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
-    } catch (error) {
-      // console.log("getme error");
-      // console.log(error.response.data.error);
-      // dispatch({
-      //   type: LOGIN_USER_ERROR,
-      //   payload: { msg: error.response.data.error },
-      // });
-      // console.log(error);
-    }
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
+      await fetchCartItems();
+    } catch (error) {}
   };
 
   const validateToken = (token) => {
@@ -147,15 +158,27 @@ export const UserProvider = ({ children }) => {
     return now.getTime() < expiry * 1000;
   };
 
-  useEffect(() => {
+  const init = async () => {
     const access_token = localStorage.getItem("access_token");
     if (access_token) {
-      console.log("have access token");
       if (validateToken(access_token)) {
-        console.log("now refresh");
-        getMe(access_token);
+        await getMe(access_token);
       }
     }
+  };
+
+  useEffect(() => {
+    console.log("now init");
+    const init = async () => {
+      const access_token = localStorage.getItem("access_token");
+      if (access_token) {
+        if (validateToken(access_token)) {
+          await getMe(access_token);
+        }
+      }
+      dispatch({ type: GETME_DONE });
+    };
+    init();
   }, []);
 
   return (
@@ -164,7 +187,10 @@ export const UserProvider = ({ children }) => {
         ...state,
         login,
         logout,
-        signUpUser,
+        register,
+        refresh,
+        init,
+        clearMsg,
       }}
     >
       {children}

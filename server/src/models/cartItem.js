@@ -19,6 +19,10 @@ const cartItemSchema = new mongoose.Schema(
       required: true,
       min: 1,
     },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
     options: [{}],
   },
   {

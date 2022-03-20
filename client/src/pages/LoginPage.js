@@ -1,16 +1,16 @@
 import React from "react";
-import LoginForm from "../components/LoginForm";
+// import LoginForm from "../components/LoginForm";
 import { useUserContext } from "../context/UserContext";
 
 const LoginPage = () => {
+  const { isUserLoading } = useUserContext();
 
-  const {isUserLoading} = useUserContext();
-
-  if(isUserLoading) {
+  if (isUserLoading) {
     return <p>Loading</p>;
   }
 
-  return <LoginForm />
+  // return <LoginForm />
+  return <p>123</p>;
 };
 
 export default LoginPage;

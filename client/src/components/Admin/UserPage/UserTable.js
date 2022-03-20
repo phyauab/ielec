@@ -23,7 +23,7 @@ import { visuallyHidden } from "@mui/utils";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const UserTable = () => {
-  const { users, fetchUsers, isLoading } = useAdminContext();
+  const { users, fetchUsers } = useAdminContext();
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("username");
   const [page, setPage] = useState(0);
@@ -31,6 +31,7 @@ const UserTable = () => {
 
   useEffect(() => {
     fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const descendingComparator = (a, b, orderBy) => {

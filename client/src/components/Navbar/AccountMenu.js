@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 // Context
@@ -13,12 +13,17 @@ import {
   MenuItem,
   ListItemIcon,
 } from "@mui/material";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+
+// Icons
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const AccountMenu = ({ anchorEl, open, onClose }) => {
-  const { user, logoutUser } = useUserContext();
+  const { user, logout } = useUserContext();
   if (!user) {
     return <></>;
   }
@@ -64,12 +69,14 @@ const AccountMenu = ({ anchorEl, open, onClose }) => {
         </Typography>
       </Box>
       <Divider />
-      <MenuItem>
-        <ListItemIcon>
-          <AccountBoxIcon />
-        </ListItemIcon>
-        My Account
-      </MenuItem>
+      <Link to="/account">
+        <MenuItem>
+          <ListItemIcon>
+            <AccountBoxIcon />
+          </ListItemIcon>
+          <ListItemText>My Account</ListItemText>
+        </MenuItem>
+      </Link>
 
       {/* if admin, show dashboard */}
       {user.isAdmin && (
@@ -82,10 +89,18 @@ const AccountMenu = ({ anchorEl, open, onClose }) => {
           </Link>
         </MenuItem>
       )}
+      {/* <Link to="/users/transactions">
+        <MenuItem>
+          <ListItemIcon>
+            <ReceiptLongIcon />
+          </ListItemIcon>
+          Transactions
+        </MenuItem>
+      </Link> */}
       <MenuItem
         onClick={() => {
           onClose();
-          logoutUser();
+          logout();
         }}
       >
         <ListItemIcon>

@@ -3,8 +3,10 @@ import React, { useState } from "react";
 // Context
 import { useUserContext } from "../../context/UserContext";
 
-// UI
+// Components
+import AuthForm from "../AuthForm/AuthForm";
 
+// UI
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -16,7 +18,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
-import LoginForm from "../LoginForm";
 
 // function
 import { Link } from "react-router-dom";
@@ -28,19 +29,18 @@ import { capitalize } from "../../utils/helpers";
 import NavbarUser from "./NavbarUser";
 
 const Navbar = () => {
-  // Login Form control
-  const [isLoginFormOpen, setIsLoginFormOpen] = useState(false);
+  // Auth Form control
+  const [isAuthFormOpen, setIsAuthFormOpen] = useState(false);
 
   // user
-  const { user, isLoggedIn, msg } = useUserContext();
+  const { user, isLoggedIn } = useUserContext();
 
-  // Login Form control
-  const openLoginForm = () => {
-    setIsLoginFormOpen(true);
+  // Auth Form control
+  const openAuthForm = () => {
+    setIsAuthFormOpen(true);
   };
-  const closeLoginForm = () => {
-    console.log("close login");
-    setIsLoginFormOpen(false);
+  const closeAuthForm = () => {
+    setIsAuthFormOpen(false);
   };
 
   return (
@@ -90,7 +90,7 @@ const Navbar = () => {
                       variant="contained"
                       color="secondary"
                       sx={{ whiteSpace: "nowrap" }}
-                      onClick={openLoginForm}
+                      onClick={openAuthForm}
                     >
                       Login In
                     </Button>
@@ -109,7 +109,7 @@ const Navbar = () => {
 
       <>
         {isLoggedIn || (
-          <LoginForm open={isLoginFormOpen} onClose={closeLoginForm} />
+          <AuthForm open={isAuthFormOpen} onClose={closeAuthForm} />
         )}
       </>
     </Box>

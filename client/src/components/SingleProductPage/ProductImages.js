@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useProductContext } from "../context/ProductContext";
-import { bufferToImage } from "../utils/helpers";
+import { useProductContext } from "../../context/ProductContext";
+// import { bufferToImage } from "../utils/helpers";
 
 // components
-import Loading from "./Loading";
+import Loading from "../Loading";
 
 const Wrapper = styled.section`
   display: flex;
@@ -44,7 +44,7 @@ const Wrapper = styled.section`
 `;
 
 const ProductImages = () => {
-  const { isProductLoading, isError, singleProduct } = useProductContext();
+  const { isProductLoading, singleProduct } = useProductContext();
   const { profilePath, imagePaths } = singleProduct;
   const [imgMain, setImgMain] = useState(profilePath);
 
@@ -62,7 +62,7 @@ const ProductImages = () => {
           src={profilePath}
           alt="asd"
           onClick={(e) => setImgMain(profilePath)}
-          className={imgMain == profilePath ? `img-selected` : ``}
+          className={imgMain === profilePath ? `img-selected` : ``}
         />
         {imagePaths.map((imagePath, index) => (
           <img
@@ -70,7 +70,7 @@ const ProductImages = () => {
             src={imagePath}
             alt="asd"
             onClick={(e) => setImgMain(imagePath)}
-            className={imgMain == imagePath ? `img-selected` : ``}
+            className={imgMain === imagePath ? `img-selected` : ``}
           />
         ))}
       </div>

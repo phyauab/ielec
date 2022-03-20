@@ -81,10 +81,10 @@ router.get("/products", async (req, res) => {
   }
 });
 
-router.get("/products/options", async (req, res) => {
+router.get("/products/featured", async (req, res) => {
   try {
-    const options = await Option.find({});
-    res.send(options);
+    const products = await Product.find({ featured: true });
+    res.send(products);
   } catch (e) {}
 });
 

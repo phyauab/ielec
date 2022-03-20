@@ -9,6 +9,23 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+    enum: ["Male", "Female"],
+  },
+  birthday: {
+    type: Date,
+    required: true,
+  },
   email: {
     type: String,
     required: true,

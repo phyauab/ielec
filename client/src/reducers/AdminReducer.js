@@ -1,7 +1,7 @@
 import {
   FETCH_USERS_BEGIN,
   FETCH_USERS_SUCCESS,
-  FETCH_USERS_ERROR,
+  // FETCH_USERS_ERROR,
 } from "./actions/AdminAction";
 
 const AdminReducer = (state, action) => {

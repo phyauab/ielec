@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 var cors = require("cors");
+
 const userRouter = require("./routers/user");
 const productRouter = require("./routers/product/product");
 const phoneRouter = require("./routers/product/discriminators/phone");
@@ -10,6 +11,7 @@ const accessoriesRouter = require("./routers/product/discriminators/accessories"
 const brandRouter = require("./routers/brand");
 const colorRouter = require("./routers/options/color");
 const cartItemRouter = require("./routers/cartItem");
+const transactionRouter = require("./routers/transaction");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,6 +27,7 @@ app.use(cartItemRouter);
 app.use(laptopRouter);
 app.use(headphoneRouter);
 app.use(accessoriesRouter);
+app.use(transactionRouter);
 
 // connect to db
 require("./db/mongoose");

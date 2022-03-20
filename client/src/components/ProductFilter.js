@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useProductContext } from "../context/ProductContext";
+
+// Components
 import Loading from "./Loading";
 
 // UI
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -15,7 +17,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+// import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
@@ -25,26 +27,14 @@ const ProductFilter = () => {
     price: [0, 20000],
     brand: "",
   });
-  const {
-    filterDisplayProducts,
-    fetchBrands,
-    brands,
-    isFilterLoading,
-    fetchProductsWithFilter,
-  } = useProductContext();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    filterDisplayProducts(filter);
-  };
+  const { fetchBrands, brands, isFilterLoading, fetchProductsWithFilter } =
+    useProductContext();
 
   useEffect(() => {
     fetchBrands();
     // setFilter({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if (isFilterLoading) {
-    return <Loading />;
-  }
 
   const ratingMarks = [
     {
@@ -123,6 +113,7 @@ const ProductFilter = () => {
             <MenuItem key={0} value={""}>
               All
             </MenuItem>
+
             {brands.map((brand, index) => (
               <MenuItem key={index} value={brand._id}>
                 {brand.name}

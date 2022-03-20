@@ -1,19 +1,22 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useCartContext } from "../../context/CartContext";
 
 // Components
 import AccountMenu from "./AccountMenu";
 
 // UI
-import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
+import Badge from "@mui/material/Badge";
 
 // Icons
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const NavbarUser = () => {
+  const { cartItems } = useCartContext();
   // Ac menu control
   const [acAnchorEl, setAcAnchorEl] = useState(null);
   const isAcMenuOpen = Boolean(acAnchorEl);
@@ -28,9 +31,13 @@ const NavbarUser = () => {
     <>
       <ListItem>
         <Tooltip title="Shopping Cart">
-          <IconButton style={{ color: "white" }} onClick={clickAcMenu}>
-            <ShoppingCartIcon />
-          </IconButton>
+          <Link to="/cart">
+            <IconButton style={{ color: "white" }}>
+              <Badge badgeContent={cartItems.length} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+          </Link>
         </Tooltip>
       </ListItem>
 

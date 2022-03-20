@@ -8,6 +8,12 @@ import SingleProductPage from "./SingleProductPage";
 import LoginPage from "./LoginPage";
 import PrivateRoute from "./PrivateRoute";
 import DashboardPage from "./Admin/DashboardPage";
+import MyAccountPage from "./User/MyAccountPage";
+import SingleTransactionPage from "./User/SingleTransactionPage";
+
+// USER
+import TransactionPage from "./User/TransactionsPage";
+// import CheckoutPage from "./Checkout/Checkout";
 
 export {
   AboutPage,
@@ -20,4 +26,8 @@ export {
   LoginPage,
   PrivateRoute,
   DashboardPage,
+  TransactionPage,
+  MyAccountPage,
+  SingleTransactionPage,
+  // CheckoutPage,
 };

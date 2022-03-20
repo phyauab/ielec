@@ -1,45 +1,32 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import BreadCrumb from "../components/BreadCrumb";
-import { useLocation, useParams } from "react-router";
-import ProductImages from "../components/ProductImages";
-import ProductInfo from "../components/ProductInfo";
+import { useParams } from "react-router";
+import ProductImages from "../components/SingleProductPage/ProductImages";
+import ProductInfo from "../components/SingleProductPage/ProductInfo";
 import { useProductContext } from "../context/ProductContext";
 import { Link } from "react-router-dom";
 
-import Offer from "../components/Offer";
+// components
+import Loading from "../components/Loading";
 
 // UI
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 
 const SingleProductPage = () => {
   const { id } = useParams();
-  const [a, SetA] = useState(true);
-
   const { fetchSingleProduct, isProductLoading, singleProduct } =
     useProductContext();
 
   useEffect(() => {
     fetchSingleProduct(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (isProductLoading || Object.keys(singleProduct).length === 0) {
-    return (
-      <Container>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
+    return <Loading />;
   }
 
   const breadcrumbs = [

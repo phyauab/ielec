@@ -12,10 +12,8 @@ router.post("/cartItems", auth, async (req, res) => {
       ...req.body,
       user: req.user._id,
     });
-    console.log(cartItem);
     await cartItem.save();
     res.send(cartItem);
-    res.send();
   } catch (e) {
     res.status(400).send(e);
   }
@@ -24,9 +22,21 @@ router.post("/cartItems", auth, async (req, res) => {
 // GET: read items
 router.get("/cartItems", auth, async (req, res) => {
   try {
-    const cartItems = await CartItem.find().populate("product");
+    const cartItems = await CartItem.find({
+      isPaid: false,
+      user: req.user.id,
+    }).populate({
+      path: "product",
+      model: "Product",
+      populate: {
+        path: "brand",
+        model: "Brand",
+      },
+    });
+
     res.send(cartItems);
   } catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 });
@@ -40,13 +50,31 @@ router.patch("/cartItems/:id", auth, async (req, res) => {
   }
 });
 
-// DELETE: delete an item
-router.delete("/cartItems/:id", auth, async (req, res) => {
+// DELETE: delte all items
+router.delete("/cartItems", auth, async (req, res) => {
   try {
-    const cartItem = await CartItem.findByIdAndDelete(req.params.id);
+    const cartItem = await CartItem.findOneAndDelete({ user: req.user._id });
     res.send(cartItem);
   } catch (e) {
     res.status(400).send(e);
+  }
+});
+
+// DELETE: delete an item
+router.delete("/cartItems/:id", auth, async (req, res) => {
+  try {
+    const cartItem = await CartItem.deleteOne({
+      _id: req.params.id,
+      user: req.user.id,
+    });
+    if (cartItem.deletedCount === 0) {
+      throw new Error("Delete Item Fails");
+    }
+    // console.log(cartItem);
+    res.send(cartItem);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e.message);
   }
 });
 

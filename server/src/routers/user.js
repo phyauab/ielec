@@ -16,15 +16,18 @@ router.get("/users", async (req, res) => {
 // Sign up new user
 router.post("/users/register", async (req, res) => {
   try {
+    console.log(req.body);
     const user = new User(req.body);
     await user.save();
+
+    console.log(user);
 
     const token = await user.generateToken();
 
     res.status(201).send({ user, access_token: token });
   } catch (e) {
     console.log(e);
-    res.status(400).send({ error: error.message });
+    res.status(400).send({ error: e.message });
   }
 });
 
@@ -42,7 +45,7 @@ router.post("/users/login", async (req, res) => {
 
     const user = await User.findOne(
       { username: req.body.username },
-      "username email isAdmin"
+      "username email isAdmin firstName lastName gender email birthday"
     );
 
     // When the user is logged in, a token is generated

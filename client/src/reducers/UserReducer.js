@@ -8,6 +8,7 @@ import {
   SIGNUP_USER_BEGIN,
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
+  GETME_DONE,
 } from "./actions/UserAction";
 
 const UserReducer = (state, action) => {
@@ -26,12 +27,13 @@ const UserReducer = (state, action) => {
         msg: null,
       };
     case LOGOUT_USER_SUCCESS:
-      // return {
-      //   ...state,
-      //   isLoading: false,
-      //   isLoggedIn: false,
-      //   user: null,
-      // };
+      return {
+        ...state,
+        isLoading: false,
+        isLoggedIn: false,
+        user: null,
+        token: null,
+      };
       return;
     case LOGIN_USER_ERROR:
       return {
@@ -44,6 +46,10 @@ const UserReducer = (state, action) => {
     case LOGOUT_USER_ERROR:
     case SIGNUP_USER_ERROR:
       return { ...state, isLoading: false, isError: true };
+    case GETME_DONE:
+      return { ...state, getMe: true };
+    case "CLEAR_MSG":
+      return { ...state, msg: null };
     default:
       throw new Error("Something wrong");
   }
