@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Context
 import { useUserContext } from "./context/UserContext";
@@ -13,6 +8,7 @@ import { useAppContext } from "./context/AppContext";
 // Layout
 import ClientLayout from "./components/Layout/ClientLayout";
 import AccountLayout from "./components/Layout/AccountLayout";
+import AdminLayout from "./components/Layout/AdminLayout";
 
 // Theme
 import theme from "./themes/theme";
@@ -31,6 +27,8 @@ import {
   PrivateRoute,
 } from "./pages";
 
+import { DashboardPage } from "./pages";
+
 // Snackbar
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -45,7 +43,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 function App() {
   // const [isAdmin, setIsAdmin] = useState(false);
   const { handleSnackbarClose, snackbarState } = useAppContext();
-  const { getMe } = useUserContext();
+  const { getMe, user } = useUserContext();
 
   if (!getMe) {
     return <></>;
@@ -54,57 +52,57 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <ClientLayout>
-          {/* <Sidebar /> */}
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
+        {user == null || !user.isAdmin ? (
+          <ClientLayout>
+            {/* <Sidebar /> */}
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
 
-            <Route exact path="/products" children={<ProductsPage />} />
-            <Route
-              exact
-              path="/products/:id"
-              children={<SingleProductPage />}
-            />
-            {/* <Route
+              <Route exact path="/products" children={<ProductsPage />} />
+              <Route
+                exact
+                path="/products/:id"
+                children={<SingleProductPage />}
+              />
+              {/* <Route
               exact
               path="/products/:category/:id"
               children={<SingleProductPage />}
             /> */}
-            <Route exact path="/about">
-              <AboutPage />
-            </Route>
-            <Route exact path="/cart">
-              <CartPage />
-            </Route>
-            <Route exact path="/checkout">
-              <CheckoutPage />
-            </Route>
-            <PrivateRoute path="/account">
-              <AccountLayout></AccountLayout>
-            </PrivateRoute>
-            {/* <PrivateRoute exact path="/dashboard">
-            <DashboardPage />
-          </PrivateRoute> */}
-            {/* <div className="admin">
-            <Route exact path="/dashboard">
-            <DashboardPage />
-            </Route>
-            
-            <Route exact path="/dashboard/addproduct">
-            <DashboardPage />
-            </Route>
-          </div> */}
-            <Route path="*">
-              <p>Error</p>
-              {/* <Redirect to="/" /> */}
-            </Route>
-          </Switch>
-        </ClientLayout>
+              <Route exact path="/about">
+                <AboutPage />
+              </Route>
+              <PrivateRoute exact path="/cart">
+                <CartPage />
+              </PrivateRoute>
+              <PrivateRoute exact path="/checkout">
+                <CheckoutPage />
+              </PrivateRoute>
+              <PrivateRoute path="/account">
+                <AccountLayout></AccountLayout>
+              </PrivateRoute>
+              <Route path="*">
+                <p>Error</p>
+              </Route>
+            </Switch>
+          </ClientLayout>
+        ) : (
+          <AdminLayout>
+            <Switch>
+              <PrivateRoute exact path="/">
+                <DashboardPage />
+              </PrivateRoute>
+              <Route path="*">
+                <p>Error</p>
+              </Route>
+            </Switch>
+          </AdminLayout>
+        )}
       </Router>
       <Snackbar
         open={snackbarState.open}

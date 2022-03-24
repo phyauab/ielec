@@ -2,25 +2,13 @@ import React, { useState } from "react";
 import { useUserContext } from "../../context/UserContext";
 
 // UI
-import {
-  Alert,
-  Button,
-  Container,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Typography,
-  TextField,
-  Slide,
-} from "@mui/material";
-
+import Button from "@mui/material/Button";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -29,7 +17,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 
 const RegisterFrom = React.forwardRef(({ setOpenRegister }, ref) => {
-  const { isLoading, msg, login, user, register } = useUserContext();
+  const { isLoading, register } = useUserContext();
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -81,12 +69,10 @@ const RegisterFrom = React.forwardRef(({ setOpenRegister }, ref) => {
           </Grid>
           <Grid item>
             <FormControl sx={{ display: "flex" }}>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                Gender
-              </FormLabel>
+              <FormLabel>Gender</FormLabel>
               <RadioGroup
                 row
-                aria-labelledby="demo-row-radio-buttons-group-label"
+                aria-labelledby="gender row"
                 name="row-radio-buttons-group"
                 value={gender}
                 defaultValue="Male"

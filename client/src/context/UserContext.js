@@ -1,4 +1,5 @@
 import React, { useContext, useReducer, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useCartContext } from "./CartContext";
 import jwt_decode from "jwt-decode";
 import reducer from "../reducers/UserReducer";
@@ -14,6 +15,9 @@ import {
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
   GETME_DONE,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from "../reducers/actions/UserAction";
 
 const UserContext = React.createContext();
@@ -31,6 +35,7 @@ const initialUserState = {
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialUserState);
   const { fetchCartItems } = useCartContext();
+  const history = useHistory();
 
   const clearMsg = () => {
     dispatch({ type: "CLEAR_MSG" });
@@ -45,6 +50,7 @@ export const UserProvider = ({ children }) => {
       });
       const { user, access_token } = response.data;
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
+
       localStorage.setItem("access_token", access_token);
 
       api.defaults.headers["Authorization"] = `Bearer ${access_token}`;
@@ -62,17 +68,9 @@ export const UserProvider = ({ children }) => {
   const logout = async () => {
     try {
       dispatch({ type: LOGOUT_USER_BEGIN });
-      // await api.post(
-      //   "/users/logout",
-      //   {},
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${state.token}`,
-      //     },
-      //   }
-      // );
       dispatch({ type: LOGOUT_USER_SUCCESS });
       localStorage.removeItem("access_token");
+      history.push("/");
     } catch (error) {
       dispatch({ type: LOGOUT_USER_ERROR, payload: {} });
       console.log(error);
@@ -111,6 +109,25 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const updateInfo = async (firstName, lastName, gender, email, birthday) => {
+    try {
+      dispatch({ type: UPDATE_USER_BEGIN });
+      const response = await api.patch("/users/update", {
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+        email: email,
+        birthday: birthday,
+      });
+      dispatch({ type: UPDATE_USER_SUCCESS, payload: response.data });
+      return true;
+    } catch (e) {
+      console.log(e);
+      dispatch({ type: UPDATE_USER_ERROR });
+      return false;
+    }
+  };
+
   const refresh = async (access_token) => {
     try {
       dispatch({ type: LOGIN_USER_BEGIN });
@@ -145,6 +162,7 @@ export const UserProvider = ({ children }) => {
         },
       });
       const user = response.data;
+      console.log(access_token);
       dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
       await fetchCartItems();
     } catch (error) {}
@@ -168,7 +186,6 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("now init");
     const init = async () => {
       const access_token = localStorage.getItem("access_token");
       if (access_token) {
@@ -191,6 +208,7 @@ export const UserProvider = ({ children }) => {
         refresh,
         init,
         clearMsg,
+        updateInfo,
       }}
     >
       {children}

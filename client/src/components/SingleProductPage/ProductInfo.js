@@ -14,7 +14,6 @@ import Loading from "../Loading";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Snackbar from "@mui/material/Snackbar";
 
 // ICONS
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -24,12 +23,6 @@ const ProductInfo = () => {
   const { singleProduct, isProductLoading } = useProductContext();
   const { addToCart, isCartLoading } = useCartContext();
   const [options, setOptions] = useState({});
-  const [state, setState] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
-  const { vertical, horizontal, open } = state;
   const history = useHistory();
 
   useEffect(() => {
@@ -56,7 +49,12 @@ const ProductInfo = () => {
   };
 
   const submit = async () => {
-    let isSuccess = await addToCart(singleProduct._id, options, 1);
+    let isSuccess = await addToCart(
+      singleProduct._id,
+      options,
+      1,
+      singleProduct.price
+    );
     if (isSuccess) {
       showMessage("Product added!", "success");
       history.push("/cart");

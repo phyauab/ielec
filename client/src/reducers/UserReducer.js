@@ -9,6 +9,9 @@ import {
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
   GETME_DONE,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from "./actions/UserAction";
 
 const UserReducer = (state, action) => {
@@ -34,7 +37,6 @@ const UserReducer = (state, action) => {
         user: null,
         token: null,
       };
-      return;
     case LOGIN_USER_ERROR:
       return {
         ...state,
@@ -50,6 +52,17 @@ const UserReducer = (state, action) => {
       return { ...state, getMe: true };
     case "CLEAR_MSG":
       return { ...state, msg: null };
+    case UPDATE_USER_BEGIN:
+      return { ...state, isLoading: true, isError: false };
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        user: action.payload,
+      };
+    case UPDATE_USER_ERROR:
+      return { ...state, isLoading: true, isError: true };
     default:
       throw new Error("Something wrong");
   }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 // component chips
 import CartItemChips from "../Cart/CartItemChip";
@@ -13,10 +13,10 @@ const TransactionItem = ({ cartItem }) => {
   return (
     <Grid container sx={{ py: 2 }}>
       {/* product */}
-      <Grid item xs={7}>
+      <Grid item xs={8}>
         <Box sx={{ display: "flex" }}>
           <Box sx={{ width: "100px", height: "120px" }}>
-            <img src={product.profilePath} style={{ width: "100%" }} />
+            <img src={product.profilePath} style={{ width: "100%" }} alt="" />
           </Box>
           <Box
             sx={{
@@ -53,16 +53,6 @@ const TransactionItem = ({ cartItem }) => {
       {/* price */}
       <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
         <Typography variant="subtitle2">${product.price}</Typography>
-      </Grid>
-      {/* delete */}
-      <Grid item xs={1} sx={{ display: "flex", alignItems: "center" }}>
-        {/* <IconButton
-          aria-label="delete"
-          size="large"
-          onClick={() => removeFromCart(cartItem._id)}
-        >
-          <ClearIcon fontSize="inherit" />
-        </IconButton> */}
       </Grid>
     </Grid>
   );

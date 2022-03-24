@@ -1,14 +1,6 @@
-import React, { useContext, useState, useReducer, useEffect } from "react";
-
-// UI
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import React, { useContext, useState } from "react";
 
 const AppContext = React.createContext();
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export const AppProvider = ({ children }) => {
   const [snackbarState, setSnackbarState] = useState({

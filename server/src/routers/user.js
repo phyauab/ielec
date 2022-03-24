@@ -90,4 +90,23 @@ router.get("/users/me", auth, async (req, res) => {
   }
 });
 
+// PATCH: update user info
+router.patch("/users/update", auth, async (req, res) => {
+  try {
+    const { firstName, lastName, gender, email, birthday } = req.body;
+    req.user.firstName = firstName;
+    req.user.lastName = lastName;
+    req.user.gender = gender;
+    req.user.email = email;
+    req.user.birthday = birthday;
+
+    const newUser = await req.user.save();
+
+    res.send(newUser);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
+  }
+});
+
 module.exports = router;

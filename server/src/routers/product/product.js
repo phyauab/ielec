@@ -1,44 +1,56 @@
 const express = require("express");
 const router = new express.Router();
+const auth = require("../../middleware/auth");
 const { Product } = require("../../models/product/product");
+const Phone = require("../../models/product/discriminators/phone");
+const Laptop = require("../../models/product/discriminators/laptop");
+const Headphone = require("../../models/product/discriminators/headphone");
+const Accessories = require("../../models/product/discriminators/accessories");
 const { upload } = require("../../middleware/upload");
 const { Brand } = require("../../models/brand");
+const { toBase64 } = require("../../helper");
 // const { Option } = require("../models/option/option");
 const { getProperties } = require("../../helper");
-const queryString = require("query-string");
-
-// const {Phone}
 
 // Create
 // Create - a product
 router.post(
   "/products",
-  upload.fields([{ name: "profile" }, { name: "images" }]),
+  auth,
+  // upload.fields([{ name: "profilePath" }, { name: "imagePaths" }]),
   async (req, res) => {
     try {
-      // images
-      // let profile = null;
-      // let bufferArray = null;
-      // if (req.files) {
-      //   let images = req.files.images;
-      //   profile = req.files.profile;
-      //   let bufferArray = [];
-      //   if (images) {
-      //     for (let file of images) {
-      //       bufferArray.push(file.buffer);
-      //     }
-      //   }
-      // }
-
-      // const phone =
-
+      if (!req.user.isAdmin) {
+        throw new Error("access denied");
+      }
+      // create by category
+      let category = req.body.category;
+      delete req.body.category;
       let product;
+      switch (category) {
+        case "Phone":
+          product = new Phone(req.body);
+          break;
+        case "Laptop":
+          product = new Laptop(req.body);
+          break;
+        case "Headphone":
+          product = new Headphone(req.body);
+          break;
+        case "Accessories":
+          product = new Accessories(req.body);
+          break;
+        default:
+          throw new Error("Category required");
+      }
+
+      console.log(product);
 
       // save the product
       await product.save();
-
       res.send(product);
     } catch (e) {
+      console.log(e);
       res.send(e.message);
     }
   }
@@ -46,7 +58,6 @@ router.post(
 
 // Read
 router.get("/products", async (req, res) => {
-  console.log(req.query);
   let filter = {};
 
   // brand
@@ -81,36 +92,25 @@ router.get("/products", async (req, res) => {
   }
 });
 
+router.post("/products/duplicate", async (req, res) => {
+  try {
+    const duplicate = await Product.findOne({ name: req.body.name });
+    if (duplicate) {
+      throw new Error("Product with this name already exists");
+    }
+
+    res.send();
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
 router.get("/products/featured", async (req, res) => {
   try {
     const products = await Product.find({ featured: true });
     res.send(products);
-  } catch (e) {}
-});
-
-// POST: with filter
-router.post("/products/filter", async (req, res) => {
-  // let params = {};
-  // if (Object.keys(req.query).length !== 0) {
-  //   params = req.query;
-  //   // convert string to boolean
-  //   if (params.featured) {
-  //     params.featured = params.featured === "true";
-  //   }
-  //   // convert type to __t
-  //   if (params.type) {
-  //     params.__t = params.type;
-  //     delete params.type;
-  //   }
-  // }
-  // // console.log(params.brand);
-  console.log(req.body);
-
-  try {
-    const data = await Product.find(req.body).populate("brand");
-    res.send(data);
-  } catch (error) {
-    res.status(400).send({ error: error });
+  } catch (e) {
+    res.status(400).send(e);
   }
 });
 
@@ -198,14 +198,24 @@ router.get("/products/categories", async (req, res) => {
   }
 });
 
+router.patch("/products", async (req, res) => {
+  try {
+    const d = await Product.updateMany({}, { sales: 0 });
+    res.send(d);
+  } catch (e) {
+    console.log(e);
+    res.status.send(e);
+  }
+});
+
 // Update
 // Update - a product
 router.patch(
   "/products/:id",
   upload.fields([{ name: "profile" }, { name: "images" }]),
   async (req, res) => {
-    const { id } = req.params;
     try {
+      const { id } = req.params;
       let images = null;
       let profile = null;
 

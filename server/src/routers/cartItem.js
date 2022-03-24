@@ -15,6 +15,7 @@ router.post("/cartItems", auth, async (req, res) => {
     await cartItem.save();
     res.send(cartItem);
   } catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 });

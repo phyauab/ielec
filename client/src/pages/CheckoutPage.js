@@ -13,9 +13,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
-const stripePromise = loadStripe(
-  "pk_test_51KeZZgEjNPWRZVN6NxvvgoqpajqSrNC7rS0SHdh6ctV2SU0Vt8Dtrtk53k05ykqVn7X56IK37GY0cUz1et2kmiIq00MzCExRn8"
-);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const breadcrumbs = [
   <Link underline="hover" key="1" color="inherit" to="/">
@@ -38,16 +36,10 @@ const CheckoutPage = () => {
     appearance,
   };
   const load = async () => {
-    console.log("submit");
     // calculate amount
     let amount = 0;
     for (const cartItem of cartItems) {
-      let additionalPrice = 0;
-      for (const option of cartItem.options) {
-        additionalPrice += option.additionalPrice;
-      }
-
-      amount += (cartItem.product.price + additionalPrice) * cartItem.qty;
+      amount += cartItem.price * cartItem.qty;
     }
     // get stripe session
     try {

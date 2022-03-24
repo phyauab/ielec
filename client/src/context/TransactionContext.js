@@ -29,8 +29,9 @@ export const TransactionProvider = ({ children }) => {
 
   const checkout = async () => {
     try {
-      dispatch({ type: FETCH_TRANSACTION_BEGIN });
+      dispatch({ type: TRANSACTION_BEGIN });
       const response = await api.post("/transactions");
+      console.log(response);
       dispatch({ type: TRANSACTION_SUCCESS });
       fetchCartItems();
     } catch (error) {
@@ -41,11 +42,8 @@ export const TransactionProvider = ({ children }) => {
 
   const fetchTransactions = async () => {
     try {
-      console.log("fetchTransactions start");
       dispatch({ type: FETCH_TRANSACTION_BEGIN });
       const response = await api.get("/transactions");
-      console.log("fetchTransactions");
-      console.log(response.data);
       dispatch({
         type: FETCH_TRANSACTION_SUCCESS,
         payload: response.data,
@@ -60,8 +58,6 @@ export const TransactionProvider = ({ children }) => {
     try {
       dispatch({ type: FETCH_SINGLE_TRANSACTION_BEGIN });
       const response = await api.get(`/transactions/${id}`);
-      console.log("fetchTransaction");
-      console.log(response.data);
       dispatch({
         type: FETCH_SINGLE_TRANSACTION_SUCCESS,
         payload: response.data,

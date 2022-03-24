@@ -11,8 +11,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 const CartList = () => {
-  const { cartItems, fetchCartItems, isCartLoading, isCartError } =
-    useCartContext();
+  const { cartItems, isCartLoading } = useCartContext();
   return (
     <Grid container>
       {/* Header */}

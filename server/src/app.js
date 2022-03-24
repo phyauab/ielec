@@ -12,6 +12,8 @@ const brandRouter = require("./routers/brand");
 const colorRouter = require("./routers/options/color");
 const cartItemRouter = require("./routers/cartItem");
 const transactionRouter = require("./routers/transaction");
+const adminRouter = require("./routers/admin");
+const imageRouter = require("./routers/image");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,6 +30,8 @@ app.use(laptopRouter);
 app.use(headphoneRouter);
 app.use(accessoriesRouter);
 app.use(transactionRouter);
+app.use(adminRouter);
+app.use(imageRouter);
 
 // connect to db
 require("./db/mongoose");

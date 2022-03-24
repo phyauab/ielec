@@ -4,6 +4,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const auth = require("../middleware/auth");
 const { Transaction } = require("../models/transaction");
 const { CartItem } = require("../models/cartItem");
+const { Product } = require("../models/product/product");
 // const {  } = require("../models/cartItem");
 
 // POST: STRIPE
@@ -31,24 +32,27 @@ router.post("/transactions", auth, async (req, res) => {
       user: req.user._id,
       isPaid: false,
     }).populate("product");
+
     if (cartItems.length === 0) {
       throw new Error("Cart Items is empty");
     }
 
-    console.log(cartItems.length);
+    // update product qty and sales
+    for (const cartItem of cartItems) {
+      let product = await Product.findById(cartItem.product._id);
+      product.sales++;
+      product.qty--;
+      await product.save();
+    }
 
     let cartItemIds = [];
     let amount = 0;
 
     for (const cartItem of cartItems) {
       cartItemIds.push(cartItem._id);
-      let additionalPrice = 0;
-      for (const option of cartItem.options) {
-        additionalPrice += option.additionalPrice;
-      }
       cartItem.isPaid = true;
       await cartItem.save();
-      amount += (cartItem.product.price + additionalPrice) * cartItem.qty;
+      amount += cartItem.price * cartItem.qty;
     }
 
     const transaction = new Transaction({

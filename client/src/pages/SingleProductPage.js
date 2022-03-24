@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import { useParams } from "react-router";
 import ProductImages from "../components/SingleProductPage/ProductImages";
@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 
 // UI
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";

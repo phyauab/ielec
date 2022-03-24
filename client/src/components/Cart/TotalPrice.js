@@ -21,15 +21,7 @@ const TotalPrice = () => {
   const calculateTotal = () => {
     let total = 0;
     for (const cartItem of cartItems) {
-      let additionalPrice = 0;
-      //   for (let j = 0; j < cartItems[i].options.length) {
-      //       additionalPrice +=
-      //   }
-      for (const option of cartItem.options) {
-        additionalPrice += option.additionalPrice;
-      }
-
-      total += (cartItem.product.price + additionalPrice) * cartItem.qty;
+      total += cartItem.price * cartItem.qty;
     }
     setTotal(total);
   };

@@ -5,7 +5,6 @@ import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import MemoryIcon from "@mui/icons-material/Memory";
 import SdStorageIcon from "@mui/icons-material/SdStorage";
-import FaceIcon from "@mui/icons-material/Face";
 
 // Icons
 import ColorLensIcon from "@mui/icons-material/ColorLens";

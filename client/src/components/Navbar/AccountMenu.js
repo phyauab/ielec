@@ -5,22 +5,19 @@ import { Link } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 
 // UI
-import {
-  Box,
-  Divider,
-  Typography,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-} from "@mui/material";
-import ListItemButton from "@mui/material/ListItemButton";
+
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
 // Icons
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const AccountMenu = ({ anchorEl, open, onClose }) => {
   const { user, logout } = useUserContext();

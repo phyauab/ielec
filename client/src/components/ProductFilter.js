@@ -86,7 +86,9 @@ const ProductFilter = () => {
     },
   ];
 
-  // console.log(brands);
+  if (isFilterLoading) {
+    return <Loading />;
+  }
   return (
     <Grid container spacing={4}>
       {/* Name */}

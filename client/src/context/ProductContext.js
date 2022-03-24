@@ -109,7 +109,7 @@ export const ProductProvider = ({ children }) => {
       }
 
       // rating
-      console.log(filterObj);
+      // console.log(filterObj);
       filterObj.minRating = filterObj.rating[0];
       filterObj.maxRating = filterObj.rating[1];
       delete filterObj.rating;

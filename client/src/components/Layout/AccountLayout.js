@@ -1,22 +1,17 @@
 import React from "react";
 import { Switch, Link, Route, useRouteMatch } from "react-router-dom";
+import { useUserContext } from "../../context/UserContext";
 
 // UI
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 
 // Icons
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -30,23 +25,23 @@ import {
 } from "../../pages";
 
 const AccountLayout = ({ children }) => {
+  const { logout } = useUserContext();
   let { path, url } = useRouteMatch();
 
   return (
     <Container sx={{ py: 10 }}>
       <Grid container spacing={5}>
-        <Grid item xs={4}>
-          <Paper sx={{ width: 320, maxWidth: "100%" }}>
+        <Grid item xs={3}>
+          <Paper>
             <MenuList>
               <Link to={url}>
-                <MenuItem>
+                <MenuItem divider>
                   <ListItemIcon>
                     <AccountBoxIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText>Profile</ListItemText>
                 </MenuItem>
               </Link>
-              <Divider />
               <Link to={`${url}/transactions`}>
                 <MenuItem>
                   <ListItemIcon>
@@ -57,7 +52,18 @@ const AccountLayout = ({ children }) => {
               </Link>
             </MenuList>
           </Paper>
+          <Box sx={{ py: 2 }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              fullWidth
+              onClick={() => logout()}
+            >
+              Logout
+            </Button>
+          </Box>
         </Grid>
+        <Grid item xs={1}></Grid>
         <Grid item xs={8}>
           <Switch>
             <Route exact path={path}>

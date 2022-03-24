@@ -31,7 +31,6 @@ router.patch("/brands/:name", async (req, res) => {
       { name },
       { $set: { name: req.query.name } }
     );
-    console.log(brand);
     if (brand.nModified > 0) res.send("Update brand successfully");
     else throw { message: "Update brand failed" };
   } catch (e) {

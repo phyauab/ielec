@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 
 // Components
 import BreadCrumb from "../components/BreadCrumb";
-import Title from "../components/Title";
 
 // UI
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 
 const breadcrumbs = [
   <Link underline="hover" key="1" color="inherit" to="/">
@@ -30,11 +28,11 @@ const AboutPage = () => {
           <img
             src="https://i.imgur.com/zPdLIFM.jpg"
             alt=""
-            srcset=""
+            srcSet=""
             style={{ width: "100%", objectFit: "cover" }}
           />
         </Grid>
-        <Grid item xs={6} spacing={5}>
+        <Grid item xs={6}>
           <Grid container spacing={5}>
             <Grid item>
               <Box

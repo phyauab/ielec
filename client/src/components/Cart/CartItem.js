@@ -26,21 +26,17 @@ const CartItem = ({ cartItem }) => {
     }
   };
 
-  const calculatePrice = () => {
-    let additionalPrice = 0;
-    for (const option of cartItem.options) {
-      additionalPrice += option.additionalPrice;
-    }
-    return product.price + additionalPrice;
-  };
-
   return (
     <Grid container sx={{ py: 2 }}>
       {/* product */}
       <Grid item xs={7}>
         <Box sx={{ display: "flex" }}>
           <Box sx={{ width: "100px" }}>
-            <img src={product.profilePath} style={{ width: "100%" }} />
+            <img
+              src={product.profilePath}
+              style={{ width: "100%" }}
+              alt="img"
+            />
           </Box>
           <Box
             sx={{
@@ -71,7 +67,7 @@ const CartItem = ({ cartItem }) => {
       </Grid>
       {/* price */}
       <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="subtitle2">${calculatePrice()}</Typography>
+        <Typography variant="subtitle2">${cartItem.price}</Typography>
       </Grid>
       {/* delete */}
       <Grid item xs={1} sx={{ display: "flex", alignItems: "center" }}>

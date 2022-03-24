@@ -6,19 +6,15 @@ import LoginForm from "./LoginForm";
 import RegisterFrom from "./RegisterForm";
 
 // UI
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import DialogActions from "@mui/material/DialogActions";
 import Typography from "@mui/material/Typography";
 import Slide from "@mui/material/Slide";
 
 const AuthForm = ({ onClose, open }) => {
   const containerRef = useRef(null);
-  const { isLoading, msg, login, user, signUpUser } = useUserContext();
+  const { user } = useUserContext();
   //   const [action, setAction] = useState("login");
   const [openLogin, setOpenLogin] = useState(true);
   const [openRegister, setOpenRegister] = useState(false);

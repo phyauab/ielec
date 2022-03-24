@@ -37,17 +37,20 @@ export const CartProvider = ({ children }) => {
   };
 
   // product = productId
-  const addToCart = async (product, options, qty) => {
+  const addToCart = async (product, options, qty, price) => {
     let optionsArr = [];
     for (const property in options) {
       optionsArr = [...optionsArr, options[property]];
+      price += options[property].additionalPrice;
     }
+    console.log(price);
     try {
       dispatch({ type: ADD_CARTITEM_BEGIN });
       const response = await api.post("/cartItems", {
         product: product,
         options: optionsArr,
         qty: qty,
+        price: price,
       });
       dispatch({ type: ADD_CARTITEM_SUCCESS, payload: response.data });
       return true;
@@ -61,14 +64,16 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (cartItemId) => {
     try {
       dispatch({ type: REMOVE_CARTITEM_BEGIN });
-      const response = await api.delete(`/cartItems/${cartItemId}`);
+      await api.delete(`/cartItems/${cartItemId}`);
       let itemIndex = 0;
       for (let i = 0; i < state.cartItems.length; ++i) {
         if (state.cartItems[i]._id === cartItemId) {
           itemIndex = i;
         }
       }
-      let newCartItems = state.cartItems.splice(itemIndex, 1);
+
+      // remove this one item
+      state.cartItems.splice(itemIndex, 1);
       dispatch({ type: REMOVE_CARTITEM_SUCCESS, payload: state.cartItems });
       return true;
     } catch (error) {
