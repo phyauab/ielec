@@ -1,6 +1,6 @@
 import React from "react";
 
-import Box from "@mui/material/Box";
+// UI
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -10,7 +10,6 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 
 const SmallInfoCard = ({ icon, title, totalNum, newNum }) => {
-  // console.log(totalNum);
   return (
     <Card sx={{ borderRadius: "15px " }}>
       <CardContent>

@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAdminContext } from "../../../context/AdminContext";
-import { Link, useHistory } from "react-router-dom";
+import { useAppContext } from "../../../context/AppContext";
+import { Link } from "react-router-dom";
 
 // Components
 import Title from "../../../components/Admin/Title";
 import Loading from "../../../components/Loading";
+import MoreActionMenu from "../../../components/Admin/MoreActionMenu";
 
 // UI
 import Box from "@mui/material/Box";
@@ -12,32 +14,31 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import AddIcon from "@mui/icons-material/Add";
-import Collapse from "@mui/material/Collapse";
-import Alert from "@mui/material/Alert";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import Input from "@mui/material/Input";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import { DataGrid } from "@mui/x-data-grid";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const BrandPage = () => {
-  const { fetchBrands, isLoading, brands } = useAdminContext();
+  const { fetchBrands, isLoading, brands, deleteBrand } = useAdminContext();
+  const { showMessage } = useAppContext();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [id, setId] = useState("");
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const deleteItem = async () => {
+    const response = await deleteBrand(id);
+    if (response.status) {
+      showMessage("Brand deleted!", "error");
+      fetchBrands();
+    } else {
+      showMessage("Failed to delete", "error");
+    }
+  };
 
   useEffect(() => {
     fetchBrands();
@@ -64,6 +65,32 @@ const BrandPage = () => {
       { field: "name", headerName: "Name", width: 200 },
       { field: "createdAt", headerName: "Created At", width: 220 },
       { field: "updatedAt", headerName: "Updated At", width: 220 },
+      {
+        sortable: false,
+        align: "right",
+        field: "more",
+        headerName: "",
+        flex: 1,
+        width: 200,
+        renderCell: (cell) => {
+          return (
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? "long-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={(e) => {
+                e.stopPropagation();
+                setId(cell.id);
+                handleClick(e);
+              }}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          );
+        },
+      },
     ];
     return columns;
   };
@@ -105,11 +132,18 @@ const BrandPage = () => {
         <DataGrid
           rows={buildRows()}
           columns={buildColumns()}
-          pageSize={9}
-          rowsPerPageOptions={[9]}
-          checkboxSelection
+          pageSize={10}
+          rowsPerPageOptions={[10]}
+          autoHeight
         />
       </div>
+      <MoreActionMenu
+        open={open}
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        link={`/brands/${id}`}
+        deleteItem={deleteItem}
+      />
     </Container>
   );
 };

@@ -4,6 +4,7 @@ const auth = require("../middleware/auth");
 const { User } = require("../models/user");
 const { Transaction } = require("../models/transaction");
 const { Product } = require("../models/product/product");
+const { Brand } = require("../models/brand");
 const { CartItem } = require("../models/cartItem");
 
 // GET: DASHBOARD
@@ -96,46 +97,15 @@ router.get("/admin/dashboard", auth, async (req, res) => {
     const topProducts = await Product.find().sort({ sales: "desc" }).limit(5);
     dashboard.topProducts = topProducts;
 
-    // top categories
-    // const topCategories = await Product.find().select("__t").distinct("__t");
-    const topCategories = await Product.find().select("__t").distinct("__t");
-    for (const category of topCategories) {
-      const a = await CartItem.aggregate([
-        // {
-        //   // $match: {
-        //   //   __t: category,
-        //   //   // isPaid: true,
-        //   // },
-        // },
-        // {
-        //   $group: {
-        //     _id: null,
-        //     price: { $sum: "$price" },
-        //   },
-        // },
-        {
-          $lookup: {
-            from: "products",
-            let: { t: "$__t" },
-            pipeline: [
-              {
-                $match: {
-                  __t: category,
-                },
-              },
-              {
-                $group: {
-                  _id: null,
-                  price: { $sum: "$price" },
-                },
-              },
-            ],
-            as: "products",
-          },
+    // top orders
+    const topCategories = await Product.aggregate([
+      {
+        $group: {
+          _id: "$__t",
+          totalUnitsSold: { $sum: "$sales" },
         },
-      ]);
-      console.log(a);
-    }
+      },
+    ]);
     dashboard.topCategories = topCategories;
 
     res.send(dashboard);

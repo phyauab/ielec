@@ -1,5 +1,4 @@
 import React, { useContext, useReducer } from "react";
-import ImageKit from "imagekitio-react";
 
 import api from "./Api";
 import reducer from "../reducers/AdminReducer";
@@ -23,9 +22,35 @@ import {
   ADD_PRODUCT_BEGIN,
   ADD_PRODUCT_SUCCESS,
   ADD_PRODUCT_ERROR,
+  FETCH_BRANDS_BEGIN,
+  FETCH_BRANDS_SUCCESS,
+  FETCH_BRANDS_ERROR,
   FETCH_BRAND_BEGIN,
   FETCH_BRAND_SUCCESS,
   FETCH_BRAND_ERROR,
+  FETCH_USER_BEGIN,
+  FETCH_USER_SUCCESS,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
+  FETCH_PRODUCT_BEGIN,
+  FETCH_PRODUCT_SUCCESS,
+  FETCH_PRODUCT_ERROR,
+  UPDATE_PRODUCT_BEGIN,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_ERROR,
+  UPDATE_BRAND_BEGIN,
+  UPDATE_BRAND_SUCCESS,
+  UPDATE_BRAND_ERROR,
+  DELETE_USER_BEGIN,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_ERROR,
+  DELETE_PRODUCT_BEGIN,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_ERROR,
+  DELETE_BRAND_BEGIN,
+  DELETE_BRAND_SUCCESS,
+  DELETE_BRAND_ERROR,
 } from "../reducers/actions/AdminAction";
 const REACT_APP_DOMAIN = process.env.REACT_APP_DOMAIN;
 console.log(REACT_APP_DOMAIN);
@@ -50,6 +75,7 @@ const initialState = {
       todaySales: 0,
     },
     topProducts: [],
+    topCategories: [],
   },
   transactions: [],
   products: [],
@@ -57,6 +83,16 @@ const initialState = {
   categories: [],
   properties: [],
   users: [],
+  user: {
+    username: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    gender: "",
+    isAdmin: false,
+    email: "",
+    birthday: Date.now(),
+  },
 };
 
 export const AdminProvider = ({ children }) => {
@@ -75,7 +111,6 @@ export const AdminProvider = ({ children }) => {
   };
 
   // USER
-
   const fetchUsers = async () => {
     try {
       dispatch({ type: FETCH_USERS_BEGIN });
@@ -84,6 +119,55 @@ export const AdminProvider = ({ children }) => {
     } catch (e) {
       console.log(e);
       dispatch({ type: FETCH_USERS_ERROR });
+    }
+  };
+
+  const fetchUser = async (id) => {
+    try {
+      dispatch({ type: FETCH_USER_BEGIN });
+      const response = await api.get(`/users/${id}`);
+      console.log(response.data);
+      dispatch({ type: FETCH_USER_SUCCESS, payload: response.data });
+      return { status: true, data: response.data };
+    } catch (e) {
+      dispatch({ type: FETCH_USERS_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
+  const addUser = async (user) => {
+    try {
+      dispatch({ type: ADD_USER_BEGIN });
+      await api.post("/admin/users", user);
+      dispatch({ type: ADD_USER_SUCCESS });
+      return { status: true };
+    } catch (e) {
+      dispatch({ type: ADD_USER_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
+  const updateUser = async (user) => {
+    try {
+      dispatch({ type: UPDATE_USER_BEGIN });
+      await api.patch("/users", user);
+      dispatch({ type: UPDATE_USER_SUCCESS });
+      return { status: true };
+    } catch (e) {
+      dispatch({ type: UPDATE_USER_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
+  const deleteUser = async (id) => {
+    try {
+      dispatch({ type: DELETE_USER_BEGIN });
+      await api.delete(`/users/${id}`);
+      dispatch({ type: DELETE_USER_SUCCESS });
+      return { status: true };
+    } catch (e) {
+      dispatch({ type: DELETE_USER_ERROR });
+      return { status: false, msg: e.response.data };
     }
   };
 
@@ -99,15 +183,64 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
+  const fetchProduct = async (id) => {
+    try {
+      dispatch({ type: FETCH_PRODUCT_BEGIN });
+      const response = await api.get(`/products/${id}`);
+      dispatch({ type: FETCH_PRODUCT_SUCCESS });
+      return { status: true, data: response.data };
+    } catch (e) {
+      dispatch({ type: FETCH_PRODUCT_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
+  const updateProduct = async (product) => {
+    try {
+      dispatch({ type: UPDATE_PRODUCT_BEGIN });
+      const response = await api.patch(`/products`, product);
+      dispatch({ type: UPDATE_PRODUCT_SUCCESS });
+      return { status: true, data: response.data };
+    } catch (e) {
+      dispatch({ type: UPDATE_PRODUCT_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    try {
+      dispatch({ type: DELETE_PRODUCT_BEGIN });
+      await api.delete(`/products/${id}`);
+      dispatch({ type: DELETE_PRODUCT_SUCCESS });
+      return { status: true };
+    } catch (e) {
+      dispatch({ type: DELETE_PRODUCT_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
   // BRAND
   const fetchBrands = async () => {
     try {
-      dispatch({ type: FETCH_BRAND_BEGIN });
+      dispatch({ type: FETCH_BRANDS_BEGIN });
       const response = await api.get("/brands");
+      dispatch({ type: FETCH_BRANDS_SUCCESS, payload: response.data });
+    } catch (e) {
+      console.log(e);
+      dispatch({ type: FETCH_BRANDS_ERROR });
+    }
+  };
+
+  const fetchBrand = async (id) => {
+    try {
+      dispatch({ type: FETCH_BRAND_BEGIN });
+      const response = await api.get(`/brands/${id}`);
       dispatch({ type: FETCH_BRAND_SUCCESS, payload: response.data });
+      return { status: true, data: response.data };
     } catch (e) {
       console.log(e);
       dispatch({ type: FETCH_BRAND_ERROR });
+      return { status: false, msg: e.response.data };
     }
   };
 
@@ -121,6 +254,31 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
+  const updateBrand = async (brand) => {
+    try {
+      dispatch({ type: UPDATE_BRAND_BEGIN });
+      await api.patch("/brands", brand);
+      dispatch({ type: UPDATE_BRAND_SUCCESS });
+      return { status: true };
+    } catch (e) {
+      console.log(e.response.data);
+      dispatch({ type: UPDATE_BRAND_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
+  const deleteBrand = async (id) => {
+    try {
+      dispatch({ type: DELETE_BRAND_BEGIN });
+      await api.delete(`/brands/${id}`);
+      dispatch({ type: DELETE_BRAND_SUCCESS });
+      return { status: true };
+    } catch (e) {
+      dispatch({ type: DELETE_BRAND_ERROR });
+      return { status: false, msg: e.response.data };
+    }
+  };
+
   // TRANSACTION
   const fetchTransactions = async () => {
     try {
@@ -130,18 +288,6 @@ export const AdminProvider = ({ children }) => {
     } catch (e) {
       console.log(e);
       dispatch({ type: FETCH_TRANSACTONS_ERROR });
-    }
-  };
-
-  const addUser = async (user) => {
-    try {
-      dispatch({ type: ADD_USER_BEGIN });
-      await api.post("/admin/users", user);
-      dispatch({ type: ADD_USER_SUCCESS });
-      return { status: true };
-    } catch (e) {
-      dispatch({ type: ADD_USER_ERROR });
-      return { status: false, msg: e.response.data };
     }
   };
 
@@ -215,14 +361,23 @@ export const AdminProvider = ({ children }) => {
       value={{
         ...state,
         fetchUsers,
+        fetchUser,
         addUser,
+        updateUser,
         fetchDashboard,
         fetchProducts,
+        fetchProduct,
+        updateProduct,
+        deleteProduct,
         fetchBrands,
+        fetchBrand,
         addBrand,
+        updateBrand,
+        deleteBrand,
         fetchTransactions,
         addProduct,
         uploadImage,
+        deleteUser,
       }}
     >
       {children}

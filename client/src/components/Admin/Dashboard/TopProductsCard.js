@@ -2,9 +2,7 @@ import React from "react";
 import { useAdminContext } from "../../../context/AdminContext";
 
 // UI
-import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

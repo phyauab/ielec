@@ -81,11 +81,9 @@ router.get("/products", async (req, res) => {
   if (req.query.featured) {
     filter.featured = req.query.featured == "true";
   }
-  console.log(filter);
 
   try {
     const data = await Product.find(filter).populate("brand");
-    // console.log(data);
     res.send(data);
   } catch (error) {
     res.status(400).send({ error: error });
@@ -120,7 +118,7 @@ router.get("/products/:id", async (req, res) => {
     const product = await Product.findById(req.params.id).populate("brand");
     res.send(product);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send(e.message);
   }
 });
 
@@ -198,57 +196,60 @@ router.get("/products/categories", async (req, res) => {
   }
 });
 
-router.patch("/products", async (req, res) => {
+router.patch("/products", auth, async (req, res) => {
   try {
-    const d = await Product.updateMany({}, { sales: 0 });
-    res.send(d);
+    if (!req.user.isAdmin) {
+      throw new Error("Access denied");
+    }
+
+    let product;
+    switch (req.body.__t) {
+      case "Phone":
+        product = await Phone.findOneAndUpdate(
+          { _id: req.body._id },
+          { $set: req.body },
+          { useFindAndModify: false }
+        );
+        break;
+      case "Laptop":
+        product = await Laptop.findOneAndUpdate(
+          { _id: req.body._id },
+          { $set: req.body },
+          { useFindAndModify: false }
+        );
+        break;
+      case "Headphone":
+        product = await Headphone.findOneAndUpdate(
+          { _id: req.body._id },
+          { $set: req.body },
+          { useFindAndModify: false }
+        );
+        break;
+      case "Accessories":
+        product = await Accessories.findOneAndUpdate(
+          { _id: req.body._id },
+          { $set: req.body },
+          { useFindAndModify: false }
+        );
+        break;
+      default:
+        throw new Error("Wrong category");
+    }
+
+    product = await Product.findOneAndUpdate(
+      { _id: req.body._id },
+      { $set: req.body },
+      { useFindAndModify: false }
+    );
+    // console.log(product);
+    res.send(product);
   } catch (e) {
     console.log(e);
-    res.status.send(e);
+    res.status.send(e.message);
   }
 });
 
-// Update
-// Update - a product
-router.patch(
-  "/products/:id",
-  upload.fields([{ name: "profile" }, { name: "images" }]),
-  async (req, res) => {
-    try {
-      const { id } = req.params;
-      let images = null;
-      let profile = null;
-
-      if (req.files) {
-        if (req.files.images) {
-          images = req.files.images;
-        }
-        if (req.files.profile) {
-          profile = req.files.profile;
-          req.body.profile = profile[0].buffer;
-        }
-      }
-      let bufferArray = [];
-      if (images) {
-        for (let file of images) {
-          bufferArray.push(file.buffer);
-        }
-        req.body.images = bufferArray;
-      }
-
-      const product = await Product.findByIdAndUpdate(id, req.body, {
-        new: true,
-        runValidators: true,
-      });
-      res.send(product);
-    } catch (e) {
-      res.status(400).send(e.message);
-    }
-  }
-);
-
-// Delete
-// Delete - all products
+// DELETE: all products
 router.delete("/products", async (req, res) => {
   try {
     await Product.deleteMany({});
@@ -256,7 +257,7 @@ router.delete("/products", async (req, res) => {
   } catch (error) {}
 });
 
-// Delete - product by id
+// DELETE: a product
 router.delete("/products/:id", async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);

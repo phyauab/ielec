@@ -10,6 +10,7 @@ import StorageOption from "../Options/StorageOption";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const Option = ({ property, optionsArr, options, setOptions }) => {
   const getTitle = () => {
@@ -83,9 +84,23 @@ const Option = ({ property, optionsArr, options, setOptions }) => {
       case "anc":
       case "wired":
         return (
-          <Typography sx={{ py: "1rem" }} variant="h6">
-            {optionsArr ? "Yes" : "No"}
-          </Typography>
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                border: `1px solid ${optionsArr ? "#00a152" : "#ab003c"}`,
+                borderRadius: "25px",
+              }}
+            >
+              <Typography
+                sx={{ py: "0.5rem" }}
+                variant="body1"
+                color={optionsArr ? "#00a152" : "#ab003c"}
+                textAlign="center"
+              >
+                {optionsArr ? "Yes" : "No"}
+              </Typography>
+            </Box>
+          </Grid>
         );
 
       default:

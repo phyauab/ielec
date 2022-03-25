@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useUserContext } from "../../context/UserContext";
 import { useAppContext } from "../../context/AppContext";
 import { useProductContext } from "../../context/ProductContext";
 import { useCartContext } from "../../context/CartContext";
@@ -22,6 +23,7 @@ const ProductInfo = () => {
   const { showMessage } = useAppContext();
   const { singleProduct, isProductLoading } = useProductContext();
   const { addToCart, isCartLoading } = useCartContext();
+  const { user, isLoading, greet } = useUserContext();
   const [options, setOptions] = useState({});
   const history = useHistory();
 
@@ -129,23 +131,44 @@ const ProductInfo = () => {
           readMoreText="...more"
         />
       </Box>
-      <Typography>{qty > 0 ? "In Stock" : "Out of Stock"}</Typography>
+      <Box
+        sx={{
+          mt: 3,
+          p: 1,
+          border: `1px solid ${qty > 0 ? "#00695f" : "#b2102f"}`,
+          borderRadius: "25px",
+        }}
+      >
+        <Typography
+          variant="body1"
+          color={qty > 0 ? "#00695f" : "#b2102f"}
+          textAlign="center"
+        >
+          {qty > 0 ? "In Stock" : "Out of Stock"}
+        </Typography>
+      </Box>
       <Box>{}</Box>
       <Box>{_buildOption()}</Box>
 
-      <Box sx={{ my: "2rem" }}>
-        <Button
-          variant="contained"
-          startIcon={<AddShoppingCartIcon />}
-          disabled={qty === 0 || isCartLoading}
-          sx={{ width: "100%", py: "1" }}
-          onClick={(e) => {
-            submit();
-          }}
-        >
-          ADD TO CART
-        </Button>
-      </Box>
+      {!isLoading && (
+        <Box sx={{ my: "2rem" }}>
+          <Button
+            variant="contained"
+            startIcon={<AddShoppingCartIcon />}
+            disabled={qty === 0 || isCartLoading}
+            sx={{ width: "100%", py: "1" }}
+            onClick={(e) => {
+              if (!user) {
+                showMessage("Please login to proceed", "warning");
+                return;
+              }
+              submit();
+            }}
+          >
+            ADD TO CART
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

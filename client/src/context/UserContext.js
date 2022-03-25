@@ -56,7 +56,6 @@ export const UserProvider = ({ children }) => {
       api.defaults.headers["Authorization"] = `Bearer ${access_token}`;
       return true;
     } catch (error) {
-      // console.log(error.response.data.msg);
       dispatch({
         type: LOGIN_USER_ERROR,
         payload: { msg: error.response.data.msg },

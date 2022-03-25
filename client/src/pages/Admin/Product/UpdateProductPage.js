@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAdminContext } from "../../../context/AdminContext";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../../context/AppContext";
 
 // Components
@@ -14,12 +14,14 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Paper from "@mui/material/Paper";
-import AddIcon from "@mui/icons-material/Add";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
-const AddProductPage = () => {
-  const { isLoading, brands, fetchBrands, addProduct } = useAdminContext();
+const UpdateProductPage = () => {
+  const { isLoading, brands, fetchBrands, fetchProduct, updateProduct } =
+    useAdminContext();
   const { showMessage } = useAppContext();
   const history = useHistory();
+  const { id } = useParams();
   const [product, setProduct] = useState({
     category: "Phone",
     name: "",
@@ -27,7 +29,7 @@ const AddProductPage = () => {
     price: 0,
     qty: 0,
     rating: 0,
-    featured: false,
+    isFeatured: false,
     description: "",
     profilePath: null,
     imagePaths: null,
@@ -41,9 +43,13 @@ const AddProductPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await addProduct(product);
+    // category => __t
+    let __t = product.category;
+    product.__t = __t;
+
+    const response = await updateProduct(product);
     if (response.status) {
-      showMessage("Product added!", "success");
+      showMessage("Product updated!", "success");
       history.push("/products");
     } else {
       setOpen(true);
@@ -55,8 +61,23 @@ const AddProductPage = () => {
   };
 
   useEffect(() => {
-    fetchBrands();
+    init();
   }, []);
+
+  const init = async () => {
+    fetchBrands();
+    const response = await fetchProduct(id);
+    console.log(response.data);
+    // update __t to category
+    let category = response.data.__t;
+    delete response.data.__t;
+    response.data.category = category;
+
+    // update brand obj to brand id
+    let brand = response.data.brand._id;
+    response.data.brand = brand;
+    setProduct(response.data);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -71,7 +92,7 @@ const AddProductPage = () => {
           </IconButton>
         </Link>
       </Toolbar>
-      <Title title="Add New Product" />
+      <Title title="Update Product" />
 
       <Paper
         sx={{
@@ -88,12 +109,12 @@ const AddProductPage = () => {
           handleSubmit={handleSubmit}
           open={open}
           msg={msg}
-          buttonText="Add Product"
-          buttonIcon={<AddIcon />}
+          buttonText="Update Product"
+          buttonIcon={<AutorenewIcon />}
         />
       </Paper>
     </Container>
   );
 };
 
-export default AddProductPage;
+export default UpdateProductPage;

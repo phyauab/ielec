@@ -13,14 +13,34 @@ router.get("/users", async (req, res) => {
   }
 });
 
+// GET: me
+router.get("/users/me", auth, async (req, res) => {
+  try {
+    // const token = await req.user.generateRefreshToken();
+    res.send(req.user);
+  } catch (error) {
+    res.status(404).send({ msg: error.message });
+  }
+});
+
+// GET: single user
+router.get("/users/:id", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      throw new Error("Access denied");
+    }
+    const user = await User.findById(req.params.id).select("-password");
+    res.send(user);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
 // Sign up new user
 router.post("/users/register", async (req, res) => {
   try {
-    console.log(req.body);
     const user = new User(req.body);
     await user.save();
-
-    console.log(user);
 
     const token = await user.generateToken();
 
@@ -80,13 +100,16 @@ router.get("/users/refresh", auth, async (req, res) => {
   }
 });
 
-// me
-router.get("/users/me", auth, async (req, res) => {
+router.patch("/users", auth, async (req, res) => {
   try {
-    // const token = await req.user.generateRefreshToken();
-    res.send(req.user);
-  } catch (error) {
-    res.status(404).send({ msg: error.message });
+    if (req.user.isAdmin || req.user._id === req.body._id) {
+      const user = await User.findOneAndUpdate({ _id: req.body._id }, req.body);
+      res.send(user);
+    } else {
+      throw new Error("Access Denied");
+    }
+  } catch (e) {
+    res.status(400).send(e.message);
   }
 });
 
@@ -106,6 +129,20 @@ router.patch("/users/update", auth, async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(400).send(e);
+  }
+});
+
+router.delete("/users/:id", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      throw new Error("Access denied");
+    }
+
+    const user = await User.findByIdAndDelete(req.params.id);
+    res.send(user);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e.message);
   }
 });
 

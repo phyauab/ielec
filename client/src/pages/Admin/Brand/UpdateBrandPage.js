@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useAppContext } from "../../../context/AppContext";
 import { useAdminContext } from "../../../context/AdminContext";
 
 // components
 import Title from "../../../components/Admin/Title";
+import Loading from "../../../components/Loading";
 
 // UI
 import Box from "@mui/material/Box";
@@ -19,19 +20,29 @@ import Grid from "@mui/material/Grid";
 import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 
-const AddBrandPage = () => {
-  const { addBrand } = useAdminContext();
+const UpdateBrandPage = () => {
+  const { updateBrand, fetchBrand, isLoading } = useAdminContext();
   const { showMessage } = useAppContext();
-  const [name, setName] = useState("");
+  const [brand, setBrand] = useState({ name: "" });
   const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState("");
   const history = useHistory();
+  const { id } = useParams();
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    const response = await fetchBrand(id);
+    setBrand(response.data);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await addBrand(name);
+    const response = await updateBrand(brand);
     if (response.status) {
-      showMessage("Product added!", "success");
+      showMessage("Brand updated!", "success");
       history.push("/brands");
     } else {
       setOpen(true);
@@ -41,6 +52,10 @@ const AddBrandPage = () => {
       }, 5.0 * 1000);
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Container>
       <Toolbar disableGutters>
@@ -50,7 +65,7 @@ const AddBrandPage = () => {
           </IconButton>
         </Link>
       </Toolbar>
-      <Title title="Add New Brand" />
+      <Title title="Update Brand" />
 
       <Paper sx={{ p: 10 }}>
         <Grid container>
@@ -71,12 +86,12 @@ const AddBrandPage = () => {
                 <TextField
                   label="Name"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={brand.name}
+                  onChange={(e) => setBrand({ ...brand, name: e.target.value })}
                 />
                 <Box sx={{ height: "20px" }}></Box>
                 <Button variant="contained" type="submit">
-                  Add brand
+                  Update Brand
                 </Button>
               </form>
             </Grid>
@@ -88,4 +103,4 @@ const AddBrandPage = () => {
   );
 };
 
-export default AddBrandPage;
+export default UpdateBrandPage;

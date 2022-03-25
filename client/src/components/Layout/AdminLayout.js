@@ -1,24 +1,24 @@
 import React from "react";
-import { Switch, Link, Route, useRouteMatch } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 
 // Components
-import Navbar from "../Navbar/Navbar";
 import AdminAppBar from "../Admin/Appbar/AdminAppBar";
-import Footer from "../Footer";
 import AdminDrawer from "../Admin/Drawer/AdminDrawer";
 
 // UI
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 
 // Pages
 import DashboardPage from "../../pages/Admin/DashboardPage";
 import UserPage from "../../pages/Admin/User/UserPage";
-import CreateUserPage from "../../pages/Admin/User/CreateUserPage";
+import AddUserPage from "../../pages/Admin/User/AddUserPage";
+import UpdateUserPage from "../../pages/Admin/User/UpdateUserPage";
 import BrandPage from "../../pages/Admin/Brand/BrandPage";
+import UpdateBrandPage from "../../pages/Admin/Brand/UpdateBrandPage";
 import AddBrandPage from "../../pages/Admin/Brand/AddBrandPage";
+import UpdateProductPage from "../../pages/Admin/Product/UpdateProductPage";
 import ProductsPage from "../../pages/Admin/Product/ProductsPage";
 import AddProductPage from "../../pages/Admin/Product/AddProductPage";
 import SalesPage from "../../pages/Admin/SalesPage";
@@ -26,9 +26,7 @@ import SalesPage from "../../pages/Admin/SalesPage";
 const drawerWidth = 240;
 
 const AdminLayout = ({ children }) => {
-  let { path, url } = useRouteMatch();
-  console.log(`${url}/users`);
-  console.log(path);
+  let { path } = useRouteMatch();
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -40,7 +38,6 @@ const AdminLayout = ({ children }) => {
           flexGrow: 1,
           bgcolor: "#f7f7f7",
           p: 5,
-          height: "100vh",
           minHeight: "110vh",
         }}
       >
@@ -53,7 +50,10 @@ const AdminLayout = ({ children }) => {
             <UserPage />
           </Route>
           <Route path="/users/add">
-            <CreateUserPage />
+            <AddUserPage />
+          </Route>
+          <Route path="/users/:id">
+            <UpdateUserPage />
           </Route>
           <Route exact path="/brands">
             <BrandPage />
@@ -61,11 +61,17 @@ const AdminLayout = ({ children }) => {
           <Route path="/brands/add">
             <AddBrandPage />
           </Route>
+          <Route path="/brands/:id">
+            <UpdateBrandPage />
+          </Route>
           <Route exact path="/products">
             <ProductsPage />
           </Route>
           <Route path="/products/add">
             <AddProductPage />
+          </Route>
+          <Route path="/products/:id">
+            <UpdateProductPage />
           </Route>
           <Route path="/sales">
             <SalesPage />

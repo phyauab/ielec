@@ -2,7 +2,12 @@ import React from "react";
 
 // UI
 import Paper from "@mui/material/Paper";
-import { Chart, PieSeries } from "@devexpress/dx-react-chart-material-ui";
+import {
+  Chart,
+  PieSeries,
+  Legend,
+  Title,
+} from "@devexpress/dx-react-chart-material-ui";
 
 const data = [
   { country: "Russia", area: 12 },
@@ -15,12 +20,19 @@ const data = [
   { country: "Others", area: 55 },
 ];
 
-const TopCategoriesCard = () => {
+const TopCategoriesCard = ({ topCategories }) => {
+  console.log(topCategories);
   return (
-    <Paper>
-      <Chart data={data}>
-        <PieSeries valueField="area" argumentField="country" />
-      </Chart>
+    <Paper sx={{ p: 2 }}>
+      {topCategories.length === 0 ? (
+        <></>
+      ) : (
+        <Chart data={topCategories}>
+          <PieSeries c valueField="totalUnitsSold" argumentField="_id" />
+          <Legend position="bottom" />
+          <Title text="Top Categories" />
+        </Chart>
+      )}
     </Paper>
   );
 };
