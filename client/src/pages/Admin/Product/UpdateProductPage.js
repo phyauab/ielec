@@ -62,12 +62,12 @@ const UpdateProductPage = () => {
 
   useEffect(() => {
     init();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const init = async () => {
     fetchBrands();
     const response = await fetchProduct(id);
-    console.log(response.data);
+
     // update __t to category
     let category = response.data.__t;
     delete response.data.__t;

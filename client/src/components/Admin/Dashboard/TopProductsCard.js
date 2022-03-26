@@ -37,7 +37,6 @@ const TopProductsCard = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* {console.log(dashboard.topProducts)} */}
             {dashboard.topProducts.map((product, index) => {
               return (
                 <TableRow

@@ -42,7 +42,7 @@ const UserPage = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return <Loading />;
@@ -89,7 +89,6 @@ const UserPage = () => {
               aria-haspopup="true"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(cell.id);
                 setId(cell.id);
                 handleClick(e);
               }}

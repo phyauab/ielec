@@ -71,7 +71,7 @@ router.delete("/cartItems/:id", auth, async (req, res) => {
     if (cartItem.deletedCount === 0) {
       throw new Error("Delete Item Fails");
     }
-    // console.log(cartItem);
+
     res.send(cartItem);
   } catch (e) {
     console.log(e);

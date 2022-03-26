@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // UI
-// import Box from "@mui/material/Box";
-// import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";

@@ -188,7 +188,6 @@ router.get("/products/properties", async (req, res) => {
 
 // Read - get all categories, e.g. phone, laptop
 router.get("/products/categories", async (req, res) => {
-  console.log(Object.keys(Product.discriminators));
   try {
     res.send(Object.keys(Product.discriminators));
   } catch (error) {
@@ -241,7 +240,7 @@ router.patch("/products", auth, async (req, res) => {
       { $set: req.body },
       { useFindAndModify: false }
     );
-    // console.log(product);
+
     res.send(product);
   } catch (e) {
     console.log(e);

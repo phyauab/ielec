@@ -11,22 +11,13 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 
-// const breadcrumbs = [
-//   <Link underline="hover" key="1" color="inherit" to="/">
-//     Home
-//   </Link>,
-//   <Typography key="3" color="text.primary">
-//     Transactions
-//   </Typography>,
-// ];
-
 const TransactionPage = () => {
   const { transactions, fetchTransactions, isLoading } =
     useTransactionContext();
 
   useEffect(() => {
     fetchTransactions();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return <Loading />;

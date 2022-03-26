@@ -3,7 +3,6 @@ import React from "react";
 // UI
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Box from "@mui/material/Box";
-// import Typography from "@mui/material/Typography";
 
 const BreadCrumb = ({ breadcrumbs }) => {
   return (

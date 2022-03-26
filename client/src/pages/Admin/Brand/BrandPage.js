@@ -42,7 +42,7 @@ const BrandPage = () => {
 
   useEffect(() => {
     fetchBrands();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return <Loading />;

@@ -16,7 +16,7 @@ const TotalPrice = () => {
 
   useEffect(() => {
     calculateTotal();
-  }, [cartItems.length]);
+  }, [cartItems.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const calculateTotal = () => {
     let total = 0;

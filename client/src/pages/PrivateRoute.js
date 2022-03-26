@@ -6,7 +6,6 @@ const PrivateRoute = ({ children, ...rest }) => {
   const { user } = useUserContext();
 
   if (!user) {
-    console.log("no user");
     return <Redirect to="/"></Redirect>;
   }
 

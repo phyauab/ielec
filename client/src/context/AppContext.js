@@ -18,7 +18,6 @@ export const AppProvider = ({ children }) => {
   };
 
   const showMessage = (msg, severity) => {
-    // console.log("show message");
     setSnackbarState({ open: true, msg: msg, severity: severity });
   };
 

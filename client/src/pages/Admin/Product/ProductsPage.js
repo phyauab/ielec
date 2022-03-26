@@ -45,7 +45,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return <Loading />;
@@ -84,7 +84,6 @@ const ProductsPage = () => {
         flex: 1,
         width: 200,
         renderCell: (cell) => {
-          // console.log(cell.id);
           return (
             <IconButton
               aria-label="more"
@@ -94,7 +93,6 @@ const ProductsPage = () => {
               aria-haspopup="true"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(cell.id);
                 setId(cell.id);
                 handleClick(e);
               }}

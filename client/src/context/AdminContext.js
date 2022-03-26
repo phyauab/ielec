@@ -52,8 +52,6 @@ import {
   DELETE_BRAND_SUCCESS,
   DELETE_BRAND_ERROR,
 } from "../reducers/actions/AdminAction";
-const REACT_APP_DOMAIN = process.env.REACT_APP_DOMAIN;
-console.log(REACT_APP_DOMAIN);
 
 const AdminContext = React.createContext();
 
@@ -103,7 +101,6 @@ export const AdminProvider = ({ children }) => {
       dispatch({ type: FETCH_DASHBOARD_BEGIN });
       const response = await api.get("/admin/dashboard");
       dispatch({ type: FETCH_DASHBOARD_SUCCESS, payload: response.data });
-      console.log(response);
     } catch (e) {
       console.log(e);
       dispatch({ type: FETCH_DASHBOARD_ERROR });
@@ -126,7 +123,6 @@ export const AdminProvider = ({ children }) => {
     try {
       dispatch({ type: FETCH_USER_BEGIN });
       const response = await api.get(`/users/${id}`);
-      console.log(response.data);
       dispatch({ type: FETCH_USER_SUCCESS, payload: response.data });
       return { status: true, data: response.data };
     } catch (e) {

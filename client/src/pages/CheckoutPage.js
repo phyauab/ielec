@@ -52,7 +52,7 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     load();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container

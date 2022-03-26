@@ -84,7 +84,6 @@ export default function CheckoutForm() {
     // }
 
     setIsLoading(false);
-    // console.log("-------set is loading fase");
   };
 
   return (

@@ -40,8 +40,7 @@ export const ProductProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // response.data
-  const fetchProducts = async (category, params) => {
-    console.log("fetchProducts");
+  const fetchProducts = async () => {
     try {
       dispatch({ type: FETCH_PRODUCTS_BEGIN });
       const response = await api.get("/products");
@@ -109,7 +108,6 @@ export const ProductProvider = ({ children }) => {
       }
 
       // rating
-      // console.log(filterObj);
       filterObj.minRating = filterObj.rating[0];
       filterObj.maxRating = filterObj.rating[1];
       delete filterObj.rating;

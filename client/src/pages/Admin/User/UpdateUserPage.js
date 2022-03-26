@@ -39,7 +39,7 @@ const UpdateUserPage = () => {
 
   useEffect(() => {
     init();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const init = async () => {
     const response = await fetchUser(id);

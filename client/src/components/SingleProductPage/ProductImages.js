@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useProductContext } from "../../context/ProductContext";
-// import { bufferToImage } from "../utils/helpers";
 
 // components
 import Loading from "../Loading";
@@ -30,6 +29,7 @@ const Wrapper = styled.section`
     gap: 1rem;
     flex-direction: row;
     img {
+      border: 2px solid transparent;
       width: 100px;
       height: 100px;
       object-fit: cover;
@@ -39,7 +39,7 @@ const Wrapper = styled.section`
     }
   }
   .img-selected {
-    border: 2px solid ${(props) => props.theme.text};
+    border: 2px solid ${(props) => props.theme.text} !important;
   }
 `;
 

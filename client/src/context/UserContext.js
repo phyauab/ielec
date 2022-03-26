@@ -195,7 +195,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: GETME_DONE });
     };
     init();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <UserContext.Provider

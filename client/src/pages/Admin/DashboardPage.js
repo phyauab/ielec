@@ -24,15 +24,12 @@ const DashboardPage = () => {
   const { fetchDashboard, dashboard, isLoading } = useAdminContext();
   useEffect(() => {
     fetchDashboard();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return <Loading />;
   }
-  // {
-  console.log("-----dashboard-------");
-  console.log(dashboard);
-  // }
+
   return (
     <Container>
       <Toolbar />
@@ -77,7 +74,6 @@ const DashboardPage = () => {
               <TopProductsCard />
             </Grid>
             <Grid item xs={5}>
-              {console.log(dashboard)}
               <TopCategoriesCard topCategories={dashboard.topCategories} />
             </Grid>
           </Grid>

@@ -55,22 +55,6 @@ const NewsLetter = () => {
         </Grid>
       </Container>
     </Box>
-    // <Wrapper className="cenetent-center">
-    //   <h1>Join Our NewsLetter!</h1>
-    //   <div>
-    //     <p>
-    //       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus,
-    //       voluptatum quas eos, rem beatae veritatis voluptatem nam eum similique
-    //       ducimus ad possimus? Deserunt non corrupti sed facilis numquam,
-    //       consequuntur similique?
-    //     </p>
-
-    //     <form onSubmit={(e) => handleSubmit(e)}>
-    //       <input type="text" placeholder={"example@gmail.com"} />
-    //       <button>Subscribe</button>
-    //     </form>
-    //   </div>
-    // </Wrapper>
   );
 };
 

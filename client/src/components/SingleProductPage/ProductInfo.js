@@ -23,7 +23,7 @@ const ProductInfo = () => {
   const { showMessage } = useAppContext();
   const { singleProduct, isProductLoading } = useProductContext();
   const { addToCart, isCartLoading } = useCartContext();
-  const { user, isLoading, greet } = useUserContext();
+  const { user, isLoading } = useUserContext();
   const [options, setOptions] = useState({});
   const history = useHistory();
 
@@ -156,7 +156,8 @@ const ProductInfo = () => {
             variant="contained"
             startIcon={<AddShoppingCartIcon />}
             disabled={qty === 0 || isCartLoading}
-            sx={{ width: "100%", py: "1" }}
+            fullWidth
+            size="large"
             onClick={(e) => {
               if (!user) {
                 showMessage("Please login to proceed", "warning");

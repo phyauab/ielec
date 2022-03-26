@@ -5,7 +5,6 @@ import { useProductContext } from "../context/ProductContext";
 import Loading from "./Loading";
 
 // UI
-// import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -17,7 +16,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
-// import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
@@ -32,7 +30,6 @@ const ProductFilter = () => {
 
   useEffect(() => {
     fetchBrands();
-    // setFilter({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
