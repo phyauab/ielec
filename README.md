@@ -1,9 +1,26 @@
-# Getting Started with Create React App
+# IELEC
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is an app made for fun.
+Click [here](https://ielec.netlify.app/) to visit.
 
-## Available Scripts
+## stack
 
-In the project directory, you can run:
+**Frontend:** React
+**Backend:** Node Express
+**Database:** MongoDB
 
-### `What is IELEC?`
+## Installation (client)
+
+```bash
+cd client
+npm install
+npm start
+```
+
+## Installation (server)
+
+```bash
+cd server
+npm install
+npm run dev
+```
