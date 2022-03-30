@@ -10,6 +10,7 @@
     "@devexpress/dx-react-grid": "^3.0.2",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
+    "@fontsource/roboto": "^4.5.5",
     "@mui/icons-material": "^5.0.0",
     "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.5.2",

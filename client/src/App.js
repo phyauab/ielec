@@ -18,7 +18,7 @@ import { ThemeProvider } from "@mui/material";
 import {
   AboutPage,
   CartPage,
-  // ErrorPage,
+  ErrorPage,
   HomePage,
   ProductsPage,
   SingleProductPage,
@@ -37,11 +37,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-// Admin Pages
-// import { AdminProductPage, AdminUserPage, DashboardPage } from "./pages/Admin";
-
 function App() {
-  // const [isAdmin, setIsAdmin] = useState(false);
   const { handleSnackbarClose, snackbarState } = useAppContext();
   const { getMe, user } = useUserContext();
 
@@ -69,11 +65,6 @@ function App() {
                 path="/products/:id"
                 children={<SingleProductPage />}
               />
-              {/* <Route
-              exact
-              path="/products/:category/:id"
-              children={<SingleProductPage />}
-            /> */}
               <Route exact path="/about">
                 <AboutPage />
               </Route>
@@ -87,7 +78,7 @@ function App() {
                 <AccountLayout></AccountLayout>
               </PrivateRoute>
               <Route path="*">
-                <p>Error</p>
+                <ErrorPage />
               </Route>
             </Switch>
           </ClientLayout>
@@ -98,7 +89,7 @@ function App() {
                 <DashboardPage />
               </PrivateRoute>
               <Route path="*">
-                <p>Error</p>
+                <ErrorPage />
               </Route>
             </Switch>
           </AdminLayout>

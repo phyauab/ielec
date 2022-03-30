@@ -15,7 +15,6 @@ import Slide from "@mui/material/Slide";
 const AuthForm = ({ onClose, open }) => {
   const containerRef = useRef(null);
   const { user } = useUserContext();
-  //   const [action, setAction] = useState("login");
   const [openLogin, setOpenLogin] = useState(true);
   const [openRegister, setOpenRegister] = useState(false);
 
@@ -28,7 +27,6 @@ const AuthForm = ({ onClose, open }) => {
   }
   return (
     <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"xs"}>
-      {/* <form onSubmit={(e) => handleSubmit(e)}> */}
       <Container sx={{ py: 2 }} ref={containerRef}>
         <DialogTitle>
           <Typography variant="h5" component="span" sx={{ fontWeight: "bold" }}>
