@@ -5,8 +5,8 @@ Click [here](https://ielec.netlify.app/) to visit.
 
 ## stack
 
-**Frontend:** React
-**Backend:** Node Express
+**Frontend:** React__
+**Backend:** Node Express__
 **Database:** MongoDB
 
 ## Installation (client)
