@@ -1,60 +1,48 @@
 const express = require("express");
 const router = new express.Router();
-const auth = require("../../middleware/auth");
-const { Product } = require("../../models/product/product");
-const Phone = require("../../models/product/discriminators/phone");
-const Laptop = require("../../models/product/discriminators/laptop");
-const Headphone = require("../../models/product/discriminators/headphone");
-const Accessories = require("../../models/product/discriminators/accessories");
-const { upload } = require("../../middleware/upload");
-const { Brand } = require("../../models/brand");
-const { toBase64 } = require("../../helper");
-// const { Option } = require("../models/option/option");
-const { getProperties } = require("../../helper");
+const auth = require("../middleware/auth");
+const { Product } = require("../models/product/product");
+const Phone = require("../models/product/discriminators/phone");
+const Laptop = require("../models/product/discriminators/laptop");
+const Headphone = require("../models/product/discriminators/headphone");
+const Accessories = require("../models/product/discriminators/accessories");
 
 // Create
 // Create - a product
-router.post(
-  "/products",
-  auth,
-  // upload.fields([{ name: "profilePath" }, { name: "imagePaths" }]),
-  async (req, res) => {
-    try {
-      if (!req.user.isAdmin) {
-        throw new Error("access denied");
-      }
-      // create by category
-      let category = req.body.category;
-      delete req.body.category;
-      let product;
-      switch (category) {
-        case "Phone":
-          product = new Phone(req.body);
-          break;
-        case "Laptop":
-          product = new Laptop(req.body);
-          break;
-        case "Headphone":
-          product = new Headphone(req.body);
-          break;
-        case "Accessories":
-          product = new Accessories(req.body);
-          break;
-        default:
-          throw new Error("Category required");
-      }
-
-      console.log(product);
-
-      // save the product
-      await product.save();
-      res.send(product);
-    } catch (e) {
-      console.log(e);
-      res.send(e.message);
+router.post("/products", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      throw new Error("access denied");
     }
+
+    // create by category
+    let category = req.body.category;
+    delete req.body.category;
+    let product;
+    switch (category) {
+      case "Phone":
+        product = new Phone(req.body);
+        break;
+      case "Laptop":
+        product = new Laptop(req.body);
+        break;
+      case "Headphone":
+        product = new Headphone(req.body);
+        break;
+      case "Accessories":
+        product = new Accessories(req.body);
+        break;
+      default:
+        throw new Error("Category required");
+    }
+
+    await product.save();
+    res.send(product);
+  } catch (e) {
+    console.log(e);
+    res.send(e.message);
   }
-);
+});
 
 // Read
 router.get("/products", async (req, res) => {
@@ -145,44 +133,6 @@ router.get("/products/unqiue_values", async (req, res) => {
     res.send(list);
   } catch (e) {
     res.send(e.message);
-  }
-});
-
-// Read - get properties of a category
-router.get("/products/properties", async (req, res) => {
-  const __t = req.query.type;
-  let properties;
-
-  switch (__t) {
-    case "Phone":
-      properties = Phone.schema.paths;
-      break;
-    case "Laptop":
-      properties = Laptop.schema.paths;
-      break;
-    case "Headphone":
-      properties = Headphone.schema.paths;
-      break;
-    case "Accessories":
-      properties = Accessories.schema.paths;
-      break;
-    default:
-      res.status(404).send("No such category");
-      break;
-  }
-
-  delete properties.updatedAt;
-  delete properties.createdAt;
-  delete properties.__t;
-  delete properties.__v;
-  delete properties.category;
-  delete properties._id;
-  let tempProperties = getProperties(properties);
-
-  try {
-    res.send(tempProperties);
-  } catch (error) {
-    res.status(400).send({ error: "fetch properties failed" });
   }
 });
 
