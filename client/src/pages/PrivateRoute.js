@@ -13,7 +13,7 @@ const PrivateRoute = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() => {
-        return user.isAdmin ? children : <Redirect to="/"></Redirect>;
+        return user ? children : <Redirect to="/"></Redirect>;
       }}
     ></Route>
   );

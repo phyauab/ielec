@@ -1,5 +1,4 @@
-import AdminProductPage from "./AddProductPage";
-import AdminUserPage from "./AdminUserPage";
 import DashboardPage from "./DashboardPage";
+import UserPage from "./UserPage";
 
-export { AdminProductPage, AdminUserPage, DashboardPage };
+export { DashboardPage, UserPage };

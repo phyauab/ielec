@@ -1,25 +1,37 @@
 import React from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 // UI
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 
-// Helper
-import { bufferToImage } from "../utils/helpers";
-
-const ProductCard = ({ name, brand, img, price, pathname, _id }) => {
+const ProductCard = ({ product }) => {
+  const { name, profilePath, brand, price, _id } = product;
   return (
-    <Card variant="outlined" sx={{ maxWidth: 300, borderRadius: "10px" }}>
-      <CardActionArea>
-        <Link to={pathname}>
-          <CardMedia component="img" image={bufferToImage(img)} alt={name} />
+    <Link to={`products/${_id}`}>
+      <Card
+        variant="outlined"
+        sx={{
+          maxWidth: 300,
+          borderRadius: "10px",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "end",
+        }}
+      >
+        <CardActionArea
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "end",
+            height: "100%",
+          }}
+        >
+          <CardMedia component="img" image={profilePath} alt={name} />
           <CardContent>
             <Typography variant="h6" component="div" align="center">
               {name}
@@ -31,15 +43,15 @@ const ProductCard = ({ name, brand, img, price, pathname, _id }) => {
               color="GrayText"
               align="center"
             >
-              {brand}
+              {brand.name}
             </Typography>
             <Typography variant="body1" color="success.main" align="center">
               ${price}
             </Typography>
           </CardContent>
-        </Link>
-      </CardActionArea>
-    </Card>
+        </CardActionArea>
+      </Card>
+    </Link>
   );
 };
 

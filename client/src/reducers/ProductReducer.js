@@ -1,53 +1,73 @@
 import {
-  FETCH_PRODUCT_BEGIN,
-  FETCH_PRODUCT_SUCCESS,
-  FETCH_PHONE_SUCCESS,
-  FETCH_LAPTOP_SUCCESS,
-  FETCH_HEADPHONE_SUCCESS,
-  FETCH_ACCESSORIES_SUCCESS,
-  FETCH_PRODUCT_ERROR,
-  CHANGE_DISPLAY_PRODUCT,
+  FETCH_PRODUCTS_BEGIN,
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_PRODUCTS_ERROR,
+  FETCH_FEATUREDPRODUCTS_BEGIN,
+  FETCH_FEATUREDPRODUCTS_SUCCESS,
+  FETCH_FEATUREDPRODUCTS_ERROR,
   FETCH_CATEGORIES_BEGIN,
   FETCH_CATEGORIES_SUCCESS,
   FETCH_PROPERTIES_BEGIN,
   FETCH_PROPERTIES_SUCCESS,
-  FILTER_DISPLAY_PRODUCTS_BEGIN,
-  FILTER_DISPLAY_PRODUCTS_SUCCESS,
-  FILTER_DISPLAY_PRODUCTS_ERROR,
   FETCH_SINGLE_PRODUCT_BEGIN,
   FETCH_SINGLE_PRODUCT_SUCCESS,
   FETCH_SINGLE_PRODUCT_ERROR,
+  FETCH_BRANDS_BEGIN,
+  FETCH_BRANDS_SUCCESS,
+  // FETCH_BRANDS_ERROR,
 } from "./actions/ProductAction";
 
 const ProductRecuder = (state, action) => {
   switch (action.type) {
-    case FETCH_PRODUCT_BEGIN:
-    case FETCH_CATEGORIES_BEGIN:
-    case FETCH_PROPERTIES_BEGIN:
-    case FILTER_DISPLAY_PRODUCTS_BEGIN:
-      return { ...state, isLoading: true, isError: false };
-    case FETCH_SINGLE_PRODUCT_BEGIN:
-      return { ...state, isLoading: true, isError: false };
-    case FETCH_PRODUCT_SUCCESS:
+    case FETCH_BRANDS_BEGIN:
+      return { ...state, isFilterLoading: true, isError: false };
+    case FETCH_FEATUREDPRODUCTS_BEGIN:
+      return { ...state, isFeaturedProductLoading: true, isError: false };
+    case FETCH_FEATUREDPRODUCTS_SUCCESS:
       return {
         ...state,
-        phones: action.payload,
-        displayProducts: action.payload,
-        isLoading: false,
+        isFeaturedProductLoading: false,
+        isError: false,
+        featuredProducts: action.payload,
+      };
+    case FETCH_FEATUREDPRODUCTS_ERROR:
+      return {
+        ...state,
+        isFeaturedProductLoading: false,
+        isError: true,
+      };
+    case FETCH_PRODUCTS_BEGIN:
+    case FETCH_CATEGORIES_BEGIN:
+    case FETCH_PROPERTIES_BEGIN:
+    case FETCH_SINGLE_PRODUCT_BEGIN:
+      return { ...state, isProductLoading: true, isError: false };
+    case FETCH_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        products: action.payload,
+        isProductLoading: false,
+      };
+    case FETCH_SINGLE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        singleProduct: action.payload,
+        isProductLoading: false,
       };
     case FETCH_CATEGORIES_SUCCESS:
       return { ...state, categories: action.payload, isLoading: false };
     case FETCH_PROPERTIES_SUCCESS:
       return { ...state, properties: action.payload, isLoading: false };
-    case FETCH_PRODUCT_ERROR:
+    case FETCH_BRANDS_SUCCESS:
+      return {
+        ...state,
+        isFilterLoading: false,
+        brands: action.payload,
+      };
+    case FETCH_PRODUCTS_ERROR:
       return { ...state, isLoading: false, isError: true };
-    case CHANGE_DISPLAY_PRODUCT:
-    case FILTER_DISPLAY_PRODUCTS_SUCCESS:
-      return { ...state, displayProducts: action.payload, isLoading: false };
-    case FETCH_SINGLE_PRODUCT_SUCCESS:
-      return { ...state, isLoading: false, singleProduct: action.payload };
     case FETCH_SINGLE_PRODUCT_ERROR:
       return { ...state, isLoading: false, isError: true };
+    default:
   }
   return { ...state };
 };

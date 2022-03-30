@@ -3,43 +3,57 @@ const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true,
-    unique: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error("Invalid Email");
-      }
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
     },
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    minLength: 8,
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+      enum: ["Male", "Female"],
+    },
+    birthday: {
+      type: Date,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Invalid Email");
+        }
       },
     },
-  ],
-});
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 8,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // has the password if modified before every save
 userSchema.pre("save", async function (next) {
@@ -60,7 +74,7 @@ userSchema.pre("save", async function (next) {
 // Q: Why not just password?
 // A: same password for >1 user
 userSchema.statics.findByPassword = async (username, password) => {
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username: username }, "password");
 
   if (!user) {
     throw new Error("username does not exist!");
@@ -71,19 +85,32 @@ userSchema.statics.findByPassword = async (username, password) => {
     throw new Error("Wrong Password!");
   }
 
-  return user;
+  return true;
 };
 
 userSchema.methods.generateToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
+  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
 
-  user.tokens = user.tokens.concat({ token });
-  await user.save();
+  const decoded = jwt.decode(token);
+  // console.log(decoded);
+
+  return token;
+};
+
+userSchema.methods.generateRefreshToken = async function () {
+  const user = this;
+  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, {
+    expiresIn: "4h",
+  });
+
+  // const decoded = jwt.decode(token);
 
   return token;
 };
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+module.exports = { User };

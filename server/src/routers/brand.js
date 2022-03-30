@@ -1,11 +1,15 @@
 const express = require("express");
-const { Brand } = require("../models/options/brand");
+const { Brand } = require("../models/brand");
 const router = new express.Router();
+const auth = require("../middleware/auth");
 
 // Create
-router.post("/brands", async (req, res) => {
+router.post("/brands", auth, async (req, res) => {
   try {
-    const brand = new Brand(req.query);
+    if (!req.user.isAdmin) {
+      throw new Error("Access denied");
+    }
+    const brand = new Brand(req.body);
     await brand.save();
     res.send(`Brand ${brand.name} is added`);
   } catch (e) {
@@ -16,7 +20,17 @@ router.post("/brands", async (req, res) => {
 // Read
 router.get("/brands", async (req, res) => {
   try {
-    const brand = await Brand.find();
+    const brands = await Brand.find();
+    res.send(brands);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
+// GET: a brand
+router.get("/brands/:id", async (req, res) => {
+  try {
+    const brand = await Brand.findById(req.params.id);
     res.send(brand);
   } catch (e) {
     res.send(e.message);
@@ -24,14 +38,17 @@ router.get("/brands", async (req, res) => {
 });
 
 // Update
-router.patch("/brands/:name", async (req, res) => {
-  const { name } = req.params;
+router.patch("/brands", auth, async (req, res) => {
   try {
-    const brand = await Brand.updateOne(
-      { name },
-      { $set: { name: req.query.name } }
+    if (!req.user.isAdmin) {
+      throw new Error("Access denied");
+    }
+    const brand = await Brand.findOneAndUpdate(
+      { _id: req.body._id },
+      { $set: req.body },
+      { useFindAndModify: false }
     );
-    console.log(brand);
+
     if (brand.nModified > 0) res.send("Update brand successfully");
     else throw { message: "Update brand failed" };
   } catch (e) {
@@ -39,13 +56,30 @@ router.patch("/brands/:name", async (req, res) => {
   }
 });
 
-// Delete
-router.delete("/brands", async (req, res) => {
+// DELETE: ALL BRANDS
+router.delete("/brands", auth, async (req, res) => {
   const { name } = req.query;
   try {
-    await Brand.deleteOne({ name });
+    if (!req.user.isAdmin) {
+      throw new Error("Access denied");
+    }
+    await Brand.deleteMany();
     res.send("brand deleted successfully");
   } catch (e) {
+    res.send(e.message);
+  }
+});
+
+// Delete
+router.delete("/brands/:id", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      throw new Error("Access denied");
+    }
+    await Brand.findByIdAndDelete(req.params.id);
+    res.send("brand deleted successfully");
+  } catch (e) {
+    console.log(e);
     res.send(e.message);
   }
 });

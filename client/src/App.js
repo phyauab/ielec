@@ -1,20 +1,14 @@
-import { React, useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Context
 import { useUserContext } from "./context/UserContext";
+import { useAppContext } from "./context/AppContext";
 
-// UI
-import Navbar from "./components/Navbar/Navbar";
-import Sidebar from "./components/Sidebar";
-import NavPanel from "./components/Admin/NavPanel/NavPanel";
-import Footer from "./components/Footer";
-import { Box } from "@mui/system";
+// Layout
+import ClientLayout from "./components/Layout/ClientLayout";
+import AccountLayout from "./components/Layout/AccountLayout";
+import AdminLayout from "./components/Layout/AdminLayout";
 
 // Theme
 import theme from "./themes/theme";
@@ -24,93 +18,98 @@ import { ThemeProvider } from "@mui/material";
 import {
   AboutPage,
   CartPage,
-  CheckoutPage,
   ErrorPage,
   HomePage,
   ProductsPage,
   SingleProductPage,
   LoginPage,
+  CheckoutPage,
   PrivateRoute,
 } from "./pages";
 
-// Admin Pages
-import { AdminProductPage, AdminUserPage, DashboardPage } from "./pages/Admin";
+import { DashboardPage } from "./pages";
+
+// Snackbar
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Grow from "@mui/material/Grow";
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function App() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const { user } = useUserContext();
+  const { handleSnackbarClose, snackbarState } = useAppContext();
+  const { getMe, user } = useUserContext();
 
-  useEffect(() => {
-    if (user) {
-      setIsAdmin(user.isAdmin);
-    } else {
-      setIsAdmin(false);
-    }
-  }, [user]);
+  if (!getMe) {
+    return <></>;
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      {!isAdmin ? (
-        <Router>
-          <Navbar />
-          {/* <Sidebar /> */}
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route exact path="/login">
-              <LoginPage />
-            </Route>
+      <Router>
+        {user == null || !user.isAdmin ? (
+          <ClientLayout>
+            {/* <Sidebar /> */}
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
 
-            <Route exact path="/products" children={<ProductsPage />} />
-            <Route
-              exact
-              path="/products/:category/:id"
-              children={<SingleProductPage />}
-            />
-            <Route exact path="/about">
-              <AboutPage />
-            </Route>
-            <Route exact path="/cart">
-              <CartPage />
-            </Route>
-            {/* <PrivateRoute exact path="/dashboard">
-            <DashboardPage />
-          </PrivateRoute> */}
-            {/* <div className="admin">
-            <Route exact path="/dashboard">
-            <DashboardPage />
-            </Route>
-            
-            <Route exact path="/dashboard/addproduct">
-            <DashboardPage />
-            </Route>
-          </div> */}
-            <Route path="*">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
-          <Footer />
-        </Router>
-      ) : (
-        <Box sx={{ display: "flex", height: "100vh", width: "100%" }}>
-          <Router>
-            <NavPanel />
-            <Route path="/dashboard">
-              <DashboardPage />
-            </Route>
-            <Route path="/users">
-              <AdminUserPage />
-            </Route>
-            <Route path="/products">
-              <AdminProductPage />
-            </Route>
-            <Router path="*">
-              <Redirect to="/dashboard" />
-            </Router>
-          </Router>
-        </Box>
-      )}
+              <Route exact path="/products" children={<ProductsPage />} />
+              <Route
+                exact
+                path="/products/:id"
+                children={<SingleProductPage />}
+              />
+              <Route exact path="/about">
+                <AboutPage />
+              </Route>
+              <PrivateRoute exact path="/cart">
+                <CartPage />
+              </PrivateRoute>
+              <PrivateRoute exact path="/checkout">
+                <CheckoutPage />
+              </PrivateRoute>
+              <PrivateRoute path="/account">
+                <AccountLayout></AccountLayout>
+              </PrivateRoute>
+              <Route path="*">
+                <ErrorPage />
+              </Route>
+            </Switch>
+          </ClientLayout>
+        ) : (
+          <AdminLayout>
+            <Switch>
+              <PrivateRoute exact path="/">
+                <DashboardPage />
+              </PrivateRoute>
+              <Route path="*">
+                <ErrorPage />
+              </Route>
+            </Switch>
+          </AdminLayout>
+        )}
+      </Router>
+      <Snackbar
+        open={snackbarState.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        TransitionComponent={Grow}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarState.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarState.msg}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

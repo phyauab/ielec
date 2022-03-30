@@ -1,7 +1,9 @@
-import React, { useState, useContext, useReducer, useEffect } from "react";
+import React, { useContext, useReducer, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useCartContext } from "./CartContext";
+import jwt_decode from "jwt-decode";
 import reducer from "../reducers/UserReducer";
-import axios from "axios";
-import { useHistory, Redirect } from "react-router-dom";
+import api from "./Api";
 import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
@@ -12,85 +14,92 @@ import {
   SIGNUP_USER_BEGIN,
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
+  GETME_DONE,
+  UPDATE_USER_BEGIN,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from "../reducers/actions/UserAction";
 
 const UserContext = React.createContext();
 
 const initialUserState = {
+  getMe: false,
   isLoggedIn: false,
   isLoading: false,
   isError: false,
+  msg: null,
   user: null,
   token: null,
 };
 
-const initialCart = {
-  cart: [],
-};
-
-// item = {
-//   id: Number,
-//   qty: Number
-// }
-
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialUserState);
+  const { fetchCartItems } = useCartContext();
   const history = useHistory();
-  const BASE_URL = "http://localhost:4000";
-  const api = axios.create({
-    baseURL: BASE_URL,
-    timeout: 5000,
-  });
 
-  const loginUser = async (username, password) => {
+  const clearMsg = () => {
+    dispatch({ type: "CLEAR_MSG" });
+  };
+
+  const login = async (username, password) => {
     try {
       dispatch({ type: LOGIN_USER_BEGIN });
       const response = await api.post("/users/login", {
-        data: {
-          username,
-          password,
-        },
+        username: username,
+        password: password,
       });
-      const { user, token } = response.data;
-      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
-      localStorage.setItem("ielec_token", token);
+      const { user, access_token } = response.data;
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
+
+      localStorage.setItem("access_token", access_token);
+
+      api.defaults.headers["Authorization"] = `Bearer ${access_token}`;
+      return true;
     } catch (error) {
-      dispatch({ type: LOGIN_USER_ERROR });
+      dispatch({
+        type: LOGIN_USER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
       return false;
     }
   };
 
-  const logoutUser = async () => {
+  const logout = async () => {
     try {
       dispatch({ type: LOGOUT_USER_BEGIN });
-      await api.post(
-        "/users/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-        }
-      );
       dispatch({ type: LOGOUT_USER_SUCCESS });
-      localStorage.removeItem("ielec_token");
+      localStorage.removeItem("access_token");
+      history.push("/");
     } catch (error) {
-      dispatch({ type: LOGOUT_USER_ERROR });
+      dispatch({ type: LOGOUT_USER_ERROR, payload: {} });
       console.log(error);
-      alert("Failed to Logout");
     }
   };
 
-  const signUpUser = async ({ username, password, email }) => {
+  const register = async (
+    username,
+    firstName,
+    lastName,
+    password,
+    gender,
+    email,
+    birthday
+  ) => {
     try {
       dispatch({ type: SIGNUP_USER_BEGIN });
-      const response = await axios.post("http://localhost:4000/users/signup", {
-        username,
-        email,
-        password,
+      const response = await api.post("/users/register", {
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+        password: password,
+        gender: gender,
+        email: email,
+        birthday: birthday,
       });
-      const { user, token } = response.data;
-      dispatch({ type: SIGNUP_USER_SUCCESS, payload: { user, token } });
+      console.log(response);
+      const { user, access_token } = response.data;
+      dispatch({ type: SIGNUP_USER_SUCCESS, payload: { user } });
+      localStorage.setItem("access_token", access_token);
       return true;
     } catch (error) {
       dispatch({ type: SIGNUP_USER_ERROR });
@@ -99,43 +108,106 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const reLoginUser = async (localToken) => {
+  const updateInfo = async (firstName, lastName, gender, email, birthday) => {
+    try {
+      dispatch({ type: UPDATE_USER_BEGIN });
+      const response = await api.patch("/users/update", {
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+        email: email,
+        birthday: birthday,
+      });
+      dispatch({ type: UPDATE_USER_SUCCESS, payload: response.data });
+      return true;
+    } catch (e) {
+      console.log(e);
+      dispatch({ type: UPDATE_USER_ERROR });
+      return false;
+    }
+  };
+
+  const refresh = async (access_token) => {
     try {
       dispatch({ type: LOGIN_USER_BEGIN });
       const response = await api.post(
-        "/users/relogin",
+        "/users/refresh",
         {},
         {
           headers: {
-            Authorization: `Bearer ${localToken}`,
+            Authorization: `Bearer ${access_token}`,
           },
         }
       );
-      const { user, token } = response.data;
+      const { user, access_token } = response.data;
       // admin cannot relogin
       if (user.isAdmin) {
         dispatch({ type: LOGIN_USER_ERROR });
         return;
       }
-      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, token } });
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user, access_token } });
     } catch (error) {
       dispatch({ type: LOGIN_USER_ERROR });
       console.log(error);
     }
   };
 
+  const getMe = async (access_token) => {
+    try {
+      // dispatch({ type: LOGIN_USER_BEGIN });
+      const response = await api.get("/users/me", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      const user = response.data;
+      console.log(access_token);
+      dispatch({ type: LOGIN_USER_SUCCESS, payload: { user } });
+      await fetchCartItems();
+    } catch (error) {}
+  };
+
+  const validateToken = (token) => {
+    let expiry = jwt_decode(token).exp;
+    const now = new Date();
+
+    // if now < exp time = valid
+    return now.getTime() < expiry * 1000;
+  };
+
+  const init = async () => {
+    const access_token = localStorage.getItem("access_token");
+    if (access_token) {
+      if (validateToken(access_token)) {
+        await getMe(access_token);
+      }
+    }
+  };
+
   useEffect(() => {
-    const localToken = localStorage.getItem("ielec_token");
-    if (localToken) reLoginUser(localToken);
-  }, []);
+    const init = async () => {
+      const access_token = localStorage.getItem("access_token");
+      if (access_token) {
+        if (validateToken(access_token)) {
+          await getMe(access_token);
+        }
+      }
+      dispatch({ type: GETME_DONE });
+    };
+    init();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <UserContext.Provider
       value={{
         ...state,
-        loginUser,
-        logoutUser,
-        signUpUser,
+        login,
+        logout,
+        register,
+        refresh,
+        init,
+        clearMsg,
+        updateInfo,
       }}
     >
       {children}

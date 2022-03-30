@@ -1,0 +1,99 @@
+import React, { useState, useEffect } from "react";
+import { useAdminContext } from "../../../context/AdminContext";
+import { Link, useHistory } from "react-router-dom";
+import { useAppContext } from "../../../context/AppContext";
+
+// Components
+import Title from "../../../components/Admin/Title";
+import Loading from "../../../components/Loading";
+import ProductForm from "../../../components/Admin/Product/ProductForm";
+
+// UI
+import Container from "@mui/material/Container";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Paper from "@mui/material/Paper";
+import AddIcon from "@mui/icons-material/Add";
+
+const AddProductPage = () => {
+  const { isLoading, brands, fetchBrands, addProduct } = useAdminContext();
+  const { showMessage } = useAppContext();
+  const history = useHistory();
+  const [product, setProduct] = useState({
+    category: "Phone",
+    name: "",
+    brand: "",
+    price: 0,
+    qty: 0,
+    rating: 0,
+    featured: false,
+    description: "",
+    profilePath: null,
+    imagePaths: null,
+    color: [],
+    ram: [],
+    storage: [],
+  });
+  const [open, setOpen] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await addProduct(product);
+    if (response.status) {
+      showMessage("Product added!", "success");
+      history.push("/products");
+    } else {
+      setOpen(true);
+      setMsg(response.msg);
+      setTimeout(() => {
+        setOpen(false);
+      }, 5.0 * 1000);
+    }
+  };
+
+  useEffect(() => {
+    fetchBrands();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  return (
+    <Container>
+      <Toolbar disableGutters>
+        <Link to="/products">
+          <IconButton>
+            <ArrowBackIcon />
+          </IconButton>
+        </Link>
+      </Toolbar>
+      <Title title="Add New Product" />
+
+      <Paper
+        sx={{
+          p: 5,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ProductForm
+          product={product}
+          setProduct={setProduct}
+          brands={brands}
+          handleSubmit={handleSubmit}
+          open={open}
+          msg={msg}
+          buttonText="Add Product"
+          buttonIcon={<AddIcon />}
+        />
+      </Paper>
+    </Container>
+  );
+};
+
+export default AddProductPage;

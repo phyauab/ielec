@@ -1,0 +1,325 @@
+import React from "react";
+
+import { SliderPicker } from "react-color";
+
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import ClearIcon from "@mui/icons-material/Clear";
+import Divider from "@mui/material/Divider";
+
+const LaptopForm = ({ product, setProduct }) => {
+  return (
+    <Grid container item xs={12} rowSpacing={2}>
+      <Grid item xs={12}>
+        <TextField
+          label="CPU"
+          required
+          fullWidth
+          value={product.cpu}
+          onChange={(e) => setProduct({ ...product, cpu: e.target.value })}
+        />
+      </Grid>
+      {/* Color */}
+      <Grid item xs={12}>
+        <FormLabel>Color (Optional)</FormLabel>
+      </Grid>
+
+      {product.color.map((item, index) => {
+        return (
+          <Grid container item xs={12} rowSpacing={2}>
+            <Grid container item xs={12} columnSpacing={2}>
+              <Grid item xs={5}>
+                <TextField
+                  label={`Color ${index + 1} name`}
+                  value={item.name}
+                  required
+                  onChange={(e) => {
+                    let tempColor = product.color;
+                    tempColor[index].name = e.target.value;
+                    setProduct({ ...product, color: tempColor });
+                  }}
+                />
+              </Grid>
+              <Grid item xs={5}>
+                <TextField
+                  label={`Color ${index + 1} price`}
+                  value={item.additionalPrice}
+                  required
+                  type="number"
+                  onChange={(e) => {
+                    let tempColor = product.color;
+                    tempColor[index].additionalPrice = e.target.value;
+                    setProduct({ ...product, color: tempColor });
+                  }}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <IconButton>
+                  <ClearIcon
+                    onClick={(e) => {
+                      let tempColor = product.color;
+                      tempColor.splice(index, 1);
+                      setProduct({ ...product, color: tempColor });
+                    }}
+                  />
+                </IconButton>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <SliderPicker
+                color={item.colorCode}
+                onChangeComplete={(c) => {
+                  let tempColor = product.color;
+                  tempColor[index].colorCode = c.hex;
+                  setProduct({ ...product, color: tempColor });
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+          </Grid>
+        );
+      })}
+
+      <Grid item xs={12}>
+        <Button
+          fullWidth
+          variant="contained"
+          color="secondary"
+          onClick={(e) => {
+            let tempColors = product.color;
+            tempColors.push({
+              name: "",
+              colorCode: "#000000",
+            });
+            setProduct({
+              ...product,
+              color: tempColors,
+            });
+          }}
+        >
+          add color
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider />
+      </Grid>
+
+      {/* RAM */}
+      <Grid item xs={12}>
+        <FormLabel>Ram (Optional)</FormLabel>
+      </Grid>
+
+      {product.ram.map((item, index) => {
+        return (
+          <Grid container item xs={12} rowSpacing={2}>
+            <Grid container item xs={12} columnSpacing={2}>
+              <Grid item xs={4}>
+                <TextField
+                  label={`Ram ${index + 1} size`}
+                  value={item.size}
+                  type="number"
+                  required
+                  onChange={(e) => {
+                    let tempRam = product.ram;
+                    tempRam[index].size = e.target.value;
+                    setProduct({ ...product, ram: tempRam });
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={3}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Unit</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={item.unit}
+                    label="unit"
+                    onChange={(e) => {
+                      let tempRam = product.ram;
+                      tempRam[index].unit = e.target.value;
+                      setProduct({ ...product, ram: tempRam });
+                    }}
+                  >
+                    <MenuItem value={"MB"}>MB</MenuItem>
+                    <MenuItem value={"GB"}>GB</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={3}>
+                <TextField
+                  label="Additional Price"
+                  value={item.additionalPrice}
+                  type="number"
+                  required
+                  onChange={(e) => {
+                    let tempRam = product.ram;
+                    tempRam[index].additionalPrice = e.target.value;
+                    setProduct({ ...product, ram: tempRam });
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={2}>
+                <IconButton>
+                  <ClearIcon
+                    onClick={(e) => {
+                      let tempRam = product.ram;
+                      tempRam.splice(index, 1);
+                      setProduct({ ...product, ram: tempRam });
+                    }}
+                  />
+                </IconButton>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+          </Grid>
+        );
+      })}
+
+      <Grid item xs={12}>
+        <Button
+          fullWidth
+          variant="contained"
+          color="secondary"
+          onClick={(e) => {
+            let tempRam = product.ram;
+            tempRam.push({
+              size: "",
+              unit: "MB",
+              additionalPrice: 0,
+            });
+            setProduct({
+              ...product,
+              ram: tempRam,
+            });
+          }}
+        >
+          add Ram
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider />
+      </Grid>
+
+      {/* SSD */}
+      <Grid item xs={12}>
+        <FormLabel>SSD (Optional)</FormLabel>
+      </Grid>
+
+      {product.ssd.map((item, index) => {
+        return (
+          <Grid container item xs={12} rowSpacing={2}>
+            <Grid container item xs={12} columnSpacing={2}>
+              <Grid item xs={4}>
+                <TextField
+                  label={`HDD ${index + 1} size`}
+                  value={item.size}
+                  type="number"
+                  required
+                  onChange={(e) => {
+                    let tempSsd = product.ssd;
+                    tempSsd[index].size = e.target.value;
+                    setProduct({ ...product, ssd: tempSsd });
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={3}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Unit</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={item.unit}
+                    label="unit"
+                    required
+                    onChange={(e) => {
+                      let tempSsd = product.ssd;
+                      tempSsd[index].unit = e.target.value;
+                      setProduct({ ...product, ssd: tempSsd });
+                    }}
+                  >
+                    <MenuItem value={"GB"}>GB</MenuItem>
+                    <MenuItem value={"TB"}>TB</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={3}>
+                <TextField
+                  label="Additional Price"
+                  value={item.additionalPrice}
+                  type="number"
+                  required
+                  onChange={(e) => {
+                    let tempSsd = product.ssd;
+                    tempSsd[index].additionalPrice = e.target.value;
+                    setProduct({ ...product, ssd: tempSsd });
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={2}>
+                <IconButton>
+                  <ClearIcon
+                    onClick={(e) => {
+                      let tempSsd = product.ssd;
+                      tempSsd.splice(index, 1);
+                      setProduct({ ...product, ssd: tempSsd });
+                    }}
+                  />
+                </IconButton>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+          </Grid>
+        );
+      })}
+
+      <Grid item xs={12}>
+        <Button
+          fullWidth
+          variant="contained"
+          color="secondary"
+          onClick={(e) => {
+            let tempSsd = product.ssd;
+            tempSsd.push({
+              size: "",
+              unit: "GB",
+              additionalPrice: 0,
+            });
+            setProduct({
+              ...product,
+              ssd: tempSsd,
+            });
+          }}
+        >
+          add SSD
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider />
+      </Grid>
+    </Grid>
+  );
+};
+
+export default LaptopForm;
